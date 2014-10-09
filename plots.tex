@@ -1,0 +1,27 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\usepackage{verbatim}
+%\usepackage[margin=0cm, paperwidth=23.5cm, paperheight=23.1cm]{geometry}
+\usepackage[margin=0cm, paperwidth=18cm, paperheight=15cm]{geometry}
+\pagestyle{empty}
+
+\begin{document}
+\newcommand{\myfig}[1]{%
+% {\tiny #1}  \\
+\includegraphics[width=10.0cm]{#1} 
+}
+
+\newcommand{\mytable}[1]{%
+% {\tiny #1}  \\
+\tiny
+\input{#1}
+\newpage
+}
+%
+%example: \myfig{test.pdf}
+%
+\input{list}
+%
+%\newpage
+%The end!
+\end{document}
