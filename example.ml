@@ -1,7 +1,7 @@
 open XBase
 open Params
 
-let system = Syscall.system
+let system = XSys.command_must_succeed_or_virtual
 
 (*****************************************************************************)
 (** Parameters *)
