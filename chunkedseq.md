@@ -64,6 +64,9 @@ The action selects the overall behavior of the script.
 `all`
 :   Build binaries, generate graphs, and then run all benchmarks.
 
+`paper`
+:   Run all of the experiments and generate all plots for the paper.
+
 Parameters
 ----------
 
@@ -127,6 +130,10 @@ Sample applications
 - Configure all PASL binaries to use tcmalloc.
 
         ./chunkedseq.byte configure -allocator tcmalloc -path_to_tcmalloc /pathto/tcmalloc
+
+- Run all experiments that are reported in the paper.
+
+        ./chunkedseq.byte paper
 
 - Run all experiments but do not plot.
 
