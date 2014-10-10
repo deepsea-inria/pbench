@@ -1,5 +1,5 @@
-Parallel algorithm benchmarking toolkit: pbench
-===============================================
+pbench: a parallel algorithm benchmarking toolkit
+=================================================
 
 Dependencies
 ------------
@@ -18,8 +18,8 @@ The run and plot tools
 These tools are still under development. At present,
 only custom ocaml scripts are supported.
 
-Getting started with writing custom benchmarking scripts
---------------------------------------------------------
+Writing custom benchmarking scripts
+-----------------------------------
 
 We have created an example script to demonstrate basic use
 of our library. The script (and the rest of our library)
