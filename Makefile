@@ -1,11 +1,10 @@
+all: doc
 
 PBENCH_PATH=.
 
 include Makefile_common
 
 DOCS=README.pdf README.html
-
-all: $(TIMEOUT)
 
 doc: $(DOCS)
 

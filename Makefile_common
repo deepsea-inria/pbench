@@ -34,13 +34,14 @@ XLIB_SRC_BASE=\
    XCmd.ml 
 
 XLIB_PATH=$(PBENCH_PATH)/xlib/
+PBENCH_LIB_PATH=$(PBENCH_PATH)/lib/
 
 XLIB_INCLUDES=-I $(XLIB_PATH) 
-PBENCH_INCLUDES=$(XLIB_INCLUDES) -I $(PBENCH_PATH)
+PBENCH_INCLUDES=$(XLIB_INCLUDES) -I $(PBENCH_LIB_PATH)
 
 XLIB_SRC=$(addprefix $(XLIB_PATH),$(XLIB_SRC_BASE)) 
 XLIB_LIBS=unix.cmxa str.cmxa
-PBENCH_SRC=$(XLIB_SRC) $(addprefix $(PBENCH_PATH)/,$(PBENCH_SRC_BASE))
+PBENCH_SRC=$(XLIB_SRC) $(addprefix $(PBENCH_LIB_PATH)/,$(PBENCH_SRC_BASE))
 PBENCH_LIBS=$(XLIB_LIBS)
 
 
@@ -75,7 +76,7 @@ $(TIMEOUT): $(TIMEOUT_SCR)
 # Clean
 
 pbench_clean:
-	rm $(TIMEOUT)
+	rm -f $(TIMEOUT)
 	rm -f *.cmi *.cmo *.cma *.o *.cmx *.pbench
 
 
