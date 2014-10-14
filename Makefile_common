@@ -1,0 +1,92 @@
+
+##################################################################
+# Libraries
+
+PBENCH_SRC_BASE=\
+   pbench.ml \
+   env.ml \
+   params.ml \
+   runs.ml \
+   results.ml \
+   legend.ml \
+   axis.ml \
+   latex.ml \
+   rtool.ml \
+   chart.ml \
+   bar_plot.ml \
+   scatter_plot.ml \
+   mk_bar_plot.ml \
+   mk_runs.ml \
+   mk_scatter_plot.ml \
+   mk_table.ml 
+
+XLIB_SRC_BASE=\
+   XBase.ml \
+   XFloat.ml \
+   XInt.ml \
+   XList.ml \
+   XMath.ml \
+   XOption.ml \
+   XString.ml \
+   XOpt.ml \
+   XFile.ml \
+   XSys.ml \
+   XCmd.ml 
+
+XLIB_PATH=$(PBENCH_PATH)/xlib/
+
+XLIB_INCLUDES=-I $(XLIB_PATH) 
+PBENCH_INCLUDES=$(XLIB_INCLUDES) -I $(PBENCH_PATH)
+
+XLIB_SRC=$(addprefix $(XLIB_PATH),$(XLIB_SRC_BASE)) 
+XLIB_LIBS=unix.cmxa str.cmxa
+PBENCH_SRC=$(XLIB_SRC) $(addprefix $(PBENCH_PATH)/,$(PBENCH_SRC_BASE))
+PBENCH_LIBS=$(XLIB_LIBS)
+
+
+##################################################################
+# Auxiliary programs
+
+TIMEOUT_SCR=$(PBENCH_PATH)/timeout.c
+TIMEOUT=timeout.out
+
+$(TIMEOUT): $(TIMEOUT_SCR)
+	gcc -o $@ $<
+
+
+##################################################################
+# Pbench binaries
+
+%.pbench: %.ml $(PBENCH_SRC) $(TIMEOUT) 
+	ocamlopt $(PBENCH_INCLUDES) $(PBENCH_LIBS) $(PBENCH_SRC) $< -o $@
+
+
+##################################################################
+# Documentation
+
+%.pdf : %.md
+	pandoc $< -s -o $@
+
+%.html : %.md
+	pandoc $< -s -o $@
+
+
+##################################################################
+# Clean
+
+pbench_clean:
+	rm $(TIMEOUT)
+	rm -f *.cmi *.cmo *.cma *.o *.cmx *.pbench
+
+
+
+
+##################################################################
+# Debugging
+
+pbench_debug:
+	@echo $(XLIB_INCLUDES)
+	@echo $(PBENCH_INCLUDES) 
+	@echo $(XLIB_SRC) 
+	@echo $(PBENCH_SRC)  
+

@@ -61,7 +61,7 @@ module ExpFib = struct
 
 let name = "fib"
 
-let prog = "./fib.byte"
+let prog = "./fib"
 
 let mk_algos = mk_list string "algo" ["recursive";"cached"]
 

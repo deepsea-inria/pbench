@@ -2,6 +2,32 @@ open XBase
 
 
 (******************************************************************************)
+(** * Template for latex files --taken from plots.tex, removing % signs, and escaping *)
+
+let latex_plots = "\
+\\documentclass[12pt]{article}\
+\\usepackage{graphicx}\
+\\usepackage{verbatim}\
+\\usepackage[margin=0cm, paperwidth=18cm, paperheight=15cm]{geometry}\
+\\pagestyle{empty}\
+\
+\\begin{document}\
+\\newcommand{\\myfig}[1]{ \
+\\includegraphics[width=10.0cm]{#1} \
+}\
+\
+\\newcommand{\\mytable}[1]{ \
+\\tiny\
+\\input{#1}\
+\\newpage\
+}\
+\\input{list}\
+\\end{document}\
+"
+
+
+
+(******************************************************************************)
 (** * Chart *)
 
 type arg = 
@@ -61,7 +87,7 @@ let build output_file (charts : t list) =
       end in
    if !latexs = [] 
       then Pbench.warning "no plots to output!\n";
-   let latex_plots = XFile.get_contents (Pbench.get_pbench_folder() ^ "/plots.tex") in
+   (* let latex_plots = XFile.get_contents (Pbench.get_pbench_folder() ^ "/plots.tex") in *)
    XFile.put_contents (folder ^ "/plots.tex") latex_plots;
    XFile.put_lines (folder ^ "/list.tex") (List.rev !latexs);
    Pbench.system (sprintf "cd %s; pdflatex -interaction=batchmode plots.tex > null" folder);

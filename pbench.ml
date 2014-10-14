@@ -28,7 +28,7 @@ let info s =
 let system s =
    try XSys.command_must_succeed s
    with XSys.Command_failure s ->
-      error (sprintf "Error when executing command:\n%s\n" s)
+      error (sprintf "Error when executing command: %s" s)
 
 
 
