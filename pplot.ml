@@ -100,6 +100,8 @@ let plot_bar () =
   let x_label_direction =
      Bar_plot.label_direction_of_string (XCmd.parse_or_default_string "x_titles_dir" "horizontal") in
 
+(* TODO: --vertical *)
+
   let mk_x = Params.from_envs (Results.get_distinct_values_for_several arg_x all_results) in
 
   Mk_bar_plot.(call ([
@@ -141,6 +143,7 @@ let plot_table () =
   let results = all_results in
   let env = Env.empty in
   let envs_tables = mk_tables env in
+  (* todo: gérer plusieurs tables séparer en remontant la traduction matrice *)
   ~~ List.iter envs_tables (fun env_tables ->
      let results = Results.filter env_tables results in
      let env = Env.append env env_tables in

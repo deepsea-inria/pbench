@@ -7,10 +7,11 @@ example:
 	pplot -x n -y exectime -series algo 
 	pplot bar -x n -y exectime -series algo 
 	pplot bar -x n -y exectime -chart algo 
-	pplot bar -x n,algo -y exectime 
+	pplot bar -x n,algo -y exectime --vertical
 	pplot scatter -x n -y exectime -series algo 
 	pplot table -row n -col algo -cell exectime
 	pplot table -row n -table algo -cell exectime 
+	pplot table -row n,algo -cell exectime 
 
 
 usage:
@@ -58,5 +59,5 @@ options for "scatter" only:
 
 options for "bar" only:
 
-   -x_titles_dir [horizontal|vertical]
+   -x_titles_dir [horizontal|vertical]  ==> --vertical is a shorthand [TODO]
 
