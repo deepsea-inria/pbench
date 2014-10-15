@@ -59,7 +59,9 @@ $(TIMEOUT): $(TIMEOUT_SCR)
 # Pbench binaries
 
 %.pbench: %.ml $(PBENCH_SRC) $(TIMEOUT) 
-	ocamlopt $(PBENCH_INCLUDES) $(PBENCH_LIBS) $(PBENCH_SRC) $< -o $@
+	ocamlopt -w d $(PBENCH_INCLUDES) $(PBENCH_LIBS) $(PBENCH_SRC) $< -o $@
+
+# "-w d" is for disabling warnings for deprecated features
 
 
 ##################################################################

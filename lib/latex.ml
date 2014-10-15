@@ -51,4 +51,3 @@ let tabular_col = " & "
 let tabular_newline = " \\\\ \\hline \n"
 let new_page = " \\newpage \n"
 let new_line = " \\\\ \n"
-
