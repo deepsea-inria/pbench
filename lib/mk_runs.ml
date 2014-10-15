@@ -117,7 +117,7 @@ let call args =
 
 
 (************************************************************************)
-(** Helper functions for acquiring mode *)
+(** Helper functions *)
 
 let valid_modes = [ "normal"; "append"; "complete"; "replace" ]
 

@@ -43,6 +43,7 @@ let build output_file tex_source =
    Pbench.system (sprintf "mv %s/latex.pdf %s" folder output_file);
    Pbench.info (sprintf "Produced file %s." output_file)
 
+(** Helper functions *)
 
 let tabular_begin s = sprintf "\\begin{tabular}{%s} \\hline \n" s
 let tabular_end = "\\end{tabular}\n"
@@ -50,3 +51,4 @@ let tabular_col = " & "
 let tabular_newline = " \\\\ \\hline \n"
 let new_page = " \\newpage \n"
 let new_line = " \\\\ \n"
+

@@ -66,6 +66,7 @@ exception Missing_chart of string
 let get_charts args =
    let results_global = get_results args in
    let group_by = get_group_by args in
+   let eval_whiskers_opt = get_y_whiskers args in
    let build_x env results_serie env_x =
       let env = Env.append env env_x in 
       let results_x = Results.filter env_x results_serie in
@@ -77,7 +78,6 @@ let get_charts args =
          try 
             let eval = get_y args in
             let y_value = eval env results_global results_x in
-	    let eval_whiskers_opt = get_y_whiskers args in
 	    let y_whisker_value = (match eval_whiskers_opt 
 				   with None -> None
 				      | Some f -> Some (f env results_global results_x)) in
@@ -133,7 +133,9 @@ let get_charts args =
          Chart_opt [ Chart.Title title_chart ];
          X_titles x_titles;
          X_label x_label;
-         Series series ] 
+         Series series;
+         Error_bars (eval_whiskers_opt <> None);
+         ] 
       @ (match get_ylabel_opt args with None -> [] | Some label -> [Y_axis [Axis.Label label]])
       @ (get_bar_plot_opt args))
       in
@@ -160,3 +162,4 @@ let get_charts args =
 let call args =
    let charts = get_charts args in
    Chart.build (get_output args) charts
+

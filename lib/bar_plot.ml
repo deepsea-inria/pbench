@@ -19,6 +19,7 @@ type arg =
    | X_titles_dir of label_direction
    | Y_axis of Axis.t
    | Series of series list
+   | Error_bars of bool (* todo: generalize *)
 
 type t = arg list
 
@@ -28,6 +29,7 @@ let get_xtitles args = XOpt.get_error args (function X_titles x -> Some x | _ ->
 let get_xtitles_dir args = XOpt.get_default args (function X_titles_dir x -> Some x | _ -> None) Horizontal
 let get_yaxis args = XOpt.projects args (function Y_axis x -> Some x | _ -> None)
 let get_series args = XOpt.get_error args (function Series x -> Some x | _ -> None) "barplot needs series" 
+let get_error_bars args = XOpt.get_default args (function Error_bars x -> Some x | _ -> None) false
 
 let out_error_bar_fct = 
   "error.bar <- function(x, y, upper, lower=upper, length=0.1,...){ \n \
@@ -39,6 +41,7 @@ let out_error_bar_fct =
 (** Returns the R script associated with a bar chart *)
 
 let call args = 
+   let error_bars = get_error_bars args in
    let series = get_series args in
    let chart = get_chart_opt args in
    let title = Chart.get_title chart in
@@ -67,10 +70,11 @@ let call args =
       sprintf "data0 <- matrix(c(%s),ncol=%d)\n" 
         (Rtool.of_list (List.map Rtool.of_float series_rvalues)) 
         nb_series
-      ^
-      sprintf "data0err <- matrix(c(%s),ncol=%d)\n" 
-        (Rtool.of_list (List.map Rtool.of_float series_whiskers))
-        nb_series
+      ^ (if error_bars then
+          sprintf "data0err <- matrix(c(%s),ncol=%d)\n" 
+            (Rtool.of_list (List.map Rtool.of_float series_whiskers))
+            nb_series
+         else "")
    in
    let serie_titles = ~~ List.map series (fun serie -> serie.serie_title) in
    let out_serie_titles = sprintf "colnames(data0) <- c(%s)\n" (Rtool.of_string_list serie_titles) in
@@ -106,7 +110,7 @@ let call args =
        out_ylim
        logoption
    in
-   let out_whiskers = sprintf "error.bar(t(bp),data0,data0err)" in
+   let out_whiskers = if error_bars then sprintf "error.bar(t(bp),data0,data0err)" else "" in
    let out_title = Rtool.chart_title title in
    String.concat "\n" [
      out_error_bar_fct;
@@ -130,3 +134,16 @@ let call args =
    (* Remark: space argument to barplot = # Amount of space between i) bars within a group, ii) bars between groups   *)
    (* Remark: in barplot, use `las=2` to render series labels vertically *)
    (* Remark: in barplot, use   font.lab=2  border="black"*)
+
+
+
+
+(************************************************************************)
+(** Helper functions *)
+
+let label_direction_of_string s = 
+  match s with
+  | "horizontal" -> Horizontal 
+  | "vertical" -> Vertical
+  | _ -> Pbench.error "invalid name for label direction (should be 'horizontal' or 'vertical')"
+  
