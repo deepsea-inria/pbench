@@ -60,6 +60,15 @@ let rec extract_nth n l =
       let (y,q') = extract_nth (n-1) q in
       (y,x::q')
 
+(** Split just before the first item that satisfies a given predicate *)
+
+let split_on_predicate f l =
+  let rec aux acc = function
+    | [] -> (List.rev acc, [])
+    | (x::t) as l -> if f x then (List.rev acc, l) else aux (x::acc) t
+    in
+  aux [] l
+
 
 (************************************************************************)
 (** Non recursive operators *)
@@ -147,6 +156,15 @@ let filter_every n l =
                    else aux acc (k-1) l'
      in
   rev_not_rec (aux [] (n-1) l)
+
+(** Count the number of items satisfying a predicate *)
+
+let count f l =
+  let rec aux acc = function
+    | [] -> acc
+    | x::t -> aux (if f x then 1+acc else acc) t
+    in
+  aux 0 l
 
 (** Combine concat and map *)
 

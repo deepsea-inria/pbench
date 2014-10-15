@@ -6,32 +6,63 @@
 
 exception Illegal_command_line of string
 
-let args,flags,others =
-   let args = ref [] in
-   let flags = ref [] in
-   let others = ref [] in
-   let argv = Sys.argv in
-   let n = Array.length argv in
-   let rec aux i =
-      if i = n then () else begin
-         let arg = argv.(i) in
-         if arg.[0] <> '-' then begin
-            XBase.add_to_list_ref others arg;
-            aux (i+1)
-         end else if arg.[1] = '-' then begin
+type element = 
+  | Arg of string * string   (* -key value *)
+  | Flag of string           (* --key *)
+  | Other of string          (* value *)
+
+let elements_from_string_list ls = (* todo: generalize the exception in a better way *)
+   let rec aux acc = function
+     | [] -> List.rev acc
+     | arg::ls2 ->
+       let n = String.length arg in
+       if n = 0
+          then raise (Illegal_command_line ("empty string as argument"));
+       if arg.[0] <> '-' then begin
+          aux ((Other arg)::acc) ls2
+       end else begin
+         if n <= 1 
+            then raise (Illegal_command_line ("dash symbol on its own"));
+         if arg.[1] = '-' then begin
             let key = Str.string_after arg 2 in       
-            XBase.add_to_list_ref flags key;
-            aux (i+1)
+            aux ((Flag key)::acc) ls2
          end else begin
             let key = Str.string_after arg 1 in
-            if i+1 = n then raise (Illegal_command_line ("missing argument after " ^ key));
-            let value = argv.(i+1) in
-            XBase.add_to_list_ref args (key,value);
-            aux (i+2)
+            match ls2 with
+            | [] -> raise (Illegal_command_line ("missing argument after " ^ key));
+            | value::ls3 -> aux (Arg(key, value)::acc) ls3
          end 
-      end in
-   aux 1;
-   List.rev !args, List.rev !flags, List.rev !others
+      end
+    in
+ aux [] ls
+
+let elements =
+   let argv = Sys.argv in
+   let n = Array.length argv in
+   let rec aux acc i =
+     if i = n then List.rev acc else aux (argv.(i)::acc) (i+1)
+     in
+   let ls = aux [] 1 in
+   elements_from_string_list ls
+
+
+let args,flags,args_and_flags,others =
+   (* todo: reimplement in more functional style *)
+   let args = ref [] in
+   let flags = ref [] in
+   let args_and_flags = ref [] in
+   let others = ref [] in
+   List.iter (function
+     | Arg (key,value) -> 
+        XBase.add_to_list_ref args (key,value);
+        XBase.add_to_list_ref args_and_flags (key,value)
+     | Flag key -> 
+        XBase.add_to_list_ref flags key;
+        XBase.add_to_list_ref args_and_flags (key, "1")
+     | Other value -> 
+        XBase.add_to_list_ref others value
+     ) elements;
+   List.rev !args, List.rev !flags, List.rev !args_and_flags, List.rev !others
 
 (** Returns the path the current binary program *)
 
@@ -39,7 +70,26 @@ let program () =
    Sys.argv.(0)
    (* same as: Sys.executable_name *)
 
-(** Accessors and iterators for args and flags *) 
+(** Accessors *) 
+
+let get_elements () =
+   elements
+
+let get_args () =
+   args
+   (*depreacted: XList.build (fun add -> iter_args (fun x v -> add (x,v))) *)
+
+let get_flags () =
+   flags 
+   (*depreacted: XList.build (fun add -> iter_flags (fun x -> add x)) *)
+
+let get_args_and_flags () =
+   args @ (List.map (fun k -> (k,"1")) flags)
+
+let get_others () =
+   others
+
+(** Iterators *) 
 
 let iter_args f =
    List.iter (fun (k,v) -> f k v) args  
@@ -50,14 +100,6 @@ let iter_flags f =
 let iter_others f =
    List.iter f others
 
-let get_args () =
-   XList.build (fun add -> iter_args (fun x v -> add (x,v)))
-
-let get_flags () =
-   XList.build (fun add -> iter_flags (fun x -> add x))
-
-let get_others () =
-   others
 
 (** Functions for removing args and flags
 
@@ -78,20 +120,28 @@ let mem_flag name =
 let mem_arg name = 
    List.mem_assoc name args  
 
-(** Obtain the value bound to a key, as a string;
-    or raise Argument_not_found *)
+(** Obtain the value bound to a key in args or flags, as a string;
+    flags are mapped to "1".  In not found, raise Argument_not_found *)
 
 exception Argument_not_found of string
 
 let find_arg name = 
    try List.assoc name args
-   with Not_found -> raise (Argument_not_found name)
+   with Not_found ->
+     if List.mem name flags
+     then "1" 
+     else raise (Argument_not_found name)
 
 (** Obtain the value bound to a key, at a specific type,
     or raise Argument_not_found *)
 
+let bool_of_string s =
+   match s with
+   | "true" | "1" -> true
+   | "false" | "0" -> false
+   | _ -> failwith ("invalid argument for bool_of_string: " ^ s)
+
 let parse_bool name =
-   let bool_of_string s = (int_of_string s != 0) in
    bool_of_string (find_arg name)
 
 let parse_int name =

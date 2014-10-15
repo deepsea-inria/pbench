@@ -44,7 +44,7 @@ let string_of_value = function
    | Vbool false -> "0"
    | Vint n -> string_of_int n
    | Vfloat x -> string_of_float x
-   | Vstring s -> s
+   | Vstring s -> s (* for debugging: sprintf "'%s'" s *)
    | _ -> Pbench.error "unsupported value type for argument_of_param"
 
 (** [is_ghost_key k] computes whether [k] is a ghost key, i.e.,
@@ -156,6 +156,14 @@ let compose fs e =
 
 let equiv e1 e2 =
    XList.equiv e1 e2
+
+(** Test equivalence of the string representation of two environments 
+    (e.g. values "1" as string and 1 as int are considered equivalent) *)
+
+let equiv_when_stringified e1 e2 =
+   let stringify k v = (k, string_of_value v) in
+   equiv (map stringify e1) (map stringify e2)
+
 
 
 (***************************************************************)

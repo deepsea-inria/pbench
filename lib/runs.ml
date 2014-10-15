@@ -5,6 +5,10 @@ let info = Pbench.info
 
 type arguments = (string * string) list
 
+(** Constant to encode "no timeout" *)
+
+let cst_no_timeout = -1
+
 (** Description of the parameters of a single run  
     -- Note: representation might change *)
 
@@ -41,13 +45,13 @@ let run_params machine b =
 let bench_command result_file b =
    let prog = b.run_prog in
    let args = XList.to_string " " (fun (k,v) -> sprintf "-%s %s" k v) b.run_args in
-   if b.run_timeout <= 0 && b.run_timeout <> -1 
-    then Pbench.error "invalid value for timeout (shoud be positive or -1)";
+   if b.run_timeout <= 0 && b.run_timeout <> cst_no_timeout
+    then Pbench.error "invalid value for timeout (shoud be positive or cst_no_timeout)";
    let timeout_path = sprintf "%s/timeout.out" (Pbench.get_pbench_folder()) in
    if not (Sys.file_exists timeout_path)
       then Pbench.error "need to compile timeout.out in pbench folder";
    let timeout = 
-      if b.run_timeout = -1 
+      if b.run_timeout = cst_no_timeout
         then ""
         else sprintf "%s %d" timeout_path b.run_timeout 
       in
@@ -101,7 +105,9 @@ let result_contains_killed content =
     - "add_output" on the liens to be dumped in the result file
     - "add_error" on command lines that failed to succeed *)
 
-let execute is_verbose is_virtual svn_revision machine add_output add_error b =
+(* TODO: svn_version is deprecated *)
+
+let execute is_verbose is_virtual (*svn_revision*) machine add_output add_error b =
    let result_file = sprintf "%s/run.txt" (Pbench.get_results_folder()) in
    let (full_cmd, disp_cmd) = bench_command result_file b in
    begin
@@ -114,7 +120,7 @@ let execute is_verbose is_virtual svn_revision machine add_output add_error b =
    if not is_virtual then begin
       XFile.put_contents result_file "";
       let attempts_left = ref b.run_attempts in
-      if !attempts_left < 0 then Pbench.error "attempts should be non-negative";
+      if !attempts_left <= 0 then Pbench.error "attempts should be positive";
       let result = ref "" in
       let timed_out = ref false in
       begin try while !attempts_left > 0 do
@@ -142,7 +148,7 @@ let execute is_verbose is_virtual svn_revision machine add_output add_error b =
             add_output "---\n";
             add_output (string_of_arguments ["timeout", string_of_int b.run_timeout]);
             add_output (string_of_arguments b.run_ghost_args);
-            add_output (sprintf "svninfo %s" svn_revision);
+            (* add_output (sprintf "svninfo %s" svn_revision); *)
             if !timed_out then begin
                add_output ("killed 1\n");
                add_output ("exectime inf\n");
@@ -174,9 +180,9 @@ let call args =
    let is_virtual = get_virtual args in 
    let output_file = get_output args in
    Pbench.ensure_results_folder_exists();
-   let svn_revision = Pbench.get_subversion_revision() in
+   (* let svn_revision = Pbench.get_subversion_revision() in *)
    let machine = Pbench.get_localhost_name() in
-   let exec = execute (get_verbose args) is_virtual svn_revision machine in
+   let exec = execute (get_verbose args) is_virtual (*svn_revision*) machine in
    let (add_output,end_output) =
       if is_virtual then begin
          ((fun s -> ()), (fun () -> ()))
