@@ -90,7 +90,7 @@ let call args =
    let legends = List.map (fun serie -> serie.serie_title) series in
    let batches = List.map (fun serie -> serie.serie_points) series in
    let legend = 
-      if legends = [""] then "" else
+      if legends = [""] || legend_pos = Legend.Nowhere then "" else
          sprintf "legend('%s', c(%s), col=cols, pch=pchs)" 
          (Rtool.string_of_legend_pos legend_pos)
          (String.concat "," (List.map (fun s -> sprintf "'%s'" s) legends)) in

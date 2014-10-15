@@ -33,6 +33,7 @@ let bool x = Env.Vbool x
 let int x = Env.Vint x
 let float x = Env.Vfloat x
 let string x = Env.Vstring x
+let value x = x
 
 
 (***************************************************************)

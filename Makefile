@@ -1,5 +1,4 @@
-all: prun 
-# pplot
+all: prun pplot
 
 PBENCH_PATH=.
 

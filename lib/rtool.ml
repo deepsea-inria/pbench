@@ -76,6 +76,7 @@ let string_of_legend_pos = Legend.(function
    | Right -> "right"
    | Center -> "center"
    | Outside_below -> Pbench.error "Outside_below not available for legend in this type of plot"
+   | Nowhere -> Pbench.error "Nowhere not available for legend in this type of plot"
    )
 
 (** Builds a R script that generates an image to store the content

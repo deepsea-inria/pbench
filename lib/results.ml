@@ -213,6 +213,17 @@ let get_unique_of k results =
       List.hd vs
    with Missing_key _ -> nan
 
+let get_distinct_values_for k results =
+  let vs = ~~ List.map results (fun (inputs,ps_results) -> Env.get ps_results k) in
+  XList.remove_duplicate vs
+
+let get_distinct_values_for_several ks results =
+  let vss : Env.t list = ~~ List.map results (fun (inputs,ps_results) -> 
+    List.map (fun k -> (k, Env.get ps_results k)) ks) in
+  List.map Env.from_assoc (XList.remove_duplicate vss)
+  (* note: returns a list of environments *)
+
+
 
 (***************************************************************)
 (** * Check consistency of inputs *)

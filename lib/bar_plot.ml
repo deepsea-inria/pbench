@@ -93,6 +93,7 @@ let call args =
       in
    let (slegend_in_plot, slegend_out_plot) =
       match legend_pos with
+      | Legend.Nowhere -> "", ""
       | Legend.Outside_below -> "", "plot.new() \n legend('center', rownames(table0), col=cols, pch=15) \n"
       | _ -> sprintf " legend=rownames(table0), args.legend = list(x = '%s')," (Rtool.string_of_legend_pos legend_pos), ""
       in

@@ -19,6 +19,12 @@ let unsome_or default = function
   | None -> default
   | Some x -> x
 
+(** Convert to a list of length zero or one *)
+
+let to_list = function
+  | None -> []
+  | Some x -> [x]
+
 
 (************************************************************************)
 (** Iterators *)

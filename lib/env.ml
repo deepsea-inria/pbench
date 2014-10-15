@@ -107,7 +107,8 @@ let rec fprintf_value ppf v =
 let empty = 
    []
 
-(** lookup for the values associated with a key; raises Not_found if not found *)
+(** lookup for the values associated with a key; raises Not_found if not found 
+    --deprecated, use get instead *)
 
 let lookup e k =
    List.assoc k e 
