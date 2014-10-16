@@ -45,3 +45,8 @@ or
 	-prog prog1,prog2  -n 34,35  -m 3.2,4.5
 
 the cross product of all coma separated values is considered
+
+
+
+remarks:
+  the result of every run is recorded in the folder _results/

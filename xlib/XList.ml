@@ -204,7 +204,7 @@ let equiv l1 l2 =
 
 let remove_duplicate l =
    let rec aux acc = function
-      | [] -> acc
+      | [] -> List.rev acc
       | x::t -> if List.mem x acc then aux acc t else aux (x::acc) t
       in
    aux [] l

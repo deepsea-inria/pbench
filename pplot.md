@@ -1,9 +1,11 @@
 
 example:
 
-	make pplot
 	make -C examples/basic fib
+	make prun
 	prun -prog examples/basic/fib -algo recursive,cached -n 39,40 -runs 2
+
+   make pplot
 	pplot -x n -y exectime -series algo 
 	pplot bar -x n -y exectime -series algo 
 	pplot bar -x n -y exectime -chart algo 
@@ -39,7 +41,7 @@ options common to "bar" and "scatter":
    -legendpos [topright|topleft|...]   (see R codes for legend or file legend.ml)
    -chart a,b,c 
    -series a,b,c 
-   -group_by a
+   -group_by a,b,c
    -y a
    -ylabel foo
    -ymin 2.0
@@ -59,5 +61,21 @@ options for "scatter" only:
 
 options for "bar" only:
 
-   -x_titles_dir [horizontal|vertical]  ==> --vertical is a shorthand [TODO]
+	--xlabel_vertical
 
+	or:
+   -x_titles_dir [horizontal|vertical]  
+
+
+options for "table" only:
+
+   -table a,b,c
+   -row a,b,c
+   -col a,b,c
+   -cell a
+   -group_by a,b,c
+
+
+
+remarks:
+  temporary files used to generate plots and tables can be found in the folder _results/

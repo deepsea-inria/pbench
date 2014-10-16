@@ -98,9 +98,9 @@ let plot_bar () =
      XCmd.parse_or_default_string "xlabel" "" in
 
   let x_label_direction =
-     Bar_plot.label_direction_of_string (XCmd.parse_or_default_string "x_titles_dir" "horizontal") in
-
-(* TODO: --vertical *)
+     if XCmd.mem_flag "xlabel_vertical" then Bar_plot.Vertical else
+     Bar_plot.label_direction_of_string (XCmd.parse_or_default_string "x_titles_dir" "horizontal") 
+     in
 
   let mk_x = Params.from_envs (Results.get_distinct_values_for_several arg_x all_results) in
 
@@ -139,12 +139,16 @@ let plot_table () =
   let all_results = Results.from_file arg_input in
   let formatter = [] in
 
-  let cells = ref [] in
+  let s = Buffer.create 1 in
+  let add x = Buffer.add_string s x in
+  
   let results = all_results in
   let env = Env.empty in
   let envs_tables = mk_tables env in
   (* todo: gérer plusieurs tables séparer en remontant la traduction matrice *)
   ~~ List.iter envs_tables (fun env_tables ->
+     let table_title = Env.format formatter env_tables in
+     let cells = ref [] in
      let results = Results.filter env_tables results in
      let env = Env.append env env_tables in
      let envs_rows = mk_rows env in
@@ -171,11 +175,16 @@ let plot_table () =
          XBase.add_to_list_ref row c;
        );
        XBase.add_to_list_ref cells (List.rev !row)
-    )
+    );
+    let matrix = Mk_table.matrix_of_list_of_lists (List.rev !cells) in
+    let latex_table = Mk_table.latex_of_matrix ~escape:true matrix in
+    if arg_title <> "" || table_title <> "" then begin
+      let title = if arg_title <> "" then arg_title else table_title in
+      add (Latex.escape title ^ Latex.new_line ^ Latex.vspace 1.);
+    end;
+    add latex_table;
   );
-  let matrix = Mk_table.matrix_of_list_of_lists (List.rev !cells) in
-  let latex_table = Mk_table.latex_of_matrix ~escape:true matrix in
-  let latex = Latex.escape arg_title ^ (if arg_title = "" then "" else Latex.new_line) ^ latex_table in
+  let latex = Buffer.contents s in
   Latex.build arg_output (Latex.basic_document latex)
 
 

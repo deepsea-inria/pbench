@@ -27,7 +27,8 @@ let basic_document contents =
    "\\documentclass[12pt]{article}\n \
    \\usepackage{graphicx}\n \
    \\usepackage{verbatim}\n \
-   \\usepackage[margin=0cm, paperwidth=25cm, paperheight=25cm]{geometry}
+   \\usepackage[margin=0.5cm, paperwidth=25cm, paperheight=25cm]{geometry}
+   \\setlength{\\parindent}{0pt}
    \\pagestyle{empty}\n \
    \\begin{document}\n"
    ^ contents
@@ -51,3 +52,4 @@ let tabular_col = " & "
 let tabular_newline = " \\\\ \\hline \n"
 let new_page = " \\newpage \n"
 let new_line = " \\\\ \n"
+let vspace x = sprintf "\\vspace{%.3fem}" x
