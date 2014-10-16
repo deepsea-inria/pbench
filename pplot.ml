@@ -1,11 +1,18 @@
 open XBase
 
+(************************************************************************)
+(** Common parameters *)
+
 let arg_width = XCmd.parse_or_default_float "width" 6.0
 let arg_height = XCmd.parse_or_default_float "height" 6.0
 let arg_dimensions = (arg_width, arg_height)
 let arg_title = XCmd.parse_or_default_string "title" "" 
 let arg_input = XCmd.parse_or_default_string "input" "results.txt"
 let arg_output = XCmd.parse_or_default_string "input" "plots.pdf"
+
+
+(************************************************************************)
+(** Helper functions *)
 
 let make_axis smin smax szero slog slabel =
   List.concat [
@@ -17,7 +24,6 @@ let make_axis smin smax szero slog slabel =
     if not b then Pbench.error "should not be using -xzero=false, but only --xzero or nothing";
     Axis.Lower (Some 0.));
   ]
-
 
 let scatter_and_bar_options () =
 
@@ -43,10 +49,7 @@ let scatter_and_bar_options () =
     Results.get_mean_of arg_y results
     in
 
-  let arg_legend_pos =
-    let s = XCmd.parse_or_default_string "legendpos" "topright" in
-    Legend.legend_pos_of_string s
-    in
+  let arg_legend_pos = Legend.legend_pos_of_string (XCmd.parse_or_default_string "legendpos" "topright") in
 
   let chart_opt = Chart.([
       Legend_opt Legend.([Legend_pos arg_legend_pos]);
@@ -56,6 +59,9 @@ let scatter_and_bar_options () =
   (all_results, chart_opt, mk_charts, mk_series, group_by, yaxis, eval_y, ylabel_def)
 
 
+
+(************************************************************************)
+(** Scatter plot *)
 
 let plot_scatter () =
   let (all_results, chart_opt, mk_charts, mk_series, group_by, yaxis, eval_y, ylabel_def) = 
@@ -87,6 +93,9 @@ let plot_scatter () =
     Output arg_output;
     ] @ (~~ List.map ylabel_def (fun s -> Y_label s)) ))
 
+
+(************************************************************************)
+(** Bar plot *)
 
 let plot_bar () =
   let (all_results, chart_opt, mk_charts, mk_series, group_by, yaxis, eval_y, ylabel_def) = 
@@ -120,6 +129,9 @@ let plot_bar () =
     Output arg_output;
     ] @ (~~ List.map ylabel_def (fun s -> Y_label s)) ))
 
+
+(************************************************************************)
+(** Table generation *)
 
 let plot_table () =
   let arg_tables = XCmd.parse_or_default_list_string "table" [] in
@@ -188,6 +200,67 @@ let plot_table () =
   Latex.build arg_output (Latex.basic_document latex)
 
 
+
+(************************************************************************)
+(** Speedup plot *)
+
+let plot_speedup () =
+  let arg_series = XCmd.parse_or_default_list_string "series" [] in
+  let arg_chart = XCmd.parse_or_default_list_string "chart" [] in
+  let group_by = XCmd.parse_or_default_list_string "group_by" [] in
+  let arg_log = XCmd.parse_or_default_bool "log" false in
+  let arg_legend_pos = Legend.legend_pos_of_string (XCmd.parse_or_default_string "legendpos" "topleft") in
+
+  let all_results = Results.from_file arg_input in
+  let all_procs = List.map Env.as_int (Results.get_distinct_values_for "proc" all_results) in
+  let max_proc = XMath.max_of all_procs in
+
+  let mk_charts = Params.from_envs (Results.get_distinct_values_for_several arg_chart all_results) in
+  let mk_series = Params.from_envs (Results.get_distinct_values_for_several arg_series all_results) in
+  let mk_x = Params.mk_list Params.int "proc" (~~ List.filter all_procs (fun p -> p <> 0)) in 
+
+  let axis = Axis.([
+    Is_log arg_log;
+    Lower (Some (if arg_log then 1. else 0.));
+    Upper (Some (float_of_int max_proc)); ]) in
+
+  let eval_y env all_results results =
+    let env_no_proc = ~~ Env.filter env (fun k -> k <> "proc") in
+    let env_baseline = Env.add env_no_proc "proc" (Env.Vint 0) in
+    let baseline_results =  ~~ Results.filter_by_params all_results (Params.from_env env_baseline) in
+    if baseline_results = [] then Pbench.warning ("no results for baseline: " ^ Env.to_string env);
+    let tp = Results.get_mean_of "exectime" results in
+    let tb = Results.get_mean_of "exectime" baseline_results in
+    tb /. tp
+    in
+
+  Mk_scatter_plot.(call ([
+    Chart_opt Chart.([
+      Legend_opt Legend.([Legend_pos arg_legend_pos]);
+      Title arg_title;
+      ]);
+    Scatter_plot_opt Scatter_plot.([
+      X_axis axis;
+      Y_axis axis;
+      Draw_lines true;    
+      Extra ["abline(a=0, b=1, col='gray')"];
+    ]);
+    Charts mk_charts;
+    Series mk_series;
+    X mk_x;
+    Group_by group_by;
+    Y eval_y;
+    Input arg_input;
+    Output arg_output;
+    Y_label "speedup";
+    (*X_label "processors";*)
+    ]))
+
+
+
+(************************************************************************)
+(** Main *)
+
 let () =
   let arg_type =
     match XCmd.parse_optional_string "type", XCmd.get_others() with
@@ -201,6 +274,7 @@ let () =
     | "bar" -> plot_bar
     | "scatter" -> plot_scatter
     | "table" -> plot_table
+    | "speedup" -> plot_speedup
     | _ -> Pbench.error "unsupported type of graph"
     in
   plot_fct()

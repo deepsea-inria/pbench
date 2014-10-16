@@ -5,6 +5,8 @@ demo:
 	make -C examples/basic fib
 	prun -prog examples/basic/fib -algo recursive,cached -n 39,40 -runs 2
 
+	prun -prog examples/others/speedup.sh -proc 0,1,2,3,4
+	prun -prog examples/others/speedup.sh -proc 0,1,2,3,4 -algo foo,bar
 
 
 usage

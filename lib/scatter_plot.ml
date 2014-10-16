@@ -12,6 +12,7 @@ type arg =
    | Y_axis of Axis.t
    | Series of serie list
    | Draw_lines of bool
+   | Extra of string list
 
 type t = arg list
 
@@ -20,6 +21,7 @@ let get_xaxis args = XOpt.projects args (function X_axis x -> Some x | _ -> None
 let get_yaxis args = XOpt.projects args (function Y_axis x -> Some x | _ -> None)
 let get_series args = XOpt.get_error args (function Series x -> Some x | _ -> None) "scatter needs series" 
 let get_draw_lines args = XOpt.get_default args (function Draw_lines x -> Some x | _ -> None) true
+let get_extra args = XOpt.get_default args (function Extra x -> Some x | _ -> None) []
 
 (** Auxiliary function used for the next function *)
 
@@ -106,4 +108,4 @@ let call args =
    let series = List.concat (XList.mapi draw_batch batches) in
    let out_title = [ Rtool.chart_title title ] in
    let style = [ Rtool.colors_define Rtool.colors_default nb_series; Rtool.pchs_define Rtool.pchs_default; ] in
-   String.concat "\n" (style @ core @ [ legend ] @ series @ out_title)
+   String.concat "\n" (style @ core @ [ legend ] @ series @ out_title @ get_extra args )

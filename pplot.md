@@ -15,6 +15,12 @@ example:
 	pplot table -row n -table algo -cell exectime 
 	pplot table -row n,algo -cell exectime 
 
+	prun -prog examples/others/speedup.sh -proc 0,1,2,3,4 
+   pplot speedup 
+
+	prun -prog examples/others/speedup.sh -proc 0,1,2,3,4 -algo foo,bar
+   pplot speedup -series algo
+   
 
 usage:
 
@@ -24,7 +30,7 @@ or
 		pplot -type [TYPE] [OPTIONS_FOR_TYPE]
 
 
-where type is among: bar, scatter and table
+where type is among: bar, scatter, table, speedup
 
 and where
 
@@ -74,6 +80,15 @@ options for "table" only:
    -col a,b,c
    -cell a
    -group_by a,b,c
+
+
+options for "speedup" only:
+   
+   -chart a,b,c
+   -series a,b,c
+   -group_by a,b,c
+   -legendpos [topright|topleft|...]   (see R codes for legend or file legend.ml)
+   --log
 
 
 

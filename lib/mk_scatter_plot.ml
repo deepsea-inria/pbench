@@ -113,9 +113,15 @@ let call args =
          (List.hd keys, values)
          in
       let series = ~~ List.map envs_series (build_serie env x_key x_values results_charts) in
+      let xlabel =
+        match get_xaxis_label_opt args, get_xlabel_opt args with 
+        | None, None -> x_key
+        | Some s, None | None, Some s -> s
+        | Some s1, Some s2 -> Pbench.warning "multiple settings for xlabel"; s2
+        in
       Scatter_plot.([
          Chart_opt [ Chart.Title title_chart ];
-         X_axis [ Axis.Label (match get_xaxis_label_opt args with Some s -> s | None -> x_key) ];
+         X_axis [ Axis.Label xlabel ];
          Series series ] 
       @ (match get_ylabel_opt args with None -> [] | Some label -> [Y_axis [Axis.Label label]])
       @ (get_scatter_plot_opt args))
