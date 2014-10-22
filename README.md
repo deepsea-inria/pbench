@@ -25,11 +25,6 @@ a few example programs that show how one can use our library
 to automate all or nearly all of the experimental evaluation
 of a research paper.
 
-Note that the benchmark programs themselves can be written in
-any language. The only requirement is that the benchmark programs
-honor a certain format for receiving command-line arguments
-and printing measurements to `stdout`.
-
 Software dependencies
 ---------------------
 
@@ -43,6 +38,12 @@ The command-line tools
 
 The documentation of the `prun` tool can be found
 in `prun.md` and that of the `pplot` tool in `pplot.md`.
+
+Note that the benchmark programs themselves can be written in
+any language. The only requirement is that the benchmark programs
+honor a certain format for receiving command-line arguments
+and printing measurements to `stdout`. The conventions that
+we use are detailed in the documentation of the `prun` tool.
 
 Writing custom benchmarking scripts
 -----------------------------------
