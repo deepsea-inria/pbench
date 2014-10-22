@@ -25,25 +25,63 @@ a few example programs that show how one can use our library
 to automate all or nearly all of the experimental evaluation
 of a research paper.
 
-Software dependencies
----------------------
+Requirements
+------------
 
-The build system requires that version >= 4.00 of
-[ocaml](http://www.ocaml.org/) be installed and also
-a recent version of the gnu c compiler 
-[GCC](http://gcc.gnu.org/).
+### Build dependencies
+
+You will need version 4.00 or greater of 
+[ocaml](http://www.ocaml.org/) and also a recent version 
+of the gnu c compiler [GCC](http://gcc.gnu.org/).
+
+### Conventions for benchmark programs
+
+The benchmark programs themselves can be written in any 
+language. The only requirement is that the benchmark programs
+honor a certain format for receiving command-line arguments
+and printing measurements.
+
+#### Command-line arguments
+
+The program must receive arguments as lists of key-value 
+pairs. The format must be as follows:
+
+`-key1` *value1* `-key2` *value2* ...
+
+Flag arguments of the form `--flag` are also allowed.
+
+Special characters such as commas and dashes must not appear
+in the strings of the keys and values.
+
+#### Program output
+
+The program must print measurements to `stdout` in lists
+of key-value pairs in the following format:
+
+`key1` *value1*
+`key2` *value2*
+...
+
+Keys and values may be separated by one or more spaces or
+by tabs.
+
+Output that deviates from this format cannot be parsed by
+the `pplot` tool.
+
+#### Example: Fibonacci benchmark program
+
+The following example command-line program honors our conventions.
+
+    $ make -C examples/basic fib
+    $ examples/basic/fib -algo recursive -n 39
+    result     102334155
+    exectime   0.495086
 
 The command-line tools
 ----------------------
 
 The documentation of the `prun` tool can be found
 in `prun.md` and that of the `pplot` tool in `pplot.md`.
-
-Note that the benchmark programs themselves can be written in
-any language. The only requirement is that the benchmark programs
-honor a certain format for receiving command-line arguments
-and printing measurements to `stdout`. The conventions that
-we use are detailed in the documentation of the `prun` tool.
 
 Writing custom benchmarking scripts
 -----------------------------------
