@@ -1,22 +1,48 @@
 pbench: a parallel algorithm benchmarking toolkit
 =================================================
 
-Dependencies
-------------
+The `pbench` toolkit is a software framework whose purpose is
+to help programmers benchmark their programs, especially 
+parallel programs. The toolkit provides two command-line tools,
+namely `prun` and `pplot`, that are useful for small, explorative
+benchmarking scenarios. The `prun` tool organizes and executes
+measured runs of client-supplied benchmark programs. Crashes
+and timeouts of benchmark programs are handled gracefully
+by `prun`. The `pplot` tool generates various human-readable
+output from the data collected by `prun` experiments. Forms
+of output include latex tables, R bar and scatter plots, etc.
+Data that is output by `pplot` can be lightly processed,
+for example, to show the mean run time of a number of runs.
+Moreover, useful data, such as error bars, can be rendered
+by `pplot`.
 
-This source files of this package consist mostly of
-ocaml code.
+Also provided by `pbench` is an Ocaml library that is useful for 
+writing sophisticated performance evaluations of one or more 
+benchmark programs. The goal of the library is to assist
+experimentalists who want to make their experimental evaluations
+repeatable by other experimenters. To this end, we provide
+a few example programs that show how one can use our library
+to automate all or nearly all of the experimental evaluation
+of a research paper.
+
+Note that the benchmark programs themselves can be written in
+any language. The only requirement is that the benchmark programs
+honor a certain format for receiving command-line arguments
+and printing measurements to `stdout`.
+
+Software dependencies
+---------------------
 
 The build system requires that version >= 4.00 of
 [ocaml](http://www.ocaml.org/) be installed and also
 a recent version of the gnu c compiler 
 [GCC](http://gcc.gnu.org/).
 
-The run and plot tools
+The command-line tools
 ----------------------
 
-These tools are still under development. At present,
-only custom ocaml scripts are supported.
+The documentation of the `prun` tool can be found
+in `prun.md` and that of the `pplot` tool in `pplot.md`.
 
 Writing custom benchmarking scripts
 -----------------------------------
