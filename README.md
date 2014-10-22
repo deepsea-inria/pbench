@@ -46,7 +46,7 @@ and printing measurements.
 The program must receive arguments as lists of key-value 
 pairs. The format must be as follows:
 
-`-key1` *value1* `-key2` *value2* ...
+    -key1 value1 -key2 value2 ...
 
 Flag arguments of the form `--flag` are also allowed.
 
@@ -58,9 +58,9 @@ in the strings of the keys and values.
 The program must print measurements to `stdout` in lists
 of key-value pairs in the following format:
 
-`key1` *value1*
-`key2` *value2*
-...
+    key1 value1
+    key2 value2
+    ...
 
 Keys and values may be separated by one or more spaces or
 by tabs.
