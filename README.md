@@ -1,22 +1,89 @@
-pbench: a parallel algorithm benchmarking toolkit
+Pbench: a program benchmarking toolkit
 =================================================
 
-Dependencies
+The `pbench` toolkit is a software framework whose purpose is
+to help programmers benchmark their programs, with particular support
+for parallel programs. The toolkit provides two command-line tools,
+namely `prun` and `pplot`, that are useful for small, explorative
+benchmarking scenarios. It also provides an OCaml library that is
+useful for writing sophisticated performance evaluations of one or 
+more benchmark programs, and for generating polished tables and plots 
+ready for incorporation in research papers.
+
+- The `prun` tool organizes and executes measured runs of
+  client-supplied benchmark programs. Crashes and timeouts of
+  benchmark programs are handled gracefully by `prun`. 
+
+- The `pplot` tool generates various human-readable
+  output from the data collected by `prun` experiments. Forms
+  of output include latex tables, R bar and scatter plots, etc.
+  Data that is output by `pplot` can be lightly processed,
+  for example, to show the mean run time of a number of runs.
+  Moreover, `pplot` can also render error bars.
+
+- The OCaml library provided by `pbench` assists experimentalists
+  who need fine-grained tuning of the runs and plots, and who
+  want to make their experimental evaluations repeatable
+  by other experimenters. The distribution includes example 
+  scripts using the lbirary.
+
+Requirements
 ------------
 
-This source files of this package consist mostly of
-ocaml code.
+### Build dependencies
 
-The build system requires that version >= 4.00 of
-[ocaml](http://www.ocaml.org/) be installed and also
-a recent version of the gnu c compiler 
-[GCC](http://gcc.gnu.org/).
+You will need version 4.00 or greater of 
+[OCaml](http://www.ocaml.org/) and also a recent version 
+of the gnu c compiler [GCC](http://gcc.gnu.org/).
 
-The run and plot tools
+### Conventions for benchmark programs
+
+The benchmark programs themselves can be written in any 
+language. The only requirement is that the benchmark programs
+honor a certain format for receiving command-line arguments
+and printing measurements.
+
+#### Command-line arguments
+
+The program must receive arguments as lists of key-value 
+pairs. The format must be as follows:
+
+    -key1 value1 -key2 value2 ...
+
+Flag arguments of the form `--flag` are also allowed.
+
+Special characters such as commas and dashes must not appear
+in the strings of the keys and values.
+
+#### Program output
+
+The program must print measurements to `stdout` in lists
+of key-value pairs in the following format:
+
+    key1 value1
+    key2 value2
+    ...
+
+Keys and values may be separated by one or more spaces or
+by tabs.
+
+Output that deviates from this format cannot be parsed by
+the `pplot` tool.
+
+#### Example: Fibonacci benchmark program
+
+The following example command-line program honors our conventions.
+
+    $ make -C examples/basic fib
+    $ examples/basic/fib -algo recursive -n 39
+    result     102334155
+    exectime   0.495086
+
+The command-line tools
 ----------------------
 
-These tools are still under development. At present,
-only custom ocaml scripts are supported.
+The documentation of the `prun` tool can be found
+in `prun.md` and that of the `pplot` tool in `pplot.md`.
 
 Writing custom benchmarking scripts
 -----------------------------------

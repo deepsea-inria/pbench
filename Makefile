@@ -4,7 +4,8 @@ PBENCH_PATH=.
 
 include Makefile_common
 
-DOCS=README.pdf README.html
+DOCS_KEYS=README prun pplot
+DOCS=$(DOCS_KEYS:=.html) $(DOCS_KEYS:=.pdf)
 
 prun: prun.pbench
 	ln -sf $< $@ 
@@ -13,6 +14,7 @@ pplot: pplot.pbench
 	ln -sf $< $@ 
 
 doc: $(DOCS)
+doc_html: $(DOCS_KEYS:=.html)
 
 clean: pbench_clean
 	rm -f $(DOCS) 

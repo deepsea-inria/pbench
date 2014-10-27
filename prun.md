@@ -5,14 +5,18 @@
 Synopsis
 ========
 
-prun [*PRUN_OPTIONS*] [*PROG_OPTIONS*]
+prun [*MODE*] [*PRUN_OPTIONS*] [*PROG_OPTIONS*]
 
 or
 
-prun [*PRUN_OPTIONS*] -args  [*PROG_OPTIONS*]
+prun [-mode *MODE*] [*PRUN_OPTIONS*] -args "[*PROG_OPTIONS*]"
 
-***Remark*** The later form should be used if you want stability
-through updates of pbench that may add new options.
+
+If not specified, the *MODE* is set to "default". Other valid
+modes include: `speedup̀.
+
+***Remark*** The later form with the explicity `-args` should be used if 
+you want stability through updates of pbench that may add new options.
 
 Description
 ===========
@@ -34,7 +38,10 @@ The benchmark-run options selects the behavior of the program that
 collects data on benchmark runs of a specified program. The
 *PRUN_OPTIONS* can be zero or more of the following:
 
-` --verbose`
+`-mode` *MODE*
+:    Specifies the mode *MODE*, among `default` or `speedup`. Defaults to `default`.
+
+`--verbose`
 :    Print to stdout, for each run of the program, the exact command that was issued.
 
 `--virtual`
@@ -60,28 +67,32 @@ collects data on benchmark runs of a specified program. The
 
 `-args` *PROG_OPTIONS*
 :    Specifies the combinations of arguments *PROG_OPTIONS* to issue to the
-     specified program.
+     specified program. It typically includes a `-prog' option.
+
+`--normal`
+:    Clear the target results file before performing the runs.
 
 `--append`
 :    Append the results of the run to the target results file, if the specified
-     file exists; otherwise writes results to a fresh results file.
+     file exists; otherwise, writes results to a fresh results file.
 
 `--complete`
 :    Perform only those runs that have not already been reported in the target 
      results file (currently incompatible with `-runs`).
 
 `--replace`
-:    Overwrite the target results file (currently incompatible with `-runs`).
+:    Overwrite in the target results file only the run that are requested
+     (currently incompatible with `-runs`).
 
-`-mode [normal|append|complete|replace]`
-:    Like the options above.
+`-output-mode [normal|append|complete|replace]`
+:    Like one of the options above.
 
 Program options
 ---------------
 
-The program options defines the behavior of the programs to be run by
-the tool. A program run is specified by a string of program options,
-which should be in the form:
+The program options *PRUN_OPTIONS* defines the behavior of the programs to 
+be run by the tool. A program run is specified by a string of program options,
+which should be in the form, e.g.:
 
     prog1,prog2  -n 34,35  -m 3.2,4.5
 
@@ -91,6 +102,15 @@ or
 
 The cross product of all comma separated values is considered by the
 `prun` tool.
+
+***Remark*** The later form with the explicit `-prog` should be used if 
+you want stability through updates of pbench that may add new options.
+
+***Limitation*** If your program expects arguments whose name conflicts
+with some of the names reserved by `prun`, such as `-prog` or `-timeout`
+or `run`, you will need to either change these names or set up a wrapper
+script around your program to rename the argument on the fly.
+
 
 Examples
 ========
@@ -117,4 +137,46 @@ experiment: in this case, the program under consideration is run using
 two alternative algorithms.
 
     prun -prog examples/others/speedup.sh -proc 0,1,2,3,4 -algo foo,bar
+
+
+Speedup mode
+============
+
+The speedup mode is to be used for preparing data for `pplot speedup`.
+
+Usage
+-----
+
+prun speedup [*PRUN_OPTIONS*] [-baseline *COMMAND*] [-parallel *PROG_OPTIONS*] -args "[*PROG_OPTIONS*]"
+
+where *COMMAND* includes the name of a binary possibly with arguments.
+
+`-baseline` "[*COMMAND*]"
+:    Provide a binary to be used for the baseline program; the binary
+     is then passed the same "args" option as the parallel program.
+
+`-parallel` "[*PROG_OPTIONS*]"
+:    Provide a binary to be used for the parallel program, and a combination
+     of options to be used for the various parallel programs to benchmark.
+
+`-args` "[*PROG_OPTIONS*]"
+:    Provide a combination of options; for each combination, the data for
+     one speedup curve will be generated.
+
+`-proc` *proc1*,*proc2*,...,*procN*
+:    Provide the list of processors to use.
+
+`-baseline-runs` *n*
+:    Specify a number of runs *n* specific to the baseline evaluation.
+
+`-baseline-timeout n`
+:    Specify a timeout specific to the baseline evaluation.
+
+
+Example
+-------
+
+    make prun
+    prun speedup -baseline "examples/others/speedup.sh -algo foo -proc 0" -baseline-runs 1  -parallel "examples/others/speedup.sh -algo bar" -runs 2 -proc 1,2,3,4 
+
 
