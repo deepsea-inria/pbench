@@ -1,29 +1,31 @@
-pbench: a parallel algorithm benchmarking toolkit
+Pbench: a program benchmarking toolkit
 =================================================
 
 The `pbench` toolkit is a software framework whose purpose is
-to help programmers benchmark their programs, especially 
-parallel programs. The toolkit provides two command-line tools,
+to help programmers benchmark their programs, with particular support
+for parallel programs. The toolkit provides two command-line tools,
 namely `prun` and `pplot`, that are useful for small, explorative
-benchmarking scenarios. The `prun` tool organizes and executes
-measured runs of client-supplied benchmark programs. Crashes
-and timeouts of benchmark programs are handled gracefully
-by `prun`. The `pplot` tool generates various human-readable
-output from the data collected by `prun` experiments. Forms
-of output include latex tables, R bar and scatter plots, etc.
-Data that is output by `pplot` can be lightly processed,
-for example, to show the mean run time of a number of runs.
-Moreover, useful data, such as error bars, can be rendered
-by `pplot`.
+benchmarking scenarios. It also provides an OCaml library that is
+useful for writing sophisticated performance evaluations of one or 
+more benchmark programs, and for generating polished tables and plots 
+ready for incorporation in research papers.
 
-Also provided by `pbench` is an Ocaml library that is useful for 
-writing sophisticated performance evaluations of one or more 
-benchmark programs. The goal of the library is to assist
-experimentalists who want to make their experimental evaluations
-repeatable by other experimenters. To this end, we provide
-a few example programs that show how one can use our library
-to automate all or nearly all of the experimental evaluation
-of a research paper.
+- The `prun` tool organizes and executes measured runs of
+  client-supplied benchmark programs. Crashes and timeouts of
+  benchmark programs are handled gracefully by `prun`. 
+
+- The `pplot` tool generates various human-readable
+  output from the data collected by `prun` experiments. Forms
+  of output include latex tables, R bar and scatter plots, etc.
+  Data that is output by `pplot` can be lightly processed,
+  for example, to show the mean run time of a number of runs.
+  Moreover, `pplot` can also render error bars.
+
+- The OCaml library provided by `pbench` assists experimentalists
+  who need fine-grained tuning of the runs and plots, and who
+  want to make their experimental evaluations repeatable
+  by other experimenters. The distribution includes example 
+  scripts using the lbirary.
 
 Requirements
 ------------
@@ -31,7 +33,7 @@ Requirements
 ### Build dependencies
 
 You will need version 4.00 or greater of 
-[ocaml](http://www.ocaml.org/) and also a recent version 
+[OCaml](http://www.ocaml.org/) and also a recent version 
 of the gnu c compiler [GCC](http://gcc.gnu.org/).
 
 ### Conventions for benchmark programs

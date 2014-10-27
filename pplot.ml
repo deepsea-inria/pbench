@@ -33,7 +33,7 @@ let scatter_and_bar_options () =
   let arg_y = XCmd.parse_string "y" in
   let yaxis = make_axis "ymin" "ymax" "yzero" "ylog" "ylabel" in
 
-  let group_by = XCmd.parse_or_default_list_string "group_by" [] in
+  let group_by = XCmd.parse_or_default_list_string "group-by" [] in
 
   let ylabel_def =
     match XCmd.parse_optional_string "ylabel" with
@@ -49,7 +49,7 @@ let scatter_and_bar_options () =
     Results.get_mean_of arg_y results
     in
 
-  let arg_legend_pos = Legend.legend_pos_of_string (XCmd.parse_or_default_string "legendpos" "topright") in
+  let arg_legend_pos = Legend.legend_pos_of_string (XCmd.parse_or_default_string "legend-pos" "topright") in
 
   let chart_opt = Chart.([
       Legend_opt Legend.([Legend_pos arg_legend_pos]);
@@ -107,8 +107,8 @@ let plot_bar () =
      XCmd.parse_or_default_string "xlabel" "" in
 
   let x_label_direction =
-     if XCmd.mem_flag "xlabel_vertical" then Bar_plot.Vertical else
-     Bar_plot.label_direction_of_string (XCmd.parse_or_default_string "x_titles_dir" "horizontal") 
+     if XCmd.mem_flag "xtitles-vertical" then Bar_plot.Vertical else
+     Bar_plot.label_direction_of_string (XCmd.parse_or_default_string "xtitles-dir" "horizontal") 
      in
 
   let mk_x = Params.from_envs (Results.get_distinct_values_for_several arg_x all_results) in
@@ -138,7 +138,7 @@ let plot_table () =
   let arg_rows = XCmd.parse_or_default_list_string "row" [] in
   let arg_cols = XCmd.parse_or_default_list_string "col" [] in
   let arg_cell = XCmd.parse_string "cell" in
-  let group_by = XCmd.parse_or_default_list_string "group_by" [] in
+  let group_by = XCmd.parse_or_default_list_string "group-by" [] in
   let all_results = Results.from_file arg_input in
 
   let mk_tables = Params.from_envs (Results.get_distinct_values_for_several arg_tables all_results) in
@@ -207,9 +207,9 @@ let plot_table () =
 let plot_speedup () =
   let arg_series = XCmd.parse_or_default_list_string "series" [] in
   let arg_chart = XCmd.parse_or_default_list_string "chart" [] in
-  let group_by = XCmd.parse_or_default_list_string "group_by" [] in
+  let group_by = XCmd.parse_or_default_list_string "group-by" [] in
   let arg_log = XCmd.parse_or_default_bool "log" false in
-  let arg_legend_pos = Legend.legend_pos_of_string (XCmd.parse_or_default_string "legendpos" "topleft") in
+  let arg_legend_pos = Legend.legend_pos_of_string (XCmd.parse_or_default_string "legend-pos" "topleft") in
 
   let all_results = Results.from_file arg_input in
   let all_procs = List.map Env.as_int (Results.get_distinct_values_for "proc" all_results) in
@@ -225,9 +225,13 @@ let plot_speedup () =
     Upper (Some (float_of_int max_proc)); ]) in
 
   let eval_y env all_results results =
+    (* deprecated: for filterning by -proc 0 
     let env_no_proc = ~~ Env.filter env (fun k -> k <> "proc") in
     let env_baseline = Env.add env_no_proc "proc" (Env.Vint 0) in
-    let baseline_results =  ~~ Results.filter_by_params all_results (Params.from_env env_baseline) in
+    ~~ Results.filter_by_params all_results (Params.from_env env_baseline) 
+    *)
+    let results = ~~ Results.filter_by_params results Params.(mk string "prun_speedup" "parallel") in
+    let baseline_results = ~~ Results.filter_by_params all_results Params.(mk string "prun_speedup" "baseline") in
     if baseline_results = [] then Pbench.warning ("no results for baseline: " ^ Env.to_string env);
     let tp = Results.get_mean_of "exectime" results in
     let tb = Results.get_mean_of "exectime" baseline_results in
@@ -263,12 +267,12 @@ let plot_speedup () =
 
 let () =
   let arg_type =
-    match XCmd.parse_optional_string "type", XCmd.get_others() with
+    match XCmd.parse_optional_string "mode", XCmd.get_others() with
     | None, [] -> "bar"
     | Some t, [] -> t
     | None, [t] -> t
-    | _, _::_::_ -> Pbench.error "only one non-named argument is allowed; it should be the type"
-    | Some _, _::_ -> Pbench.error "multiple types specified for the chart"
+    | _, _::_::_ -> Pbench.error "only one non-named argument is allowed; it should be the mode"
+    | Some _, _::_ -> Pbench.error "multiple modes specified for the chart"
     in
   let plot_fct = match arg_type with
     | "bar" -> plot_bar
