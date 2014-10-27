@@ -151,15 +151,15 @@ where *COMMAND* includes the name of a binary possibly with arguments.
 The speedup mode is to be used for preparing data for `pplot speedup`.
 
 
-`-baseline` "*COMMAND*"
+`-baseline` "[*COMMAND*]"
 :    Provide a binary to be used for the baseline program; the binary
      is then passed the same "args" option as the parallel program.
 
-`-parallel` "*PROG_OPTIONS*"
+`-parallel` "[*PROG_OPTIONS*]"
 :    Provide a binary to be used for the parallel program, and a combination
      of options to be used for the various parallel programs to benchmark.
 
-`-args` "*PROG_OPTIONS*"
+`-args` "[*PROG_OPTIONS*]"
 :    Provide a combination of options; for each combination, the data for
      one speedup curve will be generated.
 
