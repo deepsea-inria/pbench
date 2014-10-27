@@ -38,7 +38,7 @@ The benchmark-run options selects the behavior of the program that
 collects data on benchmark runs of a specified program. The
 *PRUN_OPTIONS* can be zero or more of the following:
 
-`-mode *MODE*`
+`-mode` *MODE*
 :    Specifies the mode *MODE*, among `default` or `speedup`. Defaults to `default`.
 
 `--verbose`
@@ -65,7 +65,7 @@ collects data on benchmark runs of a specified program. The
 `-attempts` *n*
 :    Maximum number of attempts when runs fail (default is 1).
 
-`-args` "*PROG_OPTIONS*"
+`-args` *PROG_OPTIONS*
 :    Specifies the combinations of arguments *PROG_OPTIONS* to issue to the
      specified program. It typically includes a `-prog' option.
 
@@ -151,23 +151,23 @@ where *COMMAND* includes the name of a binary possibly with arguments.
 The speedup mode is to be used for preparing data for `pplot speedup`.
 
 
-`-baseline "*COMMAND*"`
+`-baseline` "*COMMAND*"
 :    Provide a binary to be used for the baseline program; the binary
      is then passed the same "args" option as the parallel program.
 
-`-parallel "*PROG_OPTIONS*"`
+`-parallel` "*PROG_OPTIONS*"
 :    Provide a binary to be used for the parallel program, and a combination
      of options to be used for the various parallel programs to benchmark.
 
-`-args "*PROG_OPTIONS*"`
+`-args` "*PROG_OPTIONS*"
 :    Provide a combination of options; for each combination, the data for
      one speedup curve will be generated.
 
-`-proc proc1,proc2,...,procN`
+`-proc` *proc1*,*proc2*,...,*procN*
 :    Provide the list of processors to use.
 
-`-baseline-runs n`
-:    Specify a number of runs specific to the baseline evaluation.
+`-baseline-runs` *n*
+:    Specify a number of runs *n* specific to the baseline evaluation.
 
 `-baseline-timeout n`
 :    Specify a timeout specific to the baseline evaluation.
