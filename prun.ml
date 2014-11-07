@@ -117,7 +117,7 @@ let default () =
 (** Speedup *)
 
 let speedup () =
-  printf "baseline=%s\nparallel=%s\nshared=%d\n" arg_baseline arg_parallel (List.length (get_arguments_shared()));
+  (*  printf "baseline=%s\nparallel=%s\nshared=%d\n" arg_baseline arg_parallel (List.length (get_arguments_shared()));*)
   let args_shared = args_or_arguments (get_arguments_shared()) in
   let args_baseline = args_of_string arg_baseline in
   let args_parallel = args_of_string arg_parallel in
