@@ -183,7 +183,7 @@ Another way to make the same bar plot is the following.
 
     pplot bar -x n -y exectime -series algo 
 
-This command generates two bar plots: one for each value of algo,
+This command generates two bar plots: one for each value of `algo`,
 namely `recursive` and `cached`.
 
     pplot bar -x n -y exectime -chart algo 
