@@ -106,6 +106,7 @@ let default () =
   if arguments_shared = [] 
     then Pbench.warning "no benchmark arguments provided";
   let args_shared = args_or_arguments arguments_shared in
+  let args_shared = Params.( args_shared & (mk_list int "proc" arg_proc) ) in
   Mk_runs.(call (common_options() @ [
     Args args_shared;
     Runs arg_runs;
