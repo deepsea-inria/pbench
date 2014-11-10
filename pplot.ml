@@ -232,6 +232,8 @@ let plot_speedup () =
     *)
     let results = ~~ Results.filter_by_params results Params.(mk string "prun_speedup" "parallel") in
     let baseline_results = ~~ Results.filter_by_params all_results Params.(mk string "prun_speedup" "baseline") in
+    let series_env = ~~ Env.filter env (fun k -> List.mem k arg_series) in
+    let baseline_results = ~~ Results.filter baseline_results series_env in
     if baseline_results = [] then Pbench.warning ("no results for baseline: " ^ Env.to_string env);
     let tp = Results.get_mean_of "exectime" results in
     let tb = Results.get_mean_of "exectime" baseline_results in
