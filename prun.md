@@ -147,7 +147,7 @@ The speedup mode is to be used for preparing data for `pplot speedup`.
 Usage
 -----
 
-prun speedup [*PRUN_OPTIONS*] [-baseline *COMMAND*] [-parallel *PROG_OPTIONS*] -args "[*PROG_OPTIONS*]"
+prun speedup [*PRUN_OPTIONS*] [-baseline *COMMAND*] [-parallel *COMMAND*] -args "[*PROG_OPTIONS*]"
 
 where *COMMAND* includes the name of a binary possibly with arguments.
 
@@ -177,6 +177,6 @@ Example
 -------
 
     make prun
-    prun speedup -baseline "examples/others/speedup.sh -algo foo -proc 0" -baseline-runs 1  -parallel "examples/others/speedup.sh -algo bar" -runs 2 -proc 1,2,3,4 
+    prun speedup -baseline "examples/others/speedup.sh -algo foo -proc 0" -baseline-runs 1  -parallel "examples/others/speedup.sh -algo bar -proc 1,2,3,4" -runs 2 
 
 

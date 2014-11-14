@@ -1,0 +1,5 @@
+
+should make this work:
+
+    prun speedup -baseline "examples/others/speedup.sh -algo foo -proc 0 -n 1" -baseline-runs 1 -parallel "examples/others/speedup.sh -algo bar -proc 1,2,3,4 -n 1,5" -runs 2
+	 pplot speedup

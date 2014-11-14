@@ -207,6 +207,8 @@ let plot_table () =
 let plot_speedup () =
   let arg_series = XCmd.parse_or_default_list_string "series" [] in
   let arg_chart = XCmd.parse_or_default_list_string "chart" [] in
+  let arg_shared = arg_chart @ arg_series in 
+  (* Note: the code implicitly assumes that "arg_shared" covers all the arguments that are common to the baseline and the parallel command lines. *)
   let group_by = XCmd.parse_or_default_list_string "group-by" [] in
   let arg_log = XCmd.parse_or_default_bool "log" false in
   let arg_legend_pos = Legend.legend_pos_of_string (XCmd.parse_or_default_string "legend-pos" "topleft") in
@@ -225,15 +227,14 @@ let plot_speedup () =
     Upper (Some (float_of_int max_proc)); ]) in
 
   let eval_y env all_results results =
-    (* deprecated: for filterning by -proc 0 
-    let env_no_proc = ~~ Env.filter env (fun k -> k <> "proc") in
-    let env_baseline = Env.add env_no_proc "proc" (Env.Vint 0) in
-    ~~ Results.filter_by_params all_results (Params.from_env env_baseline) 
-    *)
     let results = ~~ Results.filter_by_params results Params.(mk string "prun_speedup" "parallel") in
     let baseline_results = ~~ Results.filter_by_params all_results Params.(mk string "prun_speedup" "baseline") in
-    let series_env = ~~ Env.filter env (fun k -> List.mem k arg_series) in
-    let baseline_results = ~~ Results.filter baseline_results series_env in
+    let baseline_env = ~~ Env.filter env (fun k -> List.mem k arg_shared) in
+    let baseline_results = ~~ Results.filter baseline_results baseline_env in
+    (* alternative: 
+    let baseline_env = Env.add baseline_env "prun_speedup" (Env.Vstring "baseline") in
+    let baseline_results = ~~ Results.filter all_results baseline_env in
+    *)
     if baseline_results = [] then Pbench.warning ("no results for baseline: " ^ Env.to_string env);
     let tp = Results.get_mean_of "exectime" results in
     let tb = Results.get_mean_of "exectime" baseline_results in

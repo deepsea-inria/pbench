@@ -16,7 +16,6 @@ let arg_output_mode = Mk_runs.mode_from_command_line "output-mode"
 
 let arg_baseline = XCmd.parse_or_default_string "baseline" ""
 let arg_parallel = XCmd.parse_or_default_string "parallel" ""
-let arg_proc = XCmd.parse_or_default_list_int "proc" []
 let arg_baseline_runs = XCmd.parse_or_default_int "baseline-runs" arg_runs
 let arg_baseline_timeout = XCmd.parse_or_default_int "baseline-timeout" arg_timeout
 
@@ -27,7 +26,7 @@ let arg_baseline_timeout = XCmd.parse_or_default_int "baseline-timeout" arg_time
 let reserved_keys = 
     ["verbose"; "output"; "virtual"; "args"; "dummy";
      "runs"; "timeout"; "attempts"; "mode" ]
-  @ ["baseline"; "parallel"; "proc"; "baseline-runs"; "baseline-timeout" ]
+  @ ["baseline"; "parallel"; "baseline-runs"; "baseline-timeout" ]
   @ Mk_runs.valid_modes
 
 let supported_modes = 
@@ -106,7 +105,7 @@ let default () =
   if arguments_shared = [] 
     then Pbench.warning "no benchmark arguments provided";
   let args_shared = args_or_arguments arguments_shared in
-  let args_shared = Params.( args_shared & (mk_list int "proc" arg_proc) ) in
+  let args_shared = Params.( args_shared ) in
   Mk_runs.(call (common_options() @ [
     Args args_shared;
     Runs arg_runs;
@@ -118,7 +117,6 @@ let default () =
 (** Speedup *)
 
 let speedup () =
-  (*  printf "baseline=%s\nparallel=%s\nshared=%d\n" arg_baseline arg_parallel (List.length (get_arguments_shared()));*)
   let args_shared = args_or_arguments (get_arguments_shared()) in
   let args_baseline = args_of_string arg_baseline in
   let args_parallel = args_of_string arg_parallel in
@@ -129,9 +127,8 @@ let speedup () =
       & (mk int "runs" runs)) in
   let args = Params.(
       args_shared 
-    & (   (args_baseline & extra "baseline" arg_baseline_timeout arg_baseline_runs)
-       ++ (args_parallel & extra "parallel" arg_timeout arg_runs
-           & mk_list int "proc" arg_proc))
+      & (   ( args_baseline & extra "baseline" arg_baseline_timeout arg_baseline_runs)
+         ++ (args_parallel & extra "parallel" arg_timeout arg_runs))
     ) in    
   Mk_runs.(call (common_options() @ [ Args args; ]))
 
