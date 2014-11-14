@@ -214,7 +214,10 @@ let plot_speedup () =
   let arg_legend_pos = Legend.legend_pos_of_string (XCmd.parse_or_default_string "legend-pos" "topleft") in
 
   let all_results = Results.from_file arg_input in
-  let all_procs = List.map Env.as_int (Results.get_distinct_values_for "proc" all_results) in
+  let mk_params_baseline = Params.(mk string "prun_speedup" "baseline") in
+  let mk_params_parallel = Params.(mk string "prun_speedup" "parallel") in
+  let all_results_parallel = ~~ Results.filter_by_params all_results mk_params_parallel in
+  let all_procs = List.map Env.as_int (Results.get_distinct_values_for "proc" all_results_parallel) in
   let max_proc = XMath.max_of all_procs in
 
   let mk_charts = Params.from_envs (Results.get_distinct_values_for_several arg_chart all_results) in
@@ -227,8 +230,8 @@ let plot_speedup () =
     Upper (Some (float_of_int max_proc)); ]) in
 
   let eval_y env all_results results =
-    let results = ~~ Results.filter_by_params results Params.(mk string "prun_speedup" "parallel") in
-    let baseline_results = ~~ Results.filter_by_params all_results Params.(mk string "prun_speedup" "baseline") in
+    let results = ~~ Results.filter_by_params results mk_params_parallel in
+    let baseline_results = ~~ Results.filter_by_params all_results mk_params_baseline in
     let baseline_env = ~~ Env.filter env (fun k -> List.mem k arg_shared) in
     let baseline_results = ~~ Results.filter baseline_results baseline_env in
     (* alternative: 
@@ -261,6 +264,7 @@ let plot_speedup () =
     Output arg_output;
     Y_label "speedup";
     (*X_label "processors";*)
+    (* TODO: specify x-labels to be exactly the keys used*)
     ]))
 
 

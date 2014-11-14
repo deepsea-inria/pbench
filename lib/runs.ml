@@ -49,7 +49,7 @@ let bench_command result_file b =
     then Pbench.error "invalid value for timeout (shoud be positive or cst_no_timeout)";
    let timeout_path = sprintf "%s/timeout.out" (Pbench.get_pbench_folder()) in
    if not (Sys.file_exists timeout_path)
-      then Pbench.error "need to compile timeout.out in pbench folder";
+      then Pbench.error (sprintf "could not find: %s" timeout_path);
    let timeout = 
       if b.run_timeout = cst_no_timeout
         then ""

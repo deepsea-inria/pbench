@@ -232,3 +232,7 @@ We can take multiple speedup curves as well.
 
     prun speedup -baseline "examples/others/speedup.sh -algo foo -proc 0" -baseline-runs 1  -parallel "examples/others/speedup.sh -algo bar -proc 1,2,3,4" -runs 2 -n 1,5
     pplot speedup -series n
+
+Another example (assuming bench.opt to exist).
+
+   prun speedup -baseline "bench.opt" -parallel "bench.opt -proc 1,2" -bench fib -n 39
