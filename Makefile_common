@@ -71,7 +71,7 @@ $(TIMEOUT): $(TIMEOUT_SCR)
 	pandoc $< -s -o $@
 
 %.html : %.md
-	pandoc $< -s -o $@
+	pandoc --mathjax $< -s -o $@
 
 
 ##################################################################

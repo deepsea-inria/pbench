@@ -47,7 +47,11 @@ let scatter_and_bar_options () =
 
   let eval_y env all_results results =
     Results.get_mean_of arg_y results
-    in
+  in
+
+  let eval_y_error env all_results results =
+    Results.get_stddev_of arg_y results
+  in
 
   let arg_legend_pos = Legend.legend_pos_of_string (XCmd.parse_or_default_string "legend-pos" "topright") in
 
@@ -56,7 +60,7 @@ let scatter_and_bar_options () =
       Title arg_title;
       ]) in
 
-  (all_results, chart_opt, mk_charts, mk_series, group_by, yaxis, eval_y, ylabel_def)
+  (all_results, chart_opt, mk_charts, mk_series, group_by, yaxis, eval_y, eval_y_error, ylabel_def)
 
 
 
@@ -64,7 +68,7 @@ let scatter_and_bar_options () =
 (** Scatter plot *)
 
 let plot_scatter () =
-  let (all_results, chart_opt, mk_charts, mk_series, group_by, yaxis, eval_y, ylabel_def) = 
+  let (all_results, chart_opt, mk_charts, mk_series, group_by, yaxis, eval_y, eval_y_error, ylabel_def) = 
     scatter_and_bar_options () in
 
   let arg_x = XCmd.parse_string "x" in
@@ -98,7 +102,7 @@ let plot_scatter () =
 (** Bar plot *)
 
 let plot_bar () =
-  let (all_results, chart_opt, mk_charts, mk_series, group_by, yaxis, eval_y, ylabel_def) = 
+  let (all_results, chart_opt, mk_charts, mk_series, group_by, yaxis, eval_y, eval_y_error, ylabel_def) = 
     scatter_and_bar_options () in
 
   let arg_x = XCmd.parse_or_default_list_string "x" [] in
@@ -125,6 +129,7 @@ let plot_bar () =
     X mk_x;
     Group_by group_by;
     Y eval_y;
+    Y_whiskers eval_y_error;
     Input arg_input;
     Output arg_output;
     ] @ (~~ List.map ylabel_def (fun s -> Y_label s)) ))
@@ -268,11 +273,95 @@ let plot_speedup () =
     ]))
 
 
+(************************************************************************)
+(** Factored speedup plot *)
+
+let plot_factored_speedup () =
+  let arg_chart = XCmd.parse_or_default_list_string "chart" [] in
+  let arg_shared = arg_chart in 
+  (* Note: the code implicitly assumes that "arg_shared" covers all the arguments that are common to the baseline and the parallel command lines. *)
+  let group_by = XCmd.parse_or_default_list_string "group-by" [] in
+  let arg_log = XCmd.parse_or_default_bool "log" false in
+  let arg_legend_pos = Legend.legend_pos_of_string (XCmd.parse_or_default_string "legend-pos" "topleft") in
+
+  let curve_type_key = "pplot_factored_speedup_curve_type" in
+  let curve_actual = "actual" in
+  let curve_idle_time_specific = "idle_time_specific" in
+  let curve_types = [curve_actual;curve_idle_time_specific;] in
+
+  let all_results = Results.from_file arg_input in
+  let inject_curve_type (ty : string) : Results.t = ~~ List.map all_results
+                                (fun (inputs, env) -> (inputs, Env.add env curve_type_key (Env.Vstring ty))) in
+  let all_results = List.concat (List.map inject_curve_type curve_types) in
+                                 
+  let mk_params_baseline = Params.(mk string "prun_speedup" "baseline") in
+  let mk_params_parallel = Params.(mk string "prun_speedup" "parallel") in
+  let all_results_parallel = ~~ Results.filter_by_params all_results mk_params_parallel in
+  let all_procs = List.map Env.as_int (Results.get_distinct_values_for "proc" all_results_parallel) in
+  let max_proc = XMath.max_of all_procs in
+
+  let mk_charts = Params.from_envs (Results.get_distinct_values_for_several arg_chart all_results) in
+  let mk_series = Params.from_envs (Results.get_distinct_values_for_several [curve_type_key] all_results) in
+  let mk_x = Params.mk_list Params.int "proc" (~~ List.filter all_procs (fun p -> p <> 0)) in 
+
+  let axis = Axis.([
+    Is_log arg_log;
+    Lower (Some (if arg_log then 1. else 0.));
+    Upper (Some (float_of_int max_proc)); ]) in
+
+  let eval_y env all_results results =
+    let results = ~~ Results.filter_by_params results mk_params_parallel in
+    let t1_results = ~~ Results.filter_by_params all_results mk_params_parallel in
+    let t1_env = Env.add env "proc" (Env.Vint 1) in
+    let t1_results = ~~ Results.filter t1_results t1_env in
+    let baseline_results = ~~ Results.filter_by_params all_results mk_params_baseline in
+    let baseline_env = ~~ Env.filter env (fun k -> List.mem k arg_shared) in
+    let baseline_results = ~~ Results.filter baseline_results baseline_env in
+    if baseline_results = [] then Pbench.warning ("no results for baseline: " ^ Env.to_string env);
+
+    let curve_type = Env.get_as_string env curve_type_key in
+    let tb = Results.get_mean_of "exectime" baseline_results in
+    if curve_type = curve_actual then
+      let tp = Results.get_mean_of "exectime" results in
+      tb /. tp
+    else if curve_type = curve_idle_time_specific then
+      let proc = float_of_int (Env.get_as_int env "proc") in
+      let t1 = Results.get_mean_of "exectime" t1_results in
+      let ip = Results.get_mean_of "total_idle_time" results in
+      (proc *. tb) /. (t1 +. ip)
+    else
+      -5.0
+    in
+
+  Mk_scatter_plot.(call ([
+    Chart_opt Chart.([
+      Legend_opt Legend.([Legend_pos arg_legend_pos]);
+      Title arg_title;
+      ]);
+    Scatter_plot_opt Scatter_plot.([
+      X_axis axis;
+      Y_axis axis;
+      Draw_lines true;    
+      Extra ["abline(a=0, b=1, col='gray')"];
+    ]);
+    Charts mk_charts;
+    Series mk_series;
+    X mk_x;
+    Group_by group_by;
+    Y eval_y;
+    Input arg_input;
+    Output arg_output;
+    Y_label "speedup";
+    (*X_label "processors";*)
+    (* TODO: specify x-labels to be exactly the keys used*)
+    ]))
+                    
 
 (************************************************************************)
 (** Main *)
 
 let () =
+  let is_factored = XCmd.parse_or_default_bool "factored" false in
   let arg_type =
     match XCmd.parse_optional_string "mode", XCmd.get_others() with
     | None, [] -> "bar"
@@ -285,7 +374,7 @@ let () =
     | "bar" -> plot_bar
     | "scatter" -> plot_scatter
     | "table" -> plot_table
-    | "speedup" -> plot_speedup
+    | "speedup" -> if is_factored then plot_factored_speedup else plot_speedup
     | _ -> Pbench.error "unsupported type of graph"
     in
   plot_fct()

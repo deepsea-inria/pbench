@@ -13,7 +13,7 @@ prun [-mode *MODE*] [*PRUN_OPTIONS*] -args "[*PROG_OPTIONS*]"
 
 
 If not specified, the *MODE* is set to "default". Other valid
-modes include: `speedup̀.
+modes include the `speedup` mode.
 
 ***Remark*** The later form with the explicity `-args` should be used if 
 you want stability through updates of pbench that may add new options.
@@ -171,7 +171,6 @@ where *COMMAND* includes the name of a binary possibly with arguments.
 
 `-baseline-timeout n`
 :    Specify a timeout specific to the baseline evaluation.
-
 
 Example
 -------
