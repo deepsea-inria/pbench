@@ -332,7 +332,7 @@ fashion, we derive the inflation-specific speedup from $(P \cdot T_S)
 The factored speedup mode can optionally generate one more curve: the
 ***elision-specific curve***. This curve is calculated by
 
-$$\textrm{maximal}(P) = \frac{P \cdot T_E}{T_1}$$
+$$\textrm{elision}(P) = \frac{P \cdot T_S}{T_E}$$
 
 where $T_E$ denotes the running time of the "sequential elision" of
 the parallel benchmark. The sequential elision is the program that is

@@ -16,6 +16,7 @@ let arg_output_mode = Mk_runs.mode_from_command_line "output-mode"
 
 let arg_baseline = XCmd.parse_or_default_string "baseline" ""
 let arg_parallel = XCmd.parse_or_default_string "parallel" ""
+let arg_elision = XCmd.parse_or_default_string "elision" ""
 let arg_baseline_runs = XCmd.parse_or_default_int "baseline-runs" arg_runs
 let arg_baseline_timeout = XCmd.parse_or_default_int "baseline-timeout" arg_timeout
 
@@ -26,7 +27,7 @@ let arg_baseline_timeout = XCmd.parse_or_default_int "baseline-timeout" arg_time
 let reserved_keys = 
     ["verbose"; "output"; "virtual"; "args"; "dummy";
      "runs"; "timeout"; "attempts"; "mode" ]
-  @ ["baseline"; "parallel"; "baseline-runs"; "baseline-timeout" ]
+  @ ["baseline"; "parallel"; "baseline-runs"; "baseline-timeout"; "elision" ]
   @ Mk_runs.valid_modes
 
 let supported_modes = 
@@ -120,17 +121,22 @@ let speedup () =
   let args_shared = args_or_arguments (get_arguments_shared()) in
   let args_baseline = args_of_string arg_baseline in
   let args_parallel = args_of_string arg_parallel in
+  let use_elision = XCmd.mem_arg "elision" in
+  let args_elision = if use_elision then args_of_string arg_elision else Params.mk_unit in
   let extra prun_speedup timeout runs  =
     Params.(
         (mk string "!prun_speedup" prun_speedup)
       & (mk int "timeout" timeout) 
       & (mk int "runs" runs)) in
-  let args = Params.(
-      args_shared 
-      & (   ( args_baseline & extra "baseline" arg_baseline_timeout arg_baseline_runs)
-         ++ (args_parallel & extra "parallel" arg_timeout arg_runs))
-    ) in    
-  Mk_runs.(call (common_options() @ [ Args args; ]))
+  Params.(
+    let b = args_baseline & extra "baseline" arg_baseline_timeout arg_baseline_runs in
+    let p = args_parallel & extra "parallel" arg_timeout arg_runs in
+    let e = args_elision  & extra "elision" arg_timeout arg_runs in
+    let args = 
+        args_shared 
+        & (if use_elision then (b ++ p ++ e) else (b ++ p))
+    in 
+  Mk_runs.(call (common_options() @ [ Args args; ])) )
 
 
 

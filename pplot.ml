@@ -286,16 +286,22 @@ let plot_factored_speedup () =
 
   let curve_type_key = "pplot_factored_speedup_curve_type" in
   let curve_actual = "actual" in
+  let curve_maximal = "maximal" in
   let curve_idle_time_specific = "idle_time_specific" in
-  let curve_types = [curve_actual;curve_idle_time_specific;] in
+  let curve_inflation_specific = "inflation_specific" in
+  let curve_elision_specific = "elision_specific" in
+  let curve_types = [curve_maximal;curve_actual;curve_idle_time_specific;curve_inflation_specific] in
+  let use_elision_specific_curve = XCmd.mem_flag "elision" in
+  let curve_types = if use_elision_specific_curve then curve_types @ [curve_elision_specific] else curve_types in
 
-  let all_results = Results.from_file arg_input in
+  let all_results = Results.from_file arg_input in  
   let inject_curve_type (ty : string) : Results.t = ~~ List.map all_results
                                 (fun (inputs, env) -> (inputs, Env.add env curve_type_key (Env.Vstring ty))) in
   let all_results = List.concat (List.map inject_curve_type curve_types) in
                                  
   let mk_params_baseline = Params.(mk string "prun_speedup" "baseline") in
   let mk_params_parallel = Params.(mk string "prun_speedup" "parallel") in
+  let mk_params_elision = Params.(mk string "prun_speedup" "elision") in
   let all_results_parallel = ~~ Results.filter_by_params all_results mk_params_parallel in
   let all_procs = List.map Env.as_int (Results.get_distinct_values_for "proc" all_results_parallel) in
   let max_proc = XMath.max_of all_procs in
@@ -311,29 +317,48 @@ let plot_factored_speedup () =
 
   let eval_y env all_results results =
     let results = ~~ Results.filter_by_params results mk_params_parallel in
+
+    let elision_env = Env.filter (fun k -> k <> "proc") env in
+    let elision_results = ~~ Results.filter_by_params all_results mk_params_elision in
+    let elision_results = ~~ Results.filter elision_results elision_env in
+     
+    let t1_env = Env.filter (fun k -> k <> "proc") env in
+    let t1_env = Env.add t1_env "proc" (Env.Vint 1) in
     let t1_results = ~~ Results.filter_by_params all_results mk_params_parallel in
-    let t1_env = Env.add env "proc" (Env.Vint 1) in
     let t1_results = ~~ Results.filter t1_results t1_env in
     let baseline_results = ~~ Results.filter_by_params all_results mk_params_baseline in
     let baseline_env = ~~ Env.filter env (fun k -> List.mem k arg_shared) in
     let baseline_results = ~~ Results.filter baseline_results baseline_env in
     if baseline_results = [] then Pbench.warning ("no results for baseline: " ^ Env.to_string env);
-
-    let curve_type = Env.get_as_string env curve_type_key in
+    let curve_type = Env.get_as_string env curve_type_key in    
     let tb = Results.get_mean_of "exectime" baseline_results in
     if curve_type = curve_actual then
       let tp = Results.get_mean_of "exectime" results in
       tb /. tp
+    else if curve_type = curve_maximal then
+      let proc = float_of_int (Env.get_as_int env "proc") in
+      let t1 = Results.get_mean_of "exectime" t1_results in
+      (proc *. tb) /. t1
     else if curve_type = curve_idle_time_specific then
       let proc = float_of_int (Env.get_as_int env "proc") in
       let t1 = Results.get_mean_of "exectime" t1_results in
       let ip = Results.get_mean_of "total_idle_time" results in
       (proc *. tb) /. (t1 +. ip)
+    else if curve_type = curve_inflation_specific then
+      let proc = float_of_int (Env.get_as_int env "proc") in
+      let tp = Results.get_mean_of "exectime" results in
+      let ip = Results.get_mean_of "total_idle_time" results in
+      (proc *. tb) /. (proc *. tp -. ip)
+    else if curve_type = curve_elision_specific then
+      let proc = float_of_int (Env.get_as_int env "proc") in
+      let te = Results.get_mean_of "exectime" elision_results in
+      (proc *. tb) /. te
     else
-      -5.0
+      (message "FAIL";
+      -5.0)
     in
 
-  Mk_scatter_plot.(call ([
+  Mk_scatter_plot.(call' ([
     Chart_opt Chart.([
       Legend_opt Legend.([Legend_pos arg_legend_pos]);
       Title arg_title;
@@ -352,9 +377,10 @@ let plot_factored_speedup () =
     Input arg_input;
     Output arg_output;
     Y_label "speedup";
+    Series_formatter Env.formatter_values;
     (*X_label "processors";*)
     (* TODO: specify x-labels to be exactly the keys used*)
-    ]))
+    ]) all_results)
                     
 
 (************************************************************************)

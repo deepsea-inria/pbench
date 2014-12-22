@@ -62,8 +62,7 @@ let y_as_mean k =
 
 (** Builder *)
 
-let call args =
-   let results_global = get_results args in
+let call' args results_global =
    let group_by = get_group_by args in
    let build_x env x_key results_serie x_value =
       let env_x = Env.add Env.empty x_key x_value in
@@ -139,3 +138,5 @@ let call args =
             Pbench.warning (sprintf "unable to build chart for %s: %s\n" (Chart.get_title (Scatter_plot.get_chart_opt scatter_plot)) s) 
       )) in
    Chart.build (get_output args) charts
+
+let call args = call' args (get_results args)
