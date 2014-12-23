@@ -15,7 +15,7 @@ let arg_onlys = XCmd.parse_or_default_list_string "only" []
 
 let run_modes =
   Mk_runs.([
-    Mode (Mk_runs.string_of_mode arg_mode);
+    Mode (mode_of_string arg_mode);
     Virtual arg_virtual_run;
     Runs arg_nb_runs; ])
 

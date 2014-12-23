@@ -7,18 +7,18 @@
 Synopsis
 ========
 
-example.byte [*ACTION*] [*PARAMETERS*]...
+basic [*ACTION*] [*PARAMETERS*]...
 
 Description
 ===========
 
-example.byte is a script whose purpose is to provide an example of how
+basic is a script whose purpose is to provide an example of how
 to write benchmarking scripts using the `pbench` library. This script
 performs a small performance study of an OCaml program, namely
 `fib.ml`, that implements two alternative algorithms for computing the
 $n^{th}$ Fibonacci number. There is one doubly recursive algorithm
 titled `recursive` and one using cached binary recursion titled
-`cached`. The example.byte script automates the building of the
+`cached`. The basic script automates the building of the
 `fib.byte` binary, the running of the experiments, the consistency
 checks, and plot generation.
 
@@ -67,7 +67,7 @@ Sample applications
 See commands to be executed
 ---------------------------
 
-    ./example.byte fib --virtual_run
+    basic fib --virtual_run
 
 Build, run, then plot
 ---------------------
@@ -75,7 +75,7 @@ Build, run, then plot
 In this experiment, we run each command five times and report the
 average.
 
-    ./example.byte fib -runs 5
+    basic fib -runs 5
 
 Just plot
 ---------
@@ -84,9 +84,9 @@ This command succeeds only if there was a previous run and there
 exists a corresponding results file named `results_fib.txt` that is in
 the current directory.
 
-    ./example.byte fib -only plot
+    basic fib -only plot
 
 Just run
 --------
 
-    ./example.byte fib -skip make,plot
+    basic fib -skip make,plot
