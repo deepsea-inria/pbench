@@ -58,8 +58,11 @@ $(TIMEOUT): $(TIMEOUT_SCR)
 ##################################################################
 # Pbench binaries
 
+PBENCH_OCAMLCOMP=ocamlc
+XLIB_LIBS=unix.cma str.cma
+
 %.pbench: %.ml $(PBENCH_SRC) $(TIMEOUT) 
-	ocamlopt -w d $(PBENCH_INCLUDES) $(PBENCH_LIBS) $(PBENCH_SRC) $< -o $@
+	$(PBENCH_OCAMLCOMP) -w d $(PBENCH_INCLUDES) $(PBENCH_LIBS) $(PBENCH_SRC) $< -o $@
 
 # "-w d" is for disabling warnings for deprecated features
 
