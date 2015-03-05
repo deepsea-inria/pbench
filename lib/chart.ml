@@ -8,7 +8,7 @@ let latex_plots = "\
 \\documentclass[12pt]{article}\
 \\usepackage{graphicx}\
 \\usepackage{verbatim}\
-\\usepackage[margin=0cm, paperwidth=18cm, paperheight=15cm]{geometry}\
+\\usepackage[margin=0cm, paperwidth=30cm, paperheight=15cm]{geometry}\
 \\pagestyle{empty}\
 \
 \\begin{document}\

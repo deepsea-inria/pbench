@@ -27,7 +27,7 @@ let basic_document contents =
    "\\documentclass[12pt]{article}\n \
    \\usepackage{graphicx}\n \
    \\usepackage{verbatim}\n \
-   \\usepackage[margin=0.5cm, paperwidth=25cm, paperheight=25cm]{geometry}
+   \\usepackage[margin=0.5cm, paperwidth=30cm, paperheight=30cm]{geometry}
    \\setlength{\\parindent}{0pt}
    \\pagestyle{empty}\n \
    \\begin{document}\n"
