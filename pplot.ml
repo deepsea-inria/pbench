@@ -286,11 +286,11 @@ let plot_factored_speedup () =
 
   let curve_type_key = "pplot_factored_speedup_curve_type" in
   let curve_actual = "actual" in
-  let curve_maximal = "maximal" in
+  (*  let curve_maximal = "maximal" in*)
   let curve_idle_time_specific = "idle_time_specific" in
   let curve_inflation_specific = "inflation_specific" in
   let curve_elision_specific = "elision_specific" in
-  let curve_types = [curve_maximal;curve_actual;curve_idle_time_specific;curve_inflation_specific] in
+  let curve_types = [(*curve_maximal;*)curve_actual;curve_idle_time_specific;curve_inflation_specific] in
   let use_elision_specific_curve = XCmd.mem_flag "elision" in
   let curve_types = if use_elision_specific_curve then curve_types @ [curve_elision_specific] else curve_types in
 
@@ -335,10 +335,10 @@ let plot_factored_speedup () =
     if curve_type = curve_actual then
       let tp = Results.get_mean_of "exectime" results in
       tb /. tp
-    else if curve_type = curve_maximal then
+(*    else if curve_type = curve_maximal then
       let proc = float_of_int (Env.get_as_int env "proc") in
       let t1 = Results.get_mean_of "exectime" t1_results in
-      (proc *. tb) /. t1
+      (proc *. tb) /. t1 *)
     else if curve_type = curve_idle_time_specific then
       let proc = float_of_int (Env.get_as_int env "proc") in
       let t1 = Results.get_mean_of "exectime" t1_results in
