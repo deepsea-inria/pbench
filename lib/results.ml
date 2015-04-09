@@ -203,6 +203,20 @@ let get_stddev_of k results =
   let (_, stddev) = get_mean_and_stddev_of k results in
   stddev
 
+(* todo: rename *)
+let get_unique_of_as conv k results =
+   try
+      let vs = get conv k results in
+      if vs = []
+         then raise (Missing_key ("", []));
+      if not (XList.same_items vs) then begin
+        let m = String.concat "," (List.map Env.string_of_value (get (fun x->x) k results)) in
+        Pbench.error (sprintf "Results.get_unique_of: not all the same values for key %s, values:\n%s" k m);
+      end;
+      List.hd vs
+   with Missing_key _ -> raise (Missing_key ("", []))
+
+(* todo: obtain by specializing above *)
 let get_unique_of k results =
    try
       let vs = get Env.as_float k results in
