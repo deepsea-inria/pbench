@@ -195,6 +195,14 @@ let get_mean_of k results =
          else XFloat.mean_of vs *)
    with Missing_key _ -> nan
 
+let get_median_of k results =
+   try XMath.median_of_or_nan (get Env.as_float k results)
+      (* let vs = (get Env.as_float k results) in
+      if List.mem infinity vs 
+         then infinity 
+         else XFloat.mean_of vs *)
+   with Missing_key _ -> nan
+
 let get_mean_and_stddev_of k results =
   try XFloat.list_mean_and_stddev (get Env.as_float k results)
   with Missing_key _ -> (nan, nan)

@@ -19,6 +19,11 @@ let median_of l =
    let s = List.sort (fun a b -> if a < b then -1 else 1) l in
    median_of_sorted s
 
+(** Returns the (lower) median item of a non-empty list, or nan. *)
+
+let median_of_or_nan l =
+  if l = [] then nan else median_of l 
+
 (** Returns the maximum value of a non-empty list *)
 
 let max_of l =
