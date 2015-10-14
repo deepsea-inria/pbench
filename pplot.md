@@ -285,60 +285,49 @@ source, such as scheduling overhead, could be disregarded.
 Our plotting tool currently generates three synthetic speedup curves
 by default and one extra synthetic curve, optionally.  The first
 synthetic curve is the ***maximal speedup curve***. This curve is
-defined by the function
-
-$$\textrm{maximal}(P) = \frac{P \cdot T_S}{T_1}$$
-
-where $P$ denotes the number of processors, $T_1$ the running time of
-the parallel program on a single processor, and $T_S$ the running time
-of the sequential baseline program. The maximal speedup curve gives a
-realistic upper bound on the parallel speedup by taking into account
-any additional work that must be performed by the parallel run
-compared to the sequential run.
+defined by the function $\textrm{maximal}(P) = \frac{P \cdot
+T_S}{T_1}$, where $P$ denotes the number of processors, $T_1$ the
+running time of the parallel program on a single processor, and $T_S$
+the running time of the sequential baseline program. The maximal
+speedup curve gives a realistic upper bound on the parallel speedup by
+taking into account any additional work that must be performed by the
+parallel run compared to the sequential run.
 
 The second synthetic curve is the ***idle-time-specific curve***. This
-curve is defined by the function
-
-$$\textrm{idletime}(P) = \frac{P \cdot T_S}{T_1 + I_P}$$
-
-where $I_P$ denotes the time spent by a processor when the processor
-is idling and waiting for work, combined across all processors. The
-`pplot` tool expects for the value of $I_P$ to be reported by the
-benchmark program to `stdout` in the form: `total_idle_time` *t*,
-where *t* denotes the total idle time in seconds. This curve
-represents the speedup curve that we might expect to see if we
-consider only the performance of the parallel program on a single
-processor and the amount of idle time as the number of processors
-increase.
+curve is defined by the function $\textrm{idletime}(P) = \frac{P \cdot
+T_S}{T_1 + I_P}$, where $I_P$ denotes the time spent by a processor
+when the processor is idling and waiting for work, combined across all
+processors. The `pplot` tool expects for the value of $I_P$ to be
+reported by the benchmark program to `stdout` in the form:
+`total_idle_time` *t*, where *t* denotes the total idle time in
+seconds. This curve represents the speedup curve that we might expect
+to see if we consider only the performance of the parallel program on
+a single processor and the amount of idle time as the number of
+processors increase.
 
 The third synthetic curve is the ***inflation-specific curve***. This
-curve is defined by the function
-
-$$\textrm{inflation}(P) = \frac{P \cdot T_S}{T_1 + F_P}$$
-
-where $F_P$ denotes the "work inflation". The work inflation of a
-parallel computation is the amount of time by which the computation is
-slowed down due to effects that are not related to processor
-utilization. The most significant of these effects are the increased
-costs relating to memory accesses in a parallel computation where
-multiple processors are sharing the same memory controllers. Because
-the work inflation term $F_P$ is not readily measured in a direct
-fashion, we derive the inflation-specific speedup from $(P \cdot T_S)
-/ (P \cdot T_P - I_P)$.
+curve is defined by the function $\textrm{inflation}(P) = \frac{P
+\cdot T_S}{T_1 + F_P}$, where $F_P$ denotes the "work inflation". The
+work inflation of a parallel computation is the amount of time by
+which the computation is slowed down due to effects that are not
+related to processor utilization. The most significant of these
+effects are the increased costs relating to memory accesses in a
+parallel computation where multiple processors are sharing the same
+memory controllers. Because the work inflation term $F_P$ is not
+readily measured in a direct fashion, we derive the inflation-specific
+speedup from $(P \cdot T_S) / (P \cdot T_P - I_P)$.
 
     prun speedup -baseline "examples/others/speedup.sh -algo foo" -baseline-runs 1 -parallel "examples/others/speedup.sh -algo bar -proc 1,2,3,4" -runs 2
     pplot speedup --factored
 
 The factored speedup mode can optionally generate one more curve: the
 ***elision-specific curve***. This curve is calculated by
-
-$$\textrm{elision}(P) = \frac{P \cdot T_S}{T_E}$$
-
-where $T_E$ denotes the running time of the "sequential elision" of
-the parallel benchmark. The sequential elision is the program that is
-derived by substituting all parallel function calls in the program by
-sequential function calls. What remains in the elision program is just
-the parallel algorithm, minus the overheads imposed by parallel
+$\textrm{elision}(P) = \frac{P \cdot T_S}{T_E}$, where $T_E$ denotes
+the running time of the "sequential elision" of the parallel
+benchmark. The sequential elision is the program that is derived by
+substituting all parallel function calls in the program by sequential
+function calls. What remains in the elision program is just the
+parallel algorithm, minus the overheads imposed by parallel
 scheduling.
 
     prun speedup -baseline "examples/others/speedup.sh -algo foo" -baseline-runs 1 -elision "examples/others/speedup.sh -algo elision_of_bar" -elision-runs 1 -parallel "examples/others/speedup.sh -algo bar -proc 1,2,3,4" -runs 2
