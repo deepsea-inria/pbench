@@ -15,5 +15,4 @@ basic: basic.pbench
 doc: $(DOCS)
 
 clean: pbench_clean
-	rm -f $(DOCS) 
 	rm -f basic fib
