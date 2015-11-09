@@ -9,7 +9,7 @@ let system = XSys.command_must_succeed_or_virtual
 let arg_virtual_run = XCmd.mem_flag "virtual_run"
 let arg_virtual_build = XCmd.mem_flag "virtual_build"
 let arg_nb_runs = XCmd.parse_or_default_int "runs" 1
-let arg_mode = "replace"   (* later: investigate the purpose of "mode" *)
+let arg_mode = "replace"   (* later: document the purpose of "mode" *)
 let arg_skips = XCmd.parse_or_default_list_string "skip" []
 let arg_onlys = XCmd.parse_or_default_list_string "only" []
 
@@ -18,6 +18,7 @@ let run_modes =
     Mode (mode_of_string arg_mode);
     Virtual arg_virtual_run;
     Runs arg_nb_runs; ])
+
 
 (*****************************************************************************)
 (** Steps *)
@@ -91,7 +92,7 @@ let plot() =
       Bar_plot_opt Bar_plot.([
          X_titles_dir Vertical;
          Y_axis [Axis.Lower (Some 0.)] ]);
-       Formatter fib_formatter;
+      Formatter fib_formatter;
       Charts mk_unit;
       Series mk_algos;
       X mk_ns;
