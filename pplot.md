@@ -45,7 +45,7 @@ Mode-specific options
 :    Specify a file *filename* where to read results (default is `results.txt`).
 
 `-output` *filename*
-:    Specify a file *filename* where to plot results.
+:    Specify a file *filename* where to store plot file.
 
 
 ### Options common to `bar` and `scatter`
