@@ -83,7 +83,11 @@ let build output_file (charts : t list) =
    let _ = 
       if !rscripts <> [] then begin
          let fullscript = String.concat "\n" (List.rev !rscripts) in
-         Rtool.execute fullscript (folder ^ "/chart-all.r")
+         let rfile_path = folder ^ "/chart-all.r" in
+         let rfile_custom_path = folder ^ "/" ^ output_file ^ ".r" in
+         Rtool.execute fullscript rfile_path;
+         Pbench.system (sprintf "cp %s %s" rfile_path rfile_custom_path);
+         ()
       end in
    if !latexs = [] 
       then Pbench.warning "no plots to output!\n";
