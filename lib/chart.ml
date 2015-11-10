@@ -59,15 +59,14 @@ exception Cannot_build of string
 (** Given a list of charts, described as chart options and R-scripts, 
     generate a PDF in a target output file. *)
 
-let build output_file (charts : t list) =
+let build_for prefix folder output_file (charts : t list) =
    Pbench.ensure_results_folder_exists();
-   let folder = Pbench.get_results_folder() in
    let rscripts = ref [] in
    let latexs = ref [] in
-   Pbench.info (sprintf "Starting to generate %d charts." (List.length charts));
+   if prefix = "chart" then Pbench.info (sprintf "Starting to generate %d charts." (List.length charts));
    ~~ List.iteri charts (fun id_chart chart ->
       let rscript_core = get_rscript chart in
-      let basename = sprintf "chart-%d" (id_chart+1) in
+      let basename = sprintf "%s-%d" prefix(id_chart+1) in
       let basepath = sprintf "%s/%s" folder basename in
       let rscript = Rtool.wrap_image rscript_core (get_dimensions chart) basepath "pdf" in
       if build_debug then begin
@@ -80,16 +79,19 @@ let build output_file (charts : t list) =
       let latex = sprintf "\\myfig{%s.pdf}\n\\\\ \\small %s\\newpage\n" basename (get_comments chart) in
       add_to_list_ref latexs latex;
       );
-   let _ = 
-      if !rscripts <> [] then begin
-         let fullscript = String.concat "\n" (List.rev !rscripts) in
-         let rfile_path = folder ^ "/chart-all.r" in
-         let rfile_custom_path = folder ^ "/" ^ output_file ^ ".r" in
-         Rtool.execute fullscript rfile_path;
-         Pbench.system (sprintf "cp %s %s" rfile_path rfile_custom_path);
-         ()
-      end in
-   if !latexs = [] 
+  if !rscripts <> [] then begin
+     let fullscript = String.concat "\n" (List.rev !rscripts) in
+     let rfile_path = folder ^ (sprintf "/%s-all.r" prefix) in
+     Rtool.execute fullscript rfile_path;
+     ()
+  end ;
+  latexs
+
+let build output_file (charts : t list) =   
+  let folder = Pbench.get_results_folder() in
+  let _ = build_for output_file folder output_file charts in
+  let latexs = build_for "chart" folder output_file charts in
+  if !latexs = [] 
       then Pbench.warning "no plots to output!\n";
    (* let latex_plots = XFile.get_contents (Pbench.get_pbench_folder() ^ "/plots.tex") in *)
    XFile.put_contents (folder ^ "/plots.tex") latex_plots;
