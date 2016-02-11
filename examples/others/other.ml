@@ -188,6 +188,10 @@ let second() =
      Env.format (Env.(
        [ ("prog", Format_custom (fun s -> sprintf "%s" s));
          ("t", Format_custom (fun s -> sprintf "t = %s" s));
+         (* ("prog", Format_custom (fun s -> 
+            if s = "test.sh" then "A" 
+            else if s = "test2.sh" then "B" else sprintf "%s" s)); *)
+         ("t", Format_hidden);
          ("s", Format_custom (fun x -> sprintf "s is %s" (
             match x with
             | "a" -> "the_a_param"

@@ -59,14 +59,21 @@ let to_rscript_all_but_series batches scatter =
       sprintf "corner2 <- matrix(c(%s,%s),ncol=2)"
          (bound (Axis.get_upper xaxis) islogx) 
          (bound (Axis.get_upper yaxis) islogy) in
+   let xaxis_pos_option =
+      if Axis.get_lower xaxis <> None then ", xaxs='i'" else "" in
+   let yaxis_pos_option = 
+      if Axis.get_lower yaxis <> None then ", yaxs='i'" else "" in
    let plot =
-      sprintf "plot(rbind(%s), type='n', xlab='%s', ylab='%s'%s%s%s)" 
+      sprintf "plot(rbind(%s), type='n', xlab='%s', ylab='%s'%s%s%s%s%s)" 
         (String.concat "," (XList.mapi (fun i _ -> Rtool.batch_name i) batches) ^ ",corner1,corner2")
         (Axis.get_label xaxis)
         (Axis.get_label yaxis)
         "" (* add support for xlim=c(a,b) here *)
         "" (* add support for ylim=c(a,b) here *)
-        logoption in
+        logoption
+        xaxis_pos_option
+        yaxis_pos_option
+        in
    List.concat (XList.mapi define_data batches)
    @ [ corner1;
        corner2;

@@ -58,9 +58,13 @@ $(TIMEOUT): $(TIMEOUT_SCR)
 ##################################################################
 # Pbench binaries
 
-
+ifndef USE_OCAMLC
+PBENCH_OCAMLCOMP=ocamlopt
+XLIB_LIBS=unix.cmxa str.cmxa
+else
 PBENCH_OCAMLCOMP=ocamlc
 XLIB_LIBS=unix.cma str.cma
+endif
 
 %.pbench: %.ml $(PBENCH_SRC) $(TIMEOUT) 
 	$(PBENCH_OCAMLCOMP) -w d $(PBENCH_INCLUDES) $(PBENCH_LIBS) $(PBENCH_SRC) $< -o $@
@@ -83,8 +87,8 @@ XLIB_LIBS=unix.cma str.cma
 
 pbench_clean:
 	rm -f $(TIMEOUT)
-	rm -f *.cmi *.cmo *.cma *.o *.cmx *.pbench
-
+	rm -f *.cmi *.cmo *.cma *.o *.cmx *.cmxa *.pbench
+	rm -f xlib/*.cmi xlib/*.cmo xlib/*.cma xlib/*.cmxa xlib/*.o xlib/*.cmx
 
 
 
