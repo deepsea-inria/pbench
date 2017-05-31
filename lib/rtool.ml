@@ -35,8 +35,8 @@ let batch_name i =
 (** Defines a default vector of colors to use for plots *)
 
 let colors_default = 
-   [ "#000000"; "#FF0000"; "#0000FF"; "#00FF00"; "#FFFF66"; "#66FFFF";  "#AA00AA"; 
-     "#000099"; "#CCFF99"; "#FF66FF"; "#CC0066"; "#CCCCFF"; "#C0C0C0"; "#0000CC"; "#FF66FF"; "#990000"; "#009900"; "#CC0000"; "#00CC00"; "#FFCCCC";]
+   [ "#000000"; "#FF0000"; "#0000FF"; "#00FF00"; "#AA00AA"; 
+     "#000099"; "#CCFF99"; "#FF66FF"; "#FFFF00"; "#00FFFF"; "#CC0066"; "#CCCCFF"; "#C0C0C0"; "#0000CC"; "#FF66FF"; "#990000"; "#009900"; "#CC0000"; "#00CC00"; "#FFCCCC";]
 
    (* XList.init nbcols (fun i -> sprintf "%d" (i+1)) 
       sprintf "cols <- as.vector(c(%s))" (XList.to_string "," (fun x -> x) vals) *)
