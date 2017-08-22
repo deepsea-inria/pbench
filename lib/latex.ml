@@ -28,9 +28,9 @@ let basic_document contents =
    \\usepackage{graphicx}\n \
    \\usepackage{verbatim}\n \
    \\usepackage{amssymb}\n \
-\\usepackage{dcolumn}\n \
-\\newcolumntype{d}[1]{D{.}{.}{#1}}\n \
-\\usepackage[margin=0.5cm, paperwidth=30cm, paperheight=30cm]{geometry}
+   \\usepackage{dcolumn}\n \
+   \\newcolumntype{d}[1]{D{.}{.}{#1}}\n \
+   \\usepackage[margin=0.5cm, paperwidth=30cm, paperheight=30cm]{geometry}
    \\setlength{\\parindent}{0pt}
    \\pagestyle{empty}\n \
    \\begin{document}\n"
