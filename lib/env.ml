@@ -22,6 +22,7 @@ type key = string
 type keys = key list
 
 type value =
+   | Vna
    | Vbool of bool
    | Vint of int
    | Vfloat of float
@@ -40,6 +41,7 @@ type formatter = t -> string
     --list of values are currently not supported *)
 
 let string_of_value = function
+   | Vna -> "[NA]"
    | Vbool true -> "1"
    | Vbool false -> "0"
    | Vint n -> string_of_int n
@@ -91,6 +93,7 @@ let to_string e =
 let rec fprintf_value ppf v =
    let fprintf = Format.fprintf in
    match v with
+   | Vna -> fprintf ppf "[NA]"
    | Vbool b -> fprintf ppf "%s" (if b then "true" else "false")
    | Vint n -> fprintf ppf "%d" n
    | Vfloat f -> fprintf ppf "%f" f
@@ -99,8 +102,42 @@ let rec fprintf_value ppf v =
 
 
 (***************************************************************)
-(** * Operations *)
+(** * Sorting *)
 
+let bool_cmp b1 b2 =
+  match b1, b2 with
+  | false, true -> -1
+  | true, false -> 1
+  | _, _ -> 0
+
+let int_cmp n1 n2 =
+  n1 - n2
+
+let float_cmp f1 f2 =
+  if f1 = f2 then 0 else if f1 < f2 then -1 else 1
+
+let string_cmp s1 s2 =
+  if s1 = s2 then 0 else if s1 < s2 then -1 else 1
+
+let rec value_cmp v1 v2 =
+  match v1, v2 with
+  | Vna, Vna -> 0
+  | Vbool b1, Vbool b2 -> bool_cmp b1 b2
+  | Vint n1, Vint n2 -> int_cmp n1 n2
+  | Vfloat f1, Vfloat f2 -> float_cmp f1 f2
+  | Vstring s1, Vstring s2 -> string_cmp s1 s2
+  | Vlist l1, Vlist l2 -> 
+      raise (Pbench.error (sprintf "Env.value_cmp: trying to compare %s with %s.\n Comparison of list of values is not yet supported." (string_of_value v1) (string_of_value v2)))
+  | Vna, _ -> -1
+  | _, Vna -> 1
+  | _, _ -> raise (Pbench.error (sprintf "Env.value_cmp: trying to compare %s with %s"
+                                  (string_of_value v1) (string_of_value v2))) 
+
+(* TODO: and list_cmp l1 l2 =  *)
+
+
+(***************************************************************)
+(** * Operations *)
 
 (** The empty params *)
 
@@ -119,6 +156,12 @@ let get e k =
    try lookup e k
    with Not_found -> (* raise (Key_not_found_in_env k (XList.keys e)) *)
      Pbench.error (sprintf "Env.lookup: not found key '%s' in env:\n %s" k (to_string e)) 
+
+(** lookup for the values associated with a key; returns the "NA" value if not found *)
+
+let get_or_na e k =
+   try lookup e k
+   with Not_found -> Vna
 
 (** Adding a key-value binding *)
 
@@ -165,6 +208,10 @@ let equiv_when_stringified e1 e2 =
    let stringify k v = (k, string_of_value v) in
    equiv (map stringify e1) (map stringify e2)
 
+(** Filterout the bindings mapping a key to a [Vna] value *)
+
+let remove_entries_with_na_values e =
+  List.filter (fun (k,v) -> v <> Vna) e
 
 
 (***************************************************************)
@@ -295,6 +342,26 @@ let filter_keys_from_ghost k e =
       in
    filter_keys ks e
 *)
+
+
+(***************************************************************)
+(** * Sorting *)
+
+let cmp e1 e2 =
+  let rec aux e =
+    match e with
+    | [] -> -1
+    | (k,v1)::e' ->
+        let v2 = get_or_na e2 k in
+        let n = value_cmp v1 v2 in
+        if n < 0 then -1 
+        else if n > 0 then 1
+        else aux e'
+    in
+  aux e1
+
+let sort (es : t list) =
+  List.sort cmp es
 
 
 (***************************************************************)

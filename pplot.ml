@@ -1,5 +1,6 @@
 open XBase
 
+
 (************************************************************************)
 (** Common parameters *)
 
@@ -13,6 +14,11 @@ let arg_output = XCmd.parse_or_default_string "output" "plots.pdf"
 
 (************************************************************************)
 (** Helper functions *)
+
+let get_sorted_distinct_params_for_keys ks results = 
+  let envs = Results.get_distinct_values_for_several ks results in
+  let envs = Env.sort envs in
+  Params.from_envs envs
 
 let make_axis smin smax szero slog slabel =
   List.concat [
@@ -42,8 +48,8 @@ let scatter_and_bar_options () =
      in
 
   let all_results = Results.from_file arg_input in
-  let mk_charts = Params.from_envs (Results.get_distinct_values_for_several arg_chart all_results) in
-  let mk_series = Params.from_envs (Results.get_distinct_values_for_several arg_series all_results) in
+  let mk_charts = get_sorted_distinct_params_for_keys arg_chart all_results in
+  let mk_series = get_sorted_distinct_params_for_keys arg_series all_results in
 
   let eval_y env all_results results =
     Results.get_mean_of arg_y results
@@ -115,7 +121,7 @@ let plot_bar () =
      Bar_plot.label_direction_of_string (XCmd.parse_or_default_string "xtitles-dir" "horizontal") 
      in
 
-  let mk_x = Params.from_envs (Results.get_distinct_values_for_several arg_x all_results) in
+  let mk_x = get_sorted_distinct_params_for_keys arg_x all_results in
 
   Mk_bar_plot.(call ([
     Chart_opt chart_opt;
@@ -146,10 +152,9 @@ let plot_table () =
   let group_by = XCmd.parse_or_default_list_string "group-by" [] in
   let all_results = Results.from_file arg_input in
 
-  let mk_tables = Params.from_envs (Results.get_distinct_values_for_several arg_tables all_results) in
-  let mk_rows = Params.from_envs (Results.get_distinct_values_for_several arg_rows all_results) in
-  let mk_cols = Params.from_envs (Results.get_distinct_values_for_several arg_cols all_results) in
-
+  let mk_tables = get_sorted_distinct_params_for_keys arg_tables all_results in
+  let mk_rows = get_sorted_distinct_params_for_keys arg_rows all_results in
+  let mk_cols = get_sorted_distinct_params_for_keys arg_cols all_results in
   let eval_cell env all_results results =
     Results.get_mean_of arg_cell results
     in
@@ -225,8 +230,8 @@ let plot_speedup () =
   let all_procs = List.map Env.as_int (Results.get_distinct_values_for "proc" all_results_parallel) in
   let max_proc = XMath.max_of all_procs in
 
-  let mk_charts = Params.from_envs (Results.get_distinct_values_for_several arg_chart all_results) in
-  let mk_series = Params.from_envs (Results.get_distinct_values_for_several arg_series all_results) in
+  let mk_charts = get_sorted_distinct_params_for_keys arg_chart all_results in
+  let mk_series = get_sorted_distinct_params_for_keys arg_series all_results in
   let mk_x = Params.mk_list Params.int "proc" (~~ List.filter all_procs (fun p -> p <> 0)) in 
 
   let axis = Axis.([
@@ -306,8 +311,8 @@ let plot_factored_speedup () =
   let all_procs = List.map Env.as_int (Results.get_distinct_values_for "proc" all_results_parallel) in
   let max_proc = XMath.max_of all_procs in
 
-  let mk_charts = Params.from_envs (Results.get_distinct_values_for_several arg_chart all_results) in
-  let mk_series = Params.from_envs (Results.get_distinct_values_for_several [curve_type_key] all_results) in
+  let mk_charts = get_sorted_distinct_params_for_keys arg_chart all_results in
+  let mk_series = get_sorted_distinct_params_for_keys [curve_type_key] all_results in
   let mk_x = Params.mk_list Params.int "proc" (~~ List.filter all_procs (fun p -> p <> 0)) in 
 
   let axis = Axis.([

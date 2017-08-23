@@ -122,13 +122,20 @@ let filter_by_fun f results =
       f kvs_result)
 
 (** Filtering the results that contain all of the specified key-value
-    bindings (represented as a Env.t); Prefixes in keys are removed. *)
+    bindings (represented as a Env.t); Prefixes in keys are removed.
+    Keys bound to [Vna] are ignored in the filtering *)
+   (* TODO: reimplement using filter_by_fun *)
 
 let filter_nostrip env results =
    let kvs_filter = Env.to_assoc env in
    ~~ List.filter results (fun (inputs, ps_result) ->
       let kvs_result = Env.to_assoc ps_result in
-      ~~ List.for_all kvs_filter (fun kv -> List.mem kv kvs_result))
+      (* OLD ~~ List.for_all kvs_filter (fun kv -> List.mem kv kvs_result)) *)
+      ~~ List.for_all kvs_filter (fun ((k,v) as kv) -> 
+        if v = Env.Vna 
+          then not (List.mem_assoc k kvs_result)
+          else List.mem kv kvs_result
+        ))
 
 let filter env results =
    let env = Env.strip_prefixes env in
@@ -241,7 +248,7 @@ let get_distinct_values_for k results =
 
 let get_distinct_values_for_several ks results =
   let vss : Env.t list = ~~ List.map results (fun (inputs,ps_results) -> 
-    List.map (fun k -> (k, Env.get ps_results k)) ks) in
+    List.map (fun k -> (k, Env.get_or_na ps_results k)) ks) in
   List.map Env.from_assoc (XList.remove_duplicate vss)
   (* note: returns a list of environments *)
 
