@@ -79,11 +79,11 @@ let read_char ch =
 
 let read_string ch =
   let len = read_int ch in
-  let str = String.make len ' ' in
+  let str = Bytes.make len ' ' in
   for i = 0 to pred len do
      str.[i] <- read_char ch
   done;
-  str
+  Bytes.to_string str
 
 (** Read real 32-bit integers from an input channel *)
 
