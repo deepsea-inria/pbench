@@ -49,7 +49,8 @@ stdenv.mkDerivation rec {
     ''
     mkdir -p $out 
     cp *.ml Makefile Makefile_common timeout.c $out/
-    cp prun prun.pbench pplot pplot.pbench timeout.out $out/
+    mkdir -p $out/bin/
+    cp prun pplot prun.pbench pplot.pbench timeout.out $out/bin/
     mkdir -p $out/lib/
     cp lib/*.ml $out/lib/
     mkdir -p $out/tools/
