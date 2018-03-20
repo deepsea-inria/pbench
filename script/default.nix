@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
       ] else
         [];
     in
-    [ pkgs.ocaml ] ++ docs;
+    [ pkgs.ocaml pkgs.gcc ] ++ docs;
 
   buildPhase =
     let docs = 
