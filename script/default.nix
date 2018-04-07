@@ -1,17 +1,16 @@
 { pkgs   ? import <nixpkgs> {},
   stdenv ? pkgs.stdenv,
-  fetchurl,
+  pbenchSrc ? ../.,
   buildDocs ? false
 }:
 
-stdenv.mkDerivation rec {
-  name = "pbench-${version}";
-  version = "v1.0";
+# Later: consider factoring pbench the command-line tool
+# and pbench the library separately.
 
-  src = fetchurl {
-    url = "https://github.com/deepsea-inria/pbench/archive/${version}.tar.gz";
-    sha256 = "0qwbpaygrhh3n45rs5f5ky5d526y4jjp54j5p7vgs5n8nz5ircz0";
-  };
+stdenv.mkDerivation rec {
+  name = "pbench";
+
+  src = pbenchSrc;
 
   buildInputs =
     let docs =
