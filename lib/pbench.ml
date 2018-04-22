@@ -71,8 +71,10 @@ let get_pbench_folder () =
 
 (** Give the name of the results folder *)
 
+let arg_path_to_results = XCmd.parse_or_default_string "path_to_results" "_results"
+
 let get_results_folder () =
-   "_results"
+   arg_path_to_results
 
 (** Ensures that a _results folder exists for producing output *)
 
