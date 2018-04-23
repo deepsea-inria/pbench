@@ -1,11 +1,11 @@
 { pkgs   ? import <nixpkgs> {},
   stdenv ? pkgs.stdenv,
   pbenchSrc ? ../.,
-  ocaml ? pkgs.ocaml,
   gcc ? pkgs.gcc,
-  R ? pkgs.R,
-  texlive ? pkgs.texlive.combined.scheme-small,
   pandoc ? pkgs.pandoc,
+  R ? pkgs.R,
+  ocaml ? pkgs.ocaml,
+  myTexlive ? pkgs.texlive.combined.scheme-small,
   makeWrapper ? pkgs.makeWrapper,
   buildDocs ? false
 }:
@@ -20,9 +20,9 @@ stdenv.mkDerivation rec {
 
   buildInputs =
     let docs =
-      if buildDocs then [ pandoc texlive] else [];
+      if buildDocs then [ pandoc ] else [];
     in
-    [ ocaml gcc R texlive makeWrapper ] ++ docs;
+    [ ocaml gcc R myTexlive makeWrapper ] ++ docs;
 
   buildPhase =
     let docs = 
@@ -53,7 +53,7 @@ stdenv.mkDerivation rec {
     mkdir -p $out/bin/
     cp prun pplot prun.pbench pplot.pbench timeout.out $out/bin/
     wrapProgram $out/bin/pplot \
-      --prefix PATH ":" ${texlive}/bin \
+      --prefix PATH ":" ${myTexlive}/bin \
       --prefix PATH ":" ${R}/bin
     mkdir -p $out/lib/
     cp lib/*.ml $out/lib/
