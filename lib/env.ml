@@ -330,7 +330,7 @@ let format_one fo k v =
    | Format_custom_value f -> f v
    | Format_hidden -> ""
 
-let format fos e = 
+let format ?delim:(d=", ") fos e = 
    let string_of_item (k,v) =
       let fo = 
          match XList.assoc_option k fos with
@@ -340,7 +340,7 @@ let format fos e =
       format_one fo k v
       in
    let ss = List.map string_of_item e in
-   XList.to_string ", " (fun x -> x) (List.filter (fun s -> s <> "") ss)
+   XList.to_string d (fun x -> x) (List.filter (fun s -> s <> "") ss)
 
 let format_values ks =
    List.map (fun k -> (k, Format_value)) ks
