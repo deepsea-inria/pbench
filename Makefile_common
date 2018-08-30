@@ -33,6 +33,7 @@ XLIB_SRC_BASE=\
    XSys.ml \
    XCmd.ml 
 
+PBENCH_PATH=.
 XLIB_PATH=$(PBENCH_PATH)/xlib/
 PBENCH_LIB_PATH=$(PBENCH_PATH)/lib/
 
@@ -43,16 +44,6 @@ XLIB_SRC=$(addprefix $(XLIB_PATH),$(XLIB_SRC_BASE))
 XLIB_LIBS=unix.cmxa str.cmxa
 PBENCH_SRC=$(XLIB_SRC) $(addprefix $(PBENCH_LIB_PATH)/,$(PBENCH_SRC_BASE))
 PBENCH_LIBS=$(XLIB_LIBS)
-
-
-##################################################################
-# Auxiliary programs
-
-TIMEOUT_SCR=$(PBENCH_PATH)/timeout.c
-TIMEOUT=timeout.out
-
-$(TIMEOUT): $(TIMEOUT_SCR)
-	gcc -o $@ $<
 
 
 ##################################################################
@@ -67,7 +58,7 @@ XLIB_LIBS=unix.cma str.cma
 endif
 
 %.pbench: %.ml $(PBENCH_SRC) $(TIMEOUT) 
-	$(PBENCH_OCAMLCOMP) -w d $(PBENCH_INCLUDES) $(PBENCH_LIBS) $(PBENCH_SRC) $< -o $@
+	$(PBENCH_OCAMLCOMP) -w d -unsafe-string $(PBENCH_INCLUDES) $(PBENCH_LIBS) $(PBENCH_SRC) $< -o $@
 
 # "-w d" is for disabling warnings for deprecated features
 
@@ -87,7 +78,7 @@ endif
 
 pbench_clean:
 	rm -f $(TIMEOUT)
-	rm -f *.cmi *.cmo *.cma *.o *.cmx *.cmxa *.pbench
+	rm -f *.cmi *.cmo *.cma *.o *.cmx *.cmxa *.pbench 
 	rm -f xlib/*.cmi xlib/*.cmo xlib/*.cma xlib/*.cmxa xlib/*.o xlib/*.cmx
 
 

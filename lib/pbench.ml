@@ -6,7 +6,7 @@ open XBase
 
 (** Reports an error *)
 
-let error s = 
+let error s =
    failwith s
 
 (** Reports a warning *)
@@ -16,7 +16,7 @@ let warning str =
 
 (** Print an information message *)
 
-let info s = 
+let info s =
    XBase.message s
 
 
@@ -39,7 +39,7 @@ let system s =
 
 let get_localhost_name () =
    let name = Unix.gethostname() in
-   List.hd (Str.split (Str.regexp_string ".") name) 
+   List.hd (Str.split (Str.regexp_string ".") name)
 
 (** Compute the local directory *)
 
@@ -49,21 +49,15 @@ let get_local_directory () =
 (** Compute the current svn revision, if possible *)
 
 let get_subversion_revision () =
-  let r = Unix.system "svnversion . > .svninfo" in 
+  let r = Unix.system "svnversion . > .svninfo" in
   if r <> Unix.WEXITED 0 then begin
-    warning "failed to get subversion number"; 
+    warning "failed to get subversion number";
     "NA"
   end else begin
     try
       XFile.get_contents ".svninfo"
     with _ -> failwith "cannot read svninfo"
   end
-
-(** Compute the relative path to the current executable *)
-
-let get_pbench_folder () =
-   Filename.dirname (XCmd.program())
-
 
 
 (***************************************************************)
@@ -91,16 +85,16 @@ let ensure_results_folder_exists () =
 
 let execute_from_only_skip onlys skips keyfuncs =
    let keys = XList.keys keyfuncs in
-   let check_incl l1 l2 =  
+   let check_incl l1 l2 =
       let show ss = String.concat "," ss in
       if not (XList.is_included l1 l2)
          then error (sprintf "Keys (%s) are not included in (%s)" (show l1) (show l2));
       in
    check_incl onlys keys;
    check_incl skips keys;
-   let acts = 
-      if onlys <> [] 
-         then onlys 
+   let acts =
+      if onlys <> []
+         then onlys
          else XList.substract keys skips
       in
    ~~ List.iter keyfuncs (fun (k,f) -> if List.mem k acts then f())

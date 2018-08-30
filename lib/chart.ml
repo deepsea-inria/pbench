@@ -30,7 +30,7 @@ let latex_plots = "\
 (******************************************************************************)
 (** * Chart *)
 
-type arg = 
+type arg =
   | Rscript of string
   | Dimensions of (float * float)
   | Legend_opt of Legend.t
@@ -45,10 +45,10 @@ type arg =
 type t = arg list
 
 let get_rscript args = XOpt.get_error args (function Rscript x -> Some x | _ -> None) "Chart.build needs Rscript"
-let get_dimensions args = XOpt.get_default args (function Dimensions x -> Some x | _ -> None) (6.,6.) 
-let get_legend_opt args = XOpt.projects args (function Legend_opt x -> Some x | _ -> None) 
-let get_title args = XOpt.get_default args (function Title x -> Some x | _ -> None) "" 
-let get_comments args = XOpt.get_default args (function Comments x -> Some x | _ -> None) "" 
+let get_dimensions args = XOpt.get_default args (function Dimensions x -> Some x | _ -> None) (6.,6.)
+let get_legend_opt args = XOpt.projects args (function Legend_opt x -> Some x | _ -> None)
+let get_title args = XOpt.get_default args (function Title x -> Some x | _ -> None) ""
+let get_comments args = XOpt.get_default args (function Comments x -> Some x | _ -> None) ""
 
 (** Option to activate debugging of R scripts *)
 
@@ -56,7 +56,7 @@ let build_debug = false
 
 exception Cannot_build of string
 
-(** Given a list of charts, described as chart options and R-scripts, 
+(** Given a list of charts, described as chart options and R-scripts,
     generate a PDF in a target output file. *)
 
 let build_for prefix folder output_file (charts : t list) =
@@ -87,13 +87,12 @@ let build_for prefix folder output_file (charts : t list) =
   end ;
   latexs
 
-let build output_file (charts : t list) =   
+let build output_file (charts : t list) =
   let folder = Pbench.get_results_folder() in
   let _ = build_for output_file folder output_file charts in
   let latexs = build_for "chart" folder output_file charts in
-  if !latexs = [] 
+  if !latexs = []
       then Pbench.warning "no plots to output!\n";
-   (* let latex_plots = XFile.get_contents (Pbench.get_pbench_folder() ^ "/plots.tex") in *)
    XFile.put_contents (folder ^ "/plots.tex") latex_plots;
    XFile.put_lines (folder ^ "/list.tex") (List.rev !latexs);
    Pbench.system (sprintf "cd %s; pdflatex -interaction=batchmode plots.tex > null" folder);

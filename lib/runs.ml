@@ -9,7 +9,7 @@ type arguments = (string * string) list
 
 let cst_no_timeout = -1
 
-(** Description of the parameters of a single run  
+(** Description of the parameters of a single run
     -- Note: representation might change *)
 
 type run = {
@@ -23,10 +23,10 @@ type run = {
 
 (** Create a backup of a given file into _results/results_[date].txt *)
 
-let create_backup_of_results source_file = 
+let create_backup_of_results source_file =
    let tm = Unix.gmtime (Unix.time()) in
    let target = sprintf "%s/results_%d-%d-%d_%d-%d-%d.txt" (Pbench.get_results_folder())
-      (1900+tm.Unix.tm_year) (1+tm.Unix.tm_mon) tm.Unix.tm_mday 
+      (1900+tm.Unix.tm_year) (1+tm.Unix.tm_mon) tm.Unix.tm_mday
       tm.Unix.tm_hour tm.Unix.tm_min tm.Unix.tm_sec in
    unix_command (sprintf "cp %s %s" source_file target)
 
@@ -35,7 +35,7 @@ let create_backup_of_results source_file =
 let string_of_arguments args =
    XList.to_string "" (fun (k,v) -> sprintf "%s %s\n" k v) args
 
-let run_params machine b = 
+let run_params machine b =
    let args = ("machine", machine) :: ("prog", b.run_prog) :: b.run_args in
    string_of_arguments args
 
@@ -47,13 +47,11 @@ let bench_command result_file b =
    let args = XList.to_string " " (fun (k,v) -> sprintf "-%s %s" k v) b.run_args in
    if b.run_timeout <= 0 && b.run_timeout <> cst_no_timeout
     then Pbench.error "invalid value for timeout (shoud be positive or cst_no_timeout)";
-   let timeout_path = sprintf "%s/timeout.out" (Pbench.get_pbench_folder()) in
-   if not (Sys.file_exists timeout_path)
-      then Pbench.error (sprintf "could not find: %s" timeout_path);
-   let timeout = 
+   let timeout_path = sprintf "prun_timeout" in
+   let timeout =
       if b.run_timeout = cst_no_timeout
         then ""
-        else sprintf "%s %d" timeout_path b.run_timeout 
+        else sprintf "%s %d" timeout_path b.run_timeout
       in
    (* let utime = sprintf "/usr/bin/time -f %s %s" "\"fUsertime %U\"" in *)
    let disp_cmd = sprintf "%s %s" prog args in
@@ -61,11 +59,11 @@ let bench_command result_file b =
    (full_cmd, disp_cmd)
 
 (** Extract the "exectime" field from the result file *)
-   
+
 let result_extract_and_report_exectime content =
    let reg = Str.regexp "exectime .*" in
-   let s = 
-      try 
+   let s =
+      try
          let _ = Str.search_forward reg content 0 in
          Str.matched_string content (* use matched_group *)
       with Not_found -> "exectime NA"
@@ -77,17 +75,17 @@ let result_extract_and_report_exectime content =
 
 let result_contains_error content =
    begin
-   let reg = Str.regexp "Error" in 
+   let reg = Str.regexp "Error" in
    try let _ = Str.search_forward reg content 0 in true
    with Not_found -> false
    end ||
    begin
-   let reg = Str.regexp "error" in 
+   let reg = Str.regexp "error" in
    try let _ = Str.search_forward reg content 0 in true
    with Not_found -> false
    end ||
    begin
-   let reg = Str.regexp "exectime ERROR" in 
+   let reg = Str.regexp "exectime ERROR" in
    try let _ = Str.search_forward reg content 0 in true
    with Not_found -> false
    end
@@ -95,13 +93,13 @@ let result_contains_error content =
 
 let result_contains_killed content =
    begin
-   let reg = Str.regexp "killed" in 
+   let reg = Str.regexp "killed" in
    try let _ = Str.search_forward reg content 0 in true
    with Not_found -> false
    end
 
 
-(** Execute a benchrun; this function invokes  
+(** Execute a benchrun; this function invokes
     - "add_output" on the liens to be dumped in the result file
     - "add_error" on command lines that failed to succeed *)
 
@@ -111,9 +109,9 @@ let execute is_verbose is_virtual (*svn_revision*) machine add_output add_error 
    let result_file = sprintf "%s/run.txt" (Pbench.get_results_folder()) in
    let (full_cmd, disp_cmd) = bench_command result_file b in
    begin
-      if b.run_dummy 
+      if b.run_dummy
          then info "[dummy]"
-         else info (sprintf "%s" disp_cmd); 
+         else info (sprintf "%s" disp_cmd);
       if is_verbose
          then info (sprintf "==> %s" full_cmd);
    end;
@@ -125,26 +123,26 @@ let execute is_verbose is_virtual (*svn_revision*) machine add_output add_error 
       let timed_out = ref false in
       begin try while !attempts_left > 0 do
          let exit_code = Unix.system full_cmd in
-         if exit_code = Unix.WEXITED 0 then begin 
+         if exit_code = Unix.WEXITED 0 then begin
             result := XFile.get_contents result_file;
-            if !result <> "" && not (result_contains_error !result) 
+            if !result <> "" && not (result_contains_error !result)
                then raise Break;
          end else if exit_code = Unix.WEXITED 137 then begin
             timed_out := true;
             raise Break;
          end;
          decr attempts_left;
-         if !attempts_left = 0 
+         if !attempts_left = 0
             then info "==========> failed... giving up."
             else info "==========> failed... retyring...";
       done with Break -> () end;
       if !attempts_left = 0 then begin
-         add_error disp_cmd; (* complete failure *) 
+         add_error disp_cmd; (* complete failure *)
       end else begin
-         if !attempts_left < !attempts_left 
-            then add_error disp_cmd; (* partial failure *) 
+         if !attempts_left < !attempts_left
+            then add_error disp_cmd; (* partial failure *)
          if not b.run_dummy then begin
-            add_output (run_params machine b);  
+            add_output (run_params machine b);
             add_output "---\n";
             add_output (string_of_arguments ["timeout", string_of_int b.run_timeout]);
             add_output (string_of_arguments b.run_ghost_args);
@@ -176,8 +174,8 @@ let get_output args = XOpt.get_default args (function Output x -> Some x | _ -> 
 
 (** Execute a set of benchruns; appends results to the file if it already exists *)
 
-let call args = 
-   let is_virtual = get_virtual args in 
+let call args =
+   let is_virtual = get_virtual args in
    let output_file = get_output args in
    Pbench.ensure_results_folder_exists();
    (* let svn_revision = Pbench.get_subversion_revision() in *)
@@ -216,10 +214,10 @@ let call args =
        info "Simulation completed."
     end else begin
       if errors = [] then begin
-        info "Benchmark successful." 
+        info "Benchmark successful."
       end else begin
         info "Benchmark completed, but encountered errors on the following commands:";
         info (XList.to_string "" (fun s -> sprintf "\t%s\n" s) errors);
       end
    end
-     
+
