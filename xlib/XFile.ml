@@ -4,7 +4,7 @@
 let put_contents filename str =
   let channel = open_out filename in
   output_string channel str;
-  close_out channel    
+  close_out channel
 
 (** Write a list of lines into a file of given name *)
 
@@ -15,15 +15,15 @@ let put_lines filename ?(sep="\n") lines =
 
 exception FileNotFound of string
 
-let get_lines file = 
+let get_lines file =
    if not (Sys.file_exists file)
       then raise (FileNotFound file);
    let lines = ref [] in
-   let f = 
+   let f =
       try open_in file with End_of_file -> raise (FileNotFound file);
       in
    begin try while true do
-      lines := input_line f :: !lines 
+      lines := input_line f :: !lines
    done with End_of_file -> () end;
    close_in f;
    XList.rev_not_rec !lines
@@ -51,8 +51,8 @@ let get_contents_or_empty file =
 
 (** Append a string to the end of an existing file *)
 
-let append_contents filename str = 
-  let contents = get_contents filename in 
+let append_contents filename str =
+  let contents = get_contents filename in
   put_contents filename (contents^str)
 
 
@@ -63,7 +63,7 @@ let append_contents filename str =
 let get_extension f =
    let n = String.length f in
    let p = String.rindex f '.' + 1 in
-   String.sub f p (n - p) 
+   String.sub f p (n - p)
 
 
 
@@ -79,11 +79,11 @@ let read_char ch =
 
 let read_string ch =
   let len = read_int ch in
-  let str = String.make len ' ' in
+  let str = Bytes.make len ' ' in
   for i = 0 to pred len do
-     str.[i] <- read_char ch
+     Bytes.set str i (read_char ch)
   done;
-  str
+  Bytes.to_string str
 
 (** Read real 32-bit integers from an input channel *)
 

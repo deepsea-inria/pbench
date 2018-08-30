@@ -58,8 +58,9 @@ XLIB_LIBS=unix.cma str.cma
 endif
 
 %.pbench: %.ml $(PBENCH_SRC) $(TIMEOUT) 
-	$(PBENCH_OCAMLCOMP) -w d -unsafe-string $(PBENCH_INCLUDES) $(PBENCH_LIBS) $(PBENCH_SRC) $< -o $@
+	$(PBENCH_OCAMLCOMP) $(PBENCH_INCLUDES) $(PBENCH_LIBS) $(PBENCH_SRC) $< -o $@
 
+# -unsafe-string -w d 
 # "-w d" is for disabling warnings for deprecated features
 
 

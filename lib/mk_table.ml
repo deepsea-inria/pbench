@@ -25,7 +25,7 @@ let matrix_of_list_of_lists cells =
   let nb_rows = List.length cells in
   if nb_rows = 0 then [| |] else begin
      let nb_cols = List.length (List.hd cells) in
-     let matrix = Array.create_matrix nb_rows nb_cols "" in
+     let matrix = Array.make_matrix nb_rows nb_cols "" in
      ~~ XList.iteri cells (fun x row ->
        ~~ XList.iteri row (fun y col ->
          matrix.(x).(y) <- col;
