@@ -4,8 +4,8 @@
 let string_ends_with s str =
    let n = String.length s in
    let m = String.length str in
-   if m < n 
-      then false 
+   if m < n
+      then false
       else (s = String.sub str (m - n) n)
 
 (** Returns true if [str] starts with the substring [s] *)
@@ -13,8 +13,8 @@ let string_ends_with s str =
 let string_starts_with s str =
    let n = String.length s in
    let m = String.length str in
-   if m < n 
-      then false 
+   if m < n
+      then false
       else (s = String.sub str 0 n)
 
 (** Comparison function for strings *)
