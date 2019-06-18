@@ -33,7 +33,6 @@ XLIB_SRC_BASE=\
    XSys.ml \
    XCmd.ml 
 
-PBENCH_PATH=.
 XLIB_PATH=$(PBENCH_PATH)/xlib/
 PBENCH_LIB_PATH=$(PBENCH_PATH)/lib/
 

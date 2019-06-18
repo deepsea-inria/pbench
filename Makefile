@@ -1,4 +1,5 @@
 
+PBENCH_PATH=.
 
 BINARIES=prun pplot prun_timeout
 
