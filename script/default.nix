@@ -49,9 +49,9 @@ stdenv.mkDerivation rec {
     in
     ''
     mkdir -p $out 
-    cp *.ml Makefile Makefile_common timeout.c $out/
+    cp *.ml Makefile Makefile_common prun_timeout.c $out/
     mkdir -p $out/bin/
-    cp prun pplot prun.pbench pplot.pbench timeout.out $out/bin/
+    cp prun pplot prun.pbench pplot.pbench prun_timeout $out/bin/
     wrapProgram $out/bin/pplot \
       --prefix PATH ":" ${myTexlive}/bin \
       --prefix PATH ":" ${R}/bin
