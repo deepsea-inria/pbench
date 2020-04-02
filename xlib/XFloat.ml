@@ -11,7 +11,7 @@ let square x =
 (** Computes the square root *)
 
 let sqrt x =
-  Pervasives.sqrt x
+  sqrt x
 
 (** Returns the value of a to the power b, as a float *)
 
@@ -42,7 +42,7 @@ let mean_of l =
 
 (** Returns the mean value and standard deviation of a non-empty list of float *)
 
-let list_mean_and_stddev l =  
+let list_mean_and_stddev l =
   let mean = mean_of l in
   let variance = mean_of (List.map (fun x -> square (x -. mean)) l) in
   mean, sqrt variance
