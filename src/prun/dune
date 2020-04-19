@@ -1,0 +1,11 @@
+(executable
+  (public_name prun)
+  (libraries str unix pbench)
+  (package pbench)
+)
+
+(install
+  (section doc)
+  (files prun.md)
+  (package pbench)
+)
