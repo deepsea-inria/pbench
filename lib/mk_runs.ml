@@ -16,7 +16,7 @@ type arg =
 
 let get_runs_opt args =
    let args2 = XOpt.projects args (function Runs_opt x -> Some x | _ -> None) in
-   ~~ List.iter args2 (function Runs.Verbose x -> () | _ -> Pbench.error "Mk_runs does not accept runs_opt other than 'verbose'");
+   ~~ List.iter args2 (function Runs.Verbose _x -> () | _ -> Pbench.error "Mk_runs does not accept runs_opt other than 'verbose'");
    args2
 let get_output args = XOpt.get_default args (function Output x -> Some x | _ -> None) "results.txt"
 let get_virtual args = XOpt.get_default args (function Virtual x -> Some x | _ -> None) false
@@ -65,7 +65,7 @@ let call args =
          run_timeout = timeout;
          run_attempts = (get_attempts args);
          run_dummy = false; }) in
-      XList.init local_runs (fun i -> r)
+      XList.init local_runs (fun _i -> r)
      in
    let requested_es = Params.to_envs (get_args args) in
    let clear_output_file () =
@@ -122,7 +122,7 @@ let call args =
          requested_es
       in
    let bs1 = XList.concat_map build_runs requested_es in
-   let bs = List.concat ((XList.init runs) (fun i -> bs1)) in
+   let bs = List.concat ((XList.init runs) (fun _i -> bs1)) in
    let mk_dummy () =
       Runs.({ (List.hd bs) with run_attempts = 1; run_dummy = true }) in
    let bs2 = if (get_dummy args) && bs <> [] then mk_dummy()::bs else bs in
@@ -161,4 +161,3 @@ let mode_string_from_command_line key =
 let mode_from_command_line key =
   let mode_string = mode_string_from_command_line key in
   mode_of_string mode_string
-

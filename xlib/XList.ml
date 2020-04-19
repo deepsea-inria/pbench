@@ -28,8 +28,8 @@ let take_last l =
 
 let rec take n xs =
    match n, xs with
-        0, xs -> []
-      | n, [] -> failwith "XList.take: invalid argument"
+        0, _xs -> []
+      | _n, [] -> failwith "XList.take: invalid argument"
       | n, x::xs -> x :: take (n-1) xs
 
 (** Drop returns the sublist obtained by skipping the n first items *)
@@ -37,8 +37,8 @@ let rec take n xs =
 let rec drop n xs =
    match n, xs with
         0, xs -> xs
-      | n, [] -> failwith "XList.drop: invalid argument"
-      | n, x::xs -> drop (n-1) xs
+      | _n, [] -> failwith "XList.drop: invalid argument"
+      | n, _x::xs -> drop (n-1) xs
 
 (** Combined calls to take and drop (for efficiency) *)
 
@@ -227,7 +227,7 @@ let same_items l =
 let unique l =
    match l with
    | [] -> failwith "Xlist.unique: called on an empty list"
-   | x::t ->
+   | x::_t ->
       if not (same_items l) then failwith "XList.unique: items are not identical";
       x
 
@@ -261,22 +261,22 @@ let build item_creator =
 
 (** Comparison functions for association lists *)
 
-let cmp_fst (x1,y1) (x2,y2) =
+let cmp_fst (x1,_y1) (x2,_y2) =
    x1 - x2
 
-let cmp_snd (x1,y1) (x2,y2) =
+let cmp_snd (_x1,y1) (_x2,y2) =
    y1 - y2
 
-let cmp_fst_desc (x1,y1) (x2,y2) =
+let cmp_fst_desc (x1,_y1) (x2,_y2) =
    x2 - x1
 
-let cmp_snd_desc (x1,y1) (x2,y2) =
+let cmp_snd_desc (_x1,y1) (_x2,y2) =
    y2 - y1
 
 
 (** Return the result of sorting an association list according to the keys *)
 
-let ksort cmp l =
+let ksort _cmp l = (* TODO why is [cmp] unused? *)
    List.sort cmp_fst l
 
 (** Insert an item into a sorted list *)

@@ -2,15 +2,15 @@
 let command_as_bool s =
    match Unix.system s with
    | Unix.WEXITED 0 -> true
-   | Unix.WEXITED n -> false
-   | Unix.WSIGNALED n -> false
-   | Unix.WSTOPPED n -> false
+   | Unix.WEXITED _ -> false
+   | Unix.WSIGNALED _ -> false
+   | Unix.WSTOPPED _ -> false
 
 exception Command_failure of string
 
 let command_must_succeed s =
    let r = command_as_bool s in
-   if not r 
+   if not r
       then raise (Command_failure s)
 
 (*
@@ -30,7 +30,7 @@ let command_or_virtual cmd s is_virtual =
 (**********************************)
 (** Commands below were added by Mike *)
 
-(** Execute system command s only if is_virtual is true; 
+(** Execute system command s only if is_virtual is true;
     otherwise just print the command to stdout. *)
 let command_must_succeed_or_virtual s is_virtual =
   command_or_virtual command_must_succeed s is_virtual
@@ -47,4 +47,3 @@ let wget ?no_clobber:(nc=false) surl sdst is_virtual =
 (* spath: path of directory of source file, sfname: name of file*)
 let gunzip spath sfname is_virtual =
   command_must_succeed_or_virtual (Printf.sprintf "(cd %s; yes|gunzip %s)" spath sfname) is_virtual
-

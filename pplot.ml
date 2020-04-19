@@ -6,7 +6,7 @@ open XBase
 let arg_width = XCmd.parse_or_default_float "width" 6.0
 let arg_height = XCmd.parse_or_default_float "height" 6.0
 let arg_dimensions = (arg_width, arg_height)
-let arg_title = XCmd.parse_or_default_string "title" "" 
+let arg_title = XCmd.parse_or_default_string "title" ""
 let arg_input = XCmd.parse_or_default_string "input" "results.txt"
 let arg_output = XCmd.parse_or_default_string "output" "plots.pdf"
 
@@ -20,7 +20,7 @@ let make_axis smin smax szero slog slabel =
   ~~ List.map (XOption.to_list (XCmd.parse_optional_bool slog)) (fun b -> Axis.Is_log b);
   ~~ List.map (XOption.to_list (XCmd.parse_optional_float smin)) (fun v -> Axis.Lower (Some v));
   ~~ List.map (XOption.to_list (XCmd.parse_optional_float smax)) (fun v -> Axis.Upper (Some v));
-  ~~ List.map (XOption.to_list (XCmd.parse_optional_bool szero)) (fun b -> 
+  ~~ List.map (XOption.to_list (XCmd.parse_optional_bool szero)) (fun b ->
     if not b then Pbench.error "should not be using -xzero=false, but only --xzero or nothing";
     Axis.Lower (Some 0.));
   ]
@@ -45,11 +45,11 @@ let scatter_and_bar_options () =
   let mk_charts = Params.from_envs (Results.get_distinct_values_for_several arg_chart all_results) in
   let mk_series = Params.from_envs (Results.get_distinct_values_for_several arg_series all_results) in
 
-  let eval_y env all_results results =
+  let eval_y _env _all_results results =
     Results.get_mean_of arg_y results
   in
 
-  let eval_y_error env all_results results =
+  let eval_y_error _env _all_results results =
     Results.get_stddev_of arg_y results
   in
 
@@ -68,7 +68,7 @@ let scatter_and_bar_options () =
 (** Scatter plot *)
 
 let plot_scatter () =
-  let (all_results, chart_opt, mk_charts, mk_series, group_by, yaxis, eval_y, eval_y_error, ylabel_def) = 
+  let (all_results, chart_opt, mk_charts, mk_series, group_by, yaxis, eval_y, _eval_y_error, ylabel_def) =
     scatter_and_bar_options () in
 
   let arg_x = XCmd.parse_string "x" in
@@ -76,7 +76,7 @@ let plot_scatter () =
 
   let mk_x =
     let vs = Results.get_distinct_values_for arg_x all_results in
-    Params.mk_list Params.value arg_x vs 
+    Params.mk_list Params.value arg_x vs
     in
 
   let arg_drawline = XCmd.parse_or_default_bool "drawline" true in
@@ -86,7 +86,7 @@ let plot_scatter () =
     Scatter_plot_opt Scatter_plot.([
       X_axis xaxis;
       Y_axis yaxis;
-      Draw_lines arg_drawline;    
+      Draw_lines arg_drawline;
     ]);
     Charts mk_charts;
     Series mk_series;
@@ -102,17 +102,17 @@ let plot_scatter () =
 (** Bar plot *)
 
 let plot_bar () =
-  let (all_results, chart_opt, mk_charts, mk_series, group_by, yaxis, eval_y, eval_y_error, ylabel_def) = 
+  let (all_results, chart_opt, mk_charts, mk_series, group_by, yaxis, eval_y, eval_y_error, ylabel_def) =
     scatter_and_bar_options () in
 
   let arg_x = XCmd.parse_or_default_list_string "x" [] in
-  
-  let x_label = 
+
+  let x_label =
      XCmd.parse_or_default_string "xlabel" "" in
 
   let x_label_direction =
      if XCmd.mem_flag "xtitles-vertical" then Bar_plot.Vertical else
-     Bar_plot.label_direction_of_string (XCmd.parse_or_default_string "xtitles-dir" "horizontal") 
+     Bar_plot.label_direction_of_string (XCmd.parse_or_default_string "xtitles-dir" "horizontal")
      in
 
   let mk_x = Params.from_envs (Results.get_distinct_values_for_several arg_x all_results) in
@@ -150,7 +150,7 @@ let plot_table () =
   let mk_rows = Params.from_envs (Results.get_distinct_values_for_several arg_rows all_results) in
   let mk_cols = Params.from_envs (Results.get_distinct_values_for_several arg_cols all_results) in
 
-  let eval_cell env all_results results =
+  let eval_cell _env _all_results results =
     Results.get_mean_of arg_cell results
     in
   let all_results = Results.from_file arg_input in
@@ -158,7 +158,7 @@ let plot_table () =
 
   let s = Buffer.create 1 in
   let add x = Buffer.add_string s x in
-  
+
   let results = all_results in
   let env = Env.empty in
   let envs_tables = mk_tables env in
@@ -176,7 +176,7 @@ let plot_table () =
          let col_title = Env.format formatter env_cols in
          XBase.add_to_list_ref first_row col_title;
        );
-     XBase.add_to_list_ref cells (List.rev !first_row); 
+     XBase.add_to_list_ref cells (List.rev !first_row);
      ~~ List.iter envs_rows (fun env_rows ->
        let row = ref [] in
        let results = Results.filter env_rows results in
@@ -212,7 +212,7 @@ let plot_table () =
 let plot_speedup () =
   let arg_series = XCmd.parse_or_default_list_string "series" [] in
   let arg_chart = XCmd.parse_or_default_list_string "chart" [] in
-  let arg_shared = arg_chart @ arg_series in 
+  let arg_shared = arg_chart @ arg_series in
   (* Note: the code implicitly assumes that "arg_shared" covers all the arguments that are common to the baseline and the parallel command lines. *)
   let group_by = XCmd.parse_or_default_list_string "group-by" [] in
   let arg_log = XCmd.parse_or_default_bool "log" false in
@@ -227,7 +227,7 @@ let plot_speedup () =
 
   let mk_charts = Params.from_envs (Results.get_distinct_values_for_several arg_chart all_results) in
   let mk_series = Params.from_envs (Results.get_distinct_values_for_several arg_series all_results) in
-  let mk_x = Params.mk_list Params.int "proc" (~~ List.filter all_procs (fun p -> p <> 0)) in 
+  let mk_x = Params.mk_list Params.int "proc" (~~ List.filter all_procs (fun p -> p <> 0)) in
 
   let axis = Axis.([
     Is_log arg_log;
@@ -239,7 +239,7 @@ let plot_speedup () =
     let baseline_results = ~~ Results.filter_by_params all_results mk_params_baseline in
     let baseline_env = ~~ Env.filter env (fun k -> List.mem k arg_shared) in
     let baseline_results = ~~ Results.filter baseline_results baseline_env in
-    (* alternative: 
+    (* alternative:
     let baseline_env = Env.add baseline_env "prun_speedup" (Env.Vstring "baseline") in
     let baseline_results = ~~ Results.filter all_results baseline_env in
     *)
@@ -257,7 +257,7 @@ let plot_speedup () =
     Scatter_plot_opt Scatter_plot.([
       X_axis axis;
       Y_axis axis;
-      Draw_lines true;    
+      Draw_lines true;
       Extra ["abline(a=0, b=1, col='gray')"];
     ]);
     Charts mk_charts;
@@ -278,7 +278,7 @@ let plot_speedup () =
 
 let plot_factored_speedup () =
   let arg_chart = XCmd.parse_or_default_list_string "chart" [] in
-  let arg_shared = arg_chart in 
+  let arg_shared = arg_chart in
   (* Note: the code implicitly assumes that "arg_shared" covers all the arguments that are common to the baseline and the parallel command lines. *)
   let group_by = XCmd.parse_or_default_list_string "group-by" [] in
   let arg_log = XCmd.parse_or_default_bool "log" false in
@@ -294,11 +294,11 @@ let plot_factored_speedup () =
   let use_elision_specific_curve = XCmd.mem_flag "elision" in
   let curve_types = if use_elision_specific_curve then curve_types @ [curve_elision_specific] else curve_types in
 
-  let all_results = Results.from_file arg_input in  
+  let all_results = Results.from_file arg_input in
   let inject_curve_type (ty : string) : Results.t = ~~ List.map all_results
                                 (fun (inputs, env) -> (inputs, Env.add env curve_type_key (Env.Vstring ty))) in
   let all_results = List.concat (List.map inject_curve_type curve_types) in
-                                 
+
   let mk_params_baseline = Params.(mk string "prun_speedup" "baseline") in
   let mk_params_parallel = Params.(mk string "prun_speedup" "parallel") in
   let mk_params_elision = Params.(mk string "prun_speedup" "elision") in
@@ -308,7 +308,7 @@ let plot_factored_speedup () =
 
   let mk_charts = Params.from_envs (Results.get_distinct_values_for_several arg_chart all_results) in
   let mk_series = Params.from_envs (Results.get_distinct_values_for_several [curve_type_key] all_results) in
-  let mk_x = Params.mk_list Params.int "proc" (~~ List.filter all_procs (fun p -> p <> 0)) in 
+  let mk_x = Params.mk_list Params.int "proc" (~~ List.filter all_procs (fun p -> p <> 0)) in
 
   let axis = Axis.([
     Is_log arg_log;
@@ -321,7 +321,7 @@ let plot_factored_speedup () =
     let elision_env = Env.filter (fun k -> k <> "proc") env in
     let elision_results = ~~ Results.filter_by_params all_results mk_params_elision in
     let elision_results = ~~ Results.filter elision_results elision_env in
-     
+
     let t1_env = Env.filter (fun k -> k <> "proc") env in
     let t1_env = Env.add t1_env "proc" (Env.Vint 1) in
     let t1_results = ~~ Results.filter_by_params all_results mk_params_parallel in
@@ -330,7 +330,7 @@ let plot_factored_speedup () =
     let baseline_env = ~~ Env.filter env (fun k -> List.mem k arg_shared) in
     let baseline_results = ~~ Results.filter baseline_results baseline_env in
     if baseline_results = [] then Pbench.warning ("no results for baseline: " ^ Env.to_string env);
-    let curve_type = Env.get_as_string env curve_type_key in    
+    let curve_type = Env.get_as_string env curve_type_key in
     let tb = Results.get_mean_of "exectime" baseline_results in
     if curve_type = curve_actual then
       let tp = Results.get_mean_of "exectime" results in
@@ -366,7 +366,7 @@ let plot_factored_speedup () =
     Scatter_plot_opt Scatter_plot.([
       X_axis axis;
       Y_axis axis;
-      Draw_lines true;    
+      Draw_lines true;
       Extra ["abline(a=0, b=1, col='gray')"];
     ]);
     Charts mk_charts;
@@ -381,7 +381,7 @@ let plot_factored_speedup () =
     (*X_label "processors";*)
     (* TODO: specify x-labels to be exactly the keys used*)
     ]) all_results)
-                    
+
 
 (************************************************************************)
 (** Main *)
@@ -404,5 +404,3 @@ let () =
     | _ -> Pbench.error "unsupported type of graph"
     in
   plot_fct()
-
-

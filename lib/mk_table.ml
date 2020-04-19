@@ -43,7 +43,7 @@ let latex_of_matrix ?(escape=true) matrix =
     if nb_cols < 2 then Pbench.error "latex_of_matrix requires at least 2 columns";
     let s = Buffer.create 1 in
     let add x = Buffer.add_string s x in
-    add (Latex.tabular_begin (String.concat "" (["|l|"] @ XList.init (nb_cols-1) (fun i -> "c|") )));
+    add (Latex.tabular_begin (String.concat "" (["|l|"] @ XList.init (nb_cols-1) (fun _i -> "c|") )));
     ~~ Array.iter matrix (fun row ->
         ~~ Array.iteri row (fun icol col ->
           cell ~escape:escape ~last:(icol=nb_cols-1) add col;
@@ -54,5 +54,3 @@ let latex_of_matrix ?(escape=true) matrix =
     add Latex.new_page;
     Buffer.contents s
   end
-
-

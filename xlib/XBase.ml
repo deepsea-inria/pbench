@@ -2,15 +2,15 @@
 (************************************************************************)
 (** Function calls *)
 
-(** A generic operator for swapping the order of the two first arguments 
+(** A generic operator for swapping the order of the two first arguments
     of a function *)
 
-let ( ~~ ) = fun f x y -> f y x 
+let ( ~~ ) = fun f x y -> f y x
 
-(** A generic operator for swapping the order of the two three arguments 
+(** A generic operator for swapping the order of the two three arguments
     of a function *)
 
-let ( ~~~ ) = fun f x y z -> f z y x 
+let ( ~~~ ) = fun f x y z -> f z y x
 
 
 (************************************************************************)
@@ -33,7 +33,7 @@ exception Return
 (** Make [n] calls to a given function [f] *)
 
 let repeat n f =
-   for i = 0 to pred n do f () done
+   for _i = 0 to pred n do f () done
 
 (** Make [n] calls to a given function [f], passing the index as argument *)
 

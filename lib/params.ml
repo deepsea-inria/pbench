@@ -6,11 +6,11 @@ open XBase
 (** Each run of the benchmarked program is performed on a given
     set of parameters. We use the name "env" as shorthand for
     "Env.t". *)
-    
-type env = Env.t    
-    
-(** To describe a set of runs, we need to consider a set of sets 
-    of parameters, represented using the type "envs", implemented 
+
+type env = Env.t
+
+(** To describe a set of runs, we need to consider a set of sets
+    of parameters, represented using the type "envs", implemented
     as a list of set of parameters of type "env". *)
 
 type envs = env list
@@ -39,17 +39,17 @@ let value x = x
 (***************************************************************)
 (** * Smart constructors *)
 
-(** Empty denotes the unit operation for cross product: 
+(** Empty denotes the unit operation for cross product:
     it consists of a singleton set with an empty params *)
 
-let mk_unit = fun e -> 
+let mk_unit = fun _e ->
    [ Env.empty ]
 
-(** Smart constructor for building a constant params, based on 
+(** Smart constructor for building a constant params, based on
     an environment *)
 
 let from_env e = fun _ ->
-   [ e ] 
+   [ e ]
 
 (** *)
 
@@ -59,17 +59,17 @@ let from_envs es = fun _ ->
 (** Smart constructor for constant values; for example,
     [mk int "foo" 3] binds the key "foo" to the int value 3. *)
 
-let mk ty k v : t = 
+let mk ty k v : t =
    from_env (Env.add Env.empty k (ty v))
- 
+
 (** Smart constructor for constant list of values; for example,
-    [mk_list int "foo" [3;4]] binds the key "foo" to the int 
+    [mk_list int "foo" [3;4]] binds the key "foo" to the int
     values 3 and 4. *)
 
-let mk_list ty k vs : t = fun e ->
+let mk_list ty k vs : t = fun _e ->
    List.map (fun v -> Env.add Env.empty k (ty v)) vs
 
-(** Smart constructor for dynamically-computed value; for example, 
+(** Smart constructor for dynamically-computed value; for example,
     [mk_eval int "foo" (fun e -> 2 * (get_int e n))] binds "foo"
     to the value obtained by doubling the value of the integer
     bound to "n" in the context *)
@@ -77,7 +77,7 @@ let mk_list ty k vs : t = fun e ->
 let mk_eval ty k mk_value : t = fun e ->
    mk ty k (mk_value e) e
 
-(** Smart constructor for dynamically-computed list of values; for example, 
+(** Smart constructor for dynamically-computed list of values; for example,
     [mk_eval_list int "foo" (fun e -> let x = get_int e n in [ x; 2*x; 3*x])]
     binds "foo" to the values obtained by multiplying the value of the integer
     bound to "n" in the context by 1, 2 and 3. *)
@@ -101,8 +101,8 @@ let mk_progs ss =
 
 (***************************************************************)
 (** * Printing (for debugging) *)
-  
-let to_string m =  
+
+let to_string m =
   let es = m Env.empty in
   XList.to_string "\n" Env.to_string es
 
@@ -116,17 +116,17 @@ let to_string m =
 
 let cross m1 m2 = fun e0 ->
    let es1 = m1 e0 in
-   ~~ XList.concat_map es1 (fun e1 -> 
+   ~~ XList.concat_map es1 (fun e1 ->
       let e01 = Env.append e0 e1 in
-      let es2 = m2 e01 in 
-      ~~ List.map es2 (fun e2 -> 
+      let es2 = m2 e01 in
+      ~~ List.map es2 (fun e2 ->
          Env.append e1 e2))
 
 (** Shorthand notation for cross product *)
 
 let (&) = cross
 
-(** Concatenation operator: [m1 ++ m2] builds the union of two sets 
+(** Concatenation operator: [m1 ++ m2] builds the union of two sets
     of sets of parameters. *)
 
 let append m1 m2 = fun e ->
@@ -157,16 +157,16 @@ let to_envs m =
 let to_env m =
    match to_envs m with
    | [e] -> e
-   | _ -> Pbench.error ("to_env fails, because nb env is not one in: "  ^ 
+   | _ -> Pbench.error ("to_env fails, because nb env is not one in: "  ^
             try to_string m with _ -> "<params could not be evaluated>")
 
-(** Map a function to all the environments associated with a params 
+(** Map a function to all the environments associated with a params
     evaluated on the empty environment *)
 
 let map_envs f m =
     List.map f (to_envs m)
 
-(** Map a function to to all the environments associated with a params 
+(** Map a function to to all the environments associated with a params
     evaluated on the empty environment, and rebuild a params from it *)
 
 let map_concat f m =
@@ -184,19 +184,18 @@ let eval m =
 
 exception Not_in_env of string
 
-(** Shorthand for lookup: "get conv e k" returns the value (of type 
+(** Shorthand for lookup: "get conv e k" returns the value (of type
     Env.values) to which the key "k" is bound. *)
 
 let get conv e k =
   let v = Env.get e k in
-  try conv v 
-  with Env.Cast_error ty -> 
+  try conv v
+  with Env.Cast_error ty ->
      raise (Env.Cast_error (sprintf "key %s not convertible to type %s" k ty))
-   
-    
+
+
 (***************************************************************)
 (** * Prefixes *)
 
 let strip_prefixes_for ks m = fun e ->
    List.map (Env.strip_prefixes_for ks) (m e)
-   

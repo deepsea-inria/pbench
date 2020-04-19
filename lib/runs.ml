@@ -183,7 +183,7 @@ let call args =
    let exec = execute (get_verbose args) is_virtual (*svn_revision*) machine in
    let (add_output,end_output) =
       if is_virtual then begin
-         ((fun s -> ()), (fun () -> ()))
+         ((fun _s -> ()), (fun () -> ()))
       end else begin
          let old_contents = XFile.get_contents_or_empty output_file in
          let ch = open_out output_file in
@@ -220,4 +220,3 @@ let call args =
         info (XList.to_string "" (fun s -> sprintf "\t%s\n" s) errors);
       end
    end
-

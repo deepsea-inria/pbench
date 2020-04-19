@@ -6,7 +6,7 @@ type serie = {
    serie_title : string;
    serie_points : points; }
 
-type arg = 
+type arg =
    | Chart_opt of Chart.t
    | X_axis of Axis.t
    | Y_axis of Axis.t
@@ -16,10 +16,10 @@ type arg =
 
 type t = arg list
 
-let get_chart_opt args = XOpt.projects args (function Chart_opt x -> Some x | _ -> None) 
+let get_chart_opt args = XOpt.projects args (function Chart_opt x -> Some x | _ -> None)
 let get_xaxis args = XOpt.projects args (function X_axis x -> Some x | _ -> None)
 let get_yaxis args = XOpt.projects args (function Y_axis x -> Some x | _ -> None)
-let get_series args = XOpt.get_error args (function Series x -> Some x | _ -> None) "scatter needs series" 
+let get_series args = XOpt.get_error args (function Series x -> Some x | _ -> None) "scatter needs series"
 let get_draw_lines args = XOpt.get_default args (function Draw_lines x -> Some x | _ -> None) true
 let get_extra args = XOpt.get_default args (function Extra x -> Some x | _ -> None) []
 
@@ -33,8 +33,8 @@ let to_rscript_all_but_series batches scatter =
    let yaxis = get_yaxis scatter in
    let islogx = Axis.get_is_log xaxis in
    let islogy = Axis.get_is_log yaxis in
-   let logoption = 
-      if islogx && islogy then ", log='xy'" 
+   let logoption =
+      if islogx && islogy then ", log='xy'"
       else if islogx then ", log='x'"
       else if islogy then ", log='y'"
       else "" in
@@ -49,22 +49,22 @@ let to_rscript_all_but_series batches scatter =
       match optvalue with
       | Some 0. when islog -> "1."
       | Some v -> sprintf "%f" v
-      | None -> "NA" 
+      | None -> "NA"
       in
-   let corner1 = 
+   let corner1 =
       sprintf "corner1 <- matrix(c(%s,%s),ncol=2)"
-         (bound (Axis.get_lower xaxis) islogx) 
+         (bound (Axis.get_lower xaxis) islogx)
          (bound (Axis.get_lower yaxis) islogy) in
-   let corner2 = 
+   let corner2 =
       sprintf "corner2 <- matrix(c(%s,%s),ncol=2)"
-         (bound (Axis.get_upper xaxis) islogx) 
+         (bound (Axis.get_upper xaxis) islogx)
          (bound (Axis.get_upper yaxis) islogy) in
    let xaxis_pos_option =
       if Axis.get_lower xaxis <> None then ", xaxs='i'" else "" in
-   let yaxis_pos_option = 
+   let yaxis_pos_option =
       if Axis.get_lower yaxis <> None then ", yaxs='i'" else "" in
    let plot =
-      sprintf "plot(rbind(%s), type='n', xlab='%s', ylab='%s'%s%s%s%s%s)" 
+      sprintf "plot(rbind(%s), type='n', xlab='%s', ylab='%s'%s%s%s%s%s)"
         (String.concat "," (XList.mapi (fun i _ -> Rtool.batch_name i) batches) ^ ",corner1,corner2")
         (Axis.get_label xaxis)
         (Axis.get_label yaxis)
@@ -98,12 +98,12 @@ let call args =
    let nb_series = List.length series in
    let legends = List.map (fun serie -> serie.serie_title) series in
    let batches = List.map (fun serie -> serie.serie_points) series in
-   let legend = 
+   let legend =
       if legends = [""] || legend_pos = Legend.Nowhere then "" else
-         sprintf "legend('%s', c(%s), col=cols, pch=pchs)" 
+         sprintf "legend('%s', c(%s), col=cols, pch=pchs)"
          (Rtool.string_of_legend_pos legend_pos)
          (String.concat "," (List.map (fun s -> sprintf "'%s'" s) legends)) in
-   let draw_batch_mode mode i points =
+   let draw_batch_mode mode i _points =
       (*if points = [] then [] else*)
       [ sprintf "points(%s,col=cols[%d],pch=pchs[%d],type='%s')" (Rtool.batch_name i) (i+1) (i+1) mode ] in
    let draw_batch i points =

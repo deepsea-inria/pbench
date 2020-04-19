@@ -4,16 +4,16 @@ open XBase
 (***************************************************************)
 (** * Types *)
 
-(** A set of parameters for a benchmark run is described as an 
-    finite map from keys to values. Keys are represented as strings. 
+(** A set of parameters for a benchmark run is described as an
+    finite map from keys to values. Keys are represented as strings.
     Values are of type bool or int or float or string,
     and they may also consists of list of values. The type "Env.t"
     describes the type of a set of parameters, currently implemented
-    as association lists from keys to values. 
-    
-    There are two kind of special keys. Keys whose name starts with 
+    as association lists from keys to values.
+
+    There are two kind of special keys. Keys whose name starts with
     a "-" character are "hidden" keys that will not show up in plots.
-    Those whose name starts with a "!" character are phantom keys: 
+    Those whose name starts with a "!" character are phantom keys:
     they will not show up in command lines nor graph plots. *)
 
 
@@ -53,12 +53,12 @@ let string_of_value = function
 let is_ghost_key k =
    k <> "" && k.[0] = '!'
 
-(** [strip_prefix k] removes the first character from [k] if it is 
+(** [strip_prefix k] removes the first character from [k] if it is
     a special tag *)
 
 let strip_prefix k =
-   if k <> "" && k.[0] = '!' || k.[0] = '-' 
-      then String.sub k 1 (String.length k - 1) 
+   if k <> "" && k.[0] = '!' || k.[0] = '-'
+      then String.sub k 1 (String.length k - 1)
       else k
 
 (** [strip_prefixes e] strips the prefix of all the keys in the environment
@@ -71,16 +71,16 @@ let strip_prefixes e =
     using [strip_prefix] *)
 
 let strip_prefixes_for ks e =
-   ~~ List.map e (fun (k,v) -> 
+   ~~ List.map e (fun (k,v) ->
       let k2 = if List.mem k ks then strip_prefix k else k in
       (k2, v))
 
 (** Function to convert a params to a list of (string*string),
     converting the values using  string_of_value *)
 
-let to_string_pairs e = 
-   ~~ List.map e (fun (k,v) -> (k, string_of_value v)) 
-   
+let to_string_pairs e =
+   ~~ List.map e (fun (k,v) -> (k, string_of_value v))
+
 (** Printing function *)
 
 let to_string e =
@@ -104,21 +104,21 @@ let rec fprintf_value ppf v =
 
 (** The empty params *)
 
-let empty = 
+let empty =
    []
 
-(** lookup for the values associated with a key; raises Not_found if not found 
+(** lookup for the values associated with a key; raises Not_found if not found
     --deprecated, use get instead *)
 
 let lookup e k =
-   List.assoc k e 
+   List.assoc k e
 
 (** lookup for the values associated with a key; raises an error if not found *)
 
 let get e k =
    try lookup e k
    with Not_found -> (* raise (Key_not_found_in_env k (XList.keys e)) *)
-     Pbench.error (sprintf "Env.lookup: not found key '%s' in env:\n %s" k (to_string e)) 
+     Pbench.error (sprintf "Env.lookup: not found key '%s' in env:\n %s" k (to_string e))
 
 (** Adding a key-value binding *)
 
@@ -128,15 +128,15 @@ let add e k v =
 (** Concatenation of two params (assumes distinct keys) *)
 
 let append e1 e2 =
-   ~~ List.iter e2 (fun (k,v) ->
-      if List.mem_assoc k e1 
+   ~~ List.iter e2 (fun (k,_v) ->
+      if List.mem_assoc k e1
          then Pbench.error (Printf.sprintf "Shadowing in the environment for key %s in append environments:\n-- %s\n-- %s" k (to_string e1) (to_string e2)));
    e1 @ e2
 
 (** Concatenation of a list params (assumes distinct keys) *)
 
 let concat es =
-   List.fold_right (fun e e2 -> append e2 e) es empty 
+   List.fold_right (fun e e2 -> append e2 e) es empty
 
 (** Map a function to the key value pairs *)
 
@@ -150,15 +150,15 @@ let map_for_key k f e =
 
 (** Compose a list of operations on environments (left-to-right order) *)
 
-let compose fs e = 
+let compose fs e =
    List.fold_left (fun acc f -> f acc) e fs
-   
+
 (** Test equivalence of two environments *)
 
 let equiv e1 e2 =
    XList.equiv e1 e2
 
-(** Test equivalence of the string representation of two environments 
+(** Test equivalence of the string representation of two environments
     (e.g. values "1" as string and 1 as int are considered equivalent) *)
 
 let equiv_when_stringified e1 e2 =
@@ -170,13 +170,13 @@ let equiv_when_stringified e1 e2 =
 (***************************************************************)
 (** * Projections and conversions *)
 
-(** Conversions from association lists to params 
+(** Conversions from association lists to params
     (currently the identity, but might later change) *)
 
 let from_assoc kvs : t =
    kvs
 
-(** Conversions to association lists from params 
+(** Conversions to association lists from params
     (currently the identity, but might later change) *)
 
 let to_assoc e : t =
@@ -185,7 +185,7 @@ let to_assoc e : t =
 (** Get the list of keys *)
 
 let keys e =
-   List.map fst e 
+   List.map fst e
 
 
 (***************************************************************)
@@ -213,7 +213,7 @@ let val_string = function
 let as_bool = function
    | Vbool b -> b
    | Vint n -> n <> 0
-   | Vstring s ->    
+   | Vstring s ->
        begin try (int_of_string s) <> 0
        with _ -> raise (Cast_error "bool") end
    | _ -> raise (Cast_error "bool")
@@ -228,7 +228,7 @@ let as_int = function
    | _ -> raise (Cast_error "int")
 
 let as_float = function
-   | Vbool b -> raise (Cast_error "float")
+   | Vbool _b -> raise (Cast_error "float")
    | Vint n -> float_of_int n
    | Vfloat f -> f
    | Vstring s ->
@@ -263,17 +263,17 @@ let get_as_string e k = as_string (get e k)
 (** Filter particular keys *)
 
 let filter f e =
-   List.filter (fun (k,v) -> f k) e
+   List.filter (fun (k,_v) -> f k) e
 
 (** Partition particular keys *)
 
 let partition f e =
-   List.partition (fun (k,v) -> f k) e
+   List.partition (fun (k,_v) -> f k) e
 
 (** Removes hidden keys from the environment *)
 
 let filter_hidden_keys e =
-   List.filter (fun (k,v) -> k <> "" && k.[0] <> '-') e
+   List.filter (fun (k,_v) -> k <> "" && k.[0] <> '-') e
 
 (** To_string combined with removed hidden keys *)
 
@@ -283,14 +283,14 @@ let filter_hidden_to_string e =
 (** Filter an environment according to the keys in a given list *)
 
 let filter_keys ks e =
-   List.filter (fun (k,v) -> List.mem k ks) e
+   List.filter (fun (k,_v) -> List.mem k ks) e
 
-(** Filter an environment according to the list of keys bound 
+(** Filter an environment according to the list of keys bound
     to a particular ghost key -- not used
 
 let filter_keys_from_ghost k e =
    let ks =
-      try as_keys (get e k) 
+      try as_keys (get e k)
       with Cast_error _ -> raise (Cast_error ("did not find a list of string for ghost key: " ^ k))
       in
    filter_keys ks e
@@ -302,13 +302,13 @@ let filter_keys_from_ghost k e =
 
 (** String of environment in the form "k1=v1, k2=v2" *)
 
-let formatter_key_values e = 
+let formatter_key_values e =
    XList.to_string ", " (fun (k,v) -> Printf.sprintf "%s=%s" k (string_of_value v)) e
 
 (** String of environment in the form "v1, v2" *)
 
-let formatter_values e = 
-   XList.to_string ", " (fun (k,v) -> Printf.sprintf "%s" (string_of_value v)) e
+let formatter_values e =
+   XList.to_string ", " (fun (_k,v) -> Printf.sprintf "%s" (string_of_value v)) e
 
 
 
@@ -316,23 +316,23 @@ let formatter_values e =
 (** * Formatter *)
 
 type format =
-   | Format_key_eq_value 
-   | Format_value 
+   | Format_key_eq_value
+   | Format_value
    | Format_custom of (string -> string)
    | Format_custom_value of (value -> string)
    | Format_hidden
-   
+
 let format_one fo k v =
-   match fo with 
+   match fo with
    | Format_key_eq_value -> Printf.sprintf "%s=%s" k (string_of_value v)
    | Format_value -> string_of_value v
    | Format_custom f -> f (string_of_value v)
    | Format_custom_value f -> f v
    | Format_hidden -> ""
 
-let format ?delim:(d=", ") fos e = 
+let format ?delim:(d=", ") fos e =
    let string_of_item (k,v) =
-      let fo = 
+      let fo =
          match XList.assoc_option k fos with
          | None -> Format_key_eq_value
          | Some fo -> fo

@@ -59,7 +59,7 @@ exception Cannot_build of string
 (** Given a list of charts, described as chart options and R-scripts,
     generate a PDF in a target output file. *)
 
-let build_for prefix folder output_file (charts : t list) =
+let build_for prefix folder _output_file (charts : t list) =
    Pbench.ensure_results_folder_exists();
    let rscripts = ref [] in
    let latexs = ref [] in
@@ -98,4 +98,3 @@ let build output_file (charts : t list) =
    Pbench.system (sprintf "cd %s; pdflatex -interaction=batchmode plots.tex > null" folder);
    Pbench.system (sprintf "mv %s/plots.pdf %s" folder output_file);
    Pbench.info (sprintf "Produced file %s." output_file)
-

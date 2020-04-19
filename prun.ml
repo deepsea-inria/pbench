@@ -3,7 +3,7 @@ open XBase
 (************************************************************************)
 (** Options *)
 
-let arg_mode = XCmd.parse_optional_string "mode" 
+let arg_mode = XCmd.parse_optional_string "mode"
 let arg_verbose = XCmd.parse_or_default_bool "verbose" false
 let arg_output = XCmd.parse_or_default_string "output" "results.txt"
 let arg_virtual = XCmd.parse_or_default_bool "virtual" false
@@ -24,13 +24,13 @@ let arg_baseline_timeout = XCmd.parse_or_default_int "baseline-timeout" arg_time
 (************************************************************************)
 (** Keys *)
 
-let reserved_keys = 
+let reserved_keys =
     ["verbose"; "output"; "virtual"; "args"; "dummy";
      "runs"; "timeout"; "attempts"; "mode" ]
   @ ["baseline"; "parallel"; "baseline-runs"; "baseline-timeout"; "elision" ]
   @ Mk_runs.valid_modes
 
-let supported_modes = 
+let supported_modes =
    [ "default"; "speedup" ]
 
 
@@ -44,7 +44,7 @@ let arguments_of_elements elements =
       | XCmd.Arg (key, value) -> (key, value)
       | XCmd.Flag key -> (key, "1")
       | XCmd.Other value ->
-          if !count_others > 0 
+          if !count_others > 0
             then Pbench.error "Multiple non-named arguments";
           incr count_others;
           ("prog", value))
@@ -56,21 +56,21 @@ let arguments_of_elements elements =
 
 let arguments_implicit =
   let elements = ~~ List.filter (XCmd.get_elements()) (function
-    | XCmd.Arg (key, _) when List.mem key reserved_keys -> false 
-    | XCmd.Flag key when List.mem key reserved_keys -> false 
-    | XCmd.Other value when List.mem value supported_modes -> false 
-    | _ -> true) 
+    | XCmd.Arg (key, _) when List.mem key reserved_keys -> false
+    | XCmd.Flag key when List.mem key reserved_keys -> false
+    | XCmd.Other value when List.mem value supported_modes -> false
+    | _ -> true)
     in
   arguments_of_elements elements
 
-let arguments_of_string str = 
+let arguments_of_string str =
     let ls = Str.split (Str.regexp "[ \t]+") str in
     let elements = XCmd.elements_from_string_list ls in
     arguments_of_elements elements
 
-let args_or_arguments arguments = 
+let args_or_arguments arguments =
   Params.(
-    List.fold_left (&) mk_unit 
+    List.fold_left (&) mk_unit
       (~~ List.map arguments (fun (k,vs) -> mk_list string k vs))
   )
 
@@ -103,10 +103,10 @@ let common_options () =
 
 let default () =
   let arguments_shared = get_arguments_shared() in
-  if arguments_shared = [] 
+  if arguments_shared = []
     then Pbench.warning "no benchmark arguments provided";
   let args_shared = args_or_arguments arguments_shared in
-  let args_shared = Params.( args_shared ) in
+  let args_shared = args_shared in
   Mk_runs.(call (common_options() @ [
     Args args_shared;
     Runs arg_runs;
@@ -126,16 +126,16 @@ let speedup () =
   let extra prun_speedup timeout runs  =
     Params.(
         (mk string "!prun_speedup" prun_speedup)
-      & (mk int "timeout" timeout) 
+      & (mk int "timeout" timeout)
       & (mk int "runs" runs)) in
   Params.(
     let b = args_baseline & extra "baseline" arg_baseline_timeout arg_baseline_runs in
     let p = args_parallel & extra "parallel" arg_timeout arg_runs in
     let e = args_elision  & extra "elision" arg_timeout arg_runs in
-    let args = 
-        args_shared 
+    let args =
+        args_shared
         & (if use_elision then (b ++ p ++ e) else (b ++ p))
-    in 
+    in
   Mk_runs.(call (common_options() @ [ Args args; ])) )
 
 
@@ -143,14 +143,14 @@ let speedup () =
 (************************************************************************)
 (** Main *)
 
-let _ = 
-   let implicit_mode = 
+let _ =
+   let implicit_mode =
      match XList.inter supported_modes (XCmd.get_others()) with
      | [] -> None
      | [m] -> Some m
      | _ -> Pbench.error "Multiple modes specified"
      in
-  let mode = 
+  let mode =
      match implicit_mode, arg_mode with
      | None, None -> "default"
      | None, Some m | Some m, None -> m
@@ -162,4 +162,3 @@ let _ =
     | _ -> Pbench.error "Unknown mode (should be 'default' or 'speedup')."
     in
   run_fct()
-

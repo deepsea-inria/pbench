@@ -20,7 +20,7 @@ type t = result list
 
 let lines_of_result (inputs,env) =
    let kvs = Env.to_assoc env in
-   let (kvsi,kvso) = List.partition (fun (k,v) -> List.mem k inputs) kvs in
+   let (kvsi,kvso) = List.partition (fun (k,_v) -> List.mem k inputs) kvs in
    let string_of_kv (k,v) =
       sprintf "%s %s\n" k (Env.string_of_value v) in
    ( (List.map string_of_kv kvsi)
@@ -117,7 +117,7 @@ let from_files filenames =
     a function of type [(key*value) list -> bool] *)
 
 let filter_by_fun f results =
-   ~~ List.filter results (fun (inputs, ps_result) ->
+   ~~ List.filter results (fun (_inputs, ps_result) ->
       let kvs_result = Env.to_assoc ps_result in
       f kvs_result)
 
@@ -126,7 +126,7 @@ let filter_by_fun f results =
 
 let filter_nostrip env results =
    let kvs_filter = Env.to_assoc env in
-   ~~ List.filter results (fun (inputs, ps_result) ->
+   ~~ List.filter results (fun (_inputs, ps_result) ->
       let kvs_result = Env.to_assoc ps_result in
       ~~ List.for_all kvs_filter (fun kv -> List.mem kv kvs_result))
 
@@ -163,7 +163,7 @@ exception Missing_key of string * string list (* missing key, available keys *)
 
 (** Get the value associated with a given key for a given result *)
 
-let get_one conv k (inkeys,ps) =
+let get_one conv k (_inkeys,ps) =
    let v =
       try Env.lookup ps k
       with Not_found -> raise (Missing_key (k, Env.keys ps))
@@ -190,16 +190,16 @@ exception Missing_data
 let get_mean_of k results =
    try  XFloat.mean_of (get Env.as_float k results)
       (* let vs = (get Env.as_float k results) in
-      if List.mem infinity vs 
-         then infinity 
+      if List.mem infinity vs
+         then infinity
          else XFloat.mean_of vs *)
    with Missing_key _ -> nan
 
 let get_median_of k results =
    try XMath.median_of_or_nan (get Env.as_float k results)
       (* let vs = (get Env.as_float k results) in
-      if List.mem infinity vs 
-         then infinity 
+      if List.mem infinity vs
+         then infinity
          else XFloat.mean_of vs *)
    with Missing_key _ -> nan
 
@@ -236,11 +236,11 @@ let get_unique_of k results =
    with Missing_key _ -> nan
 
 let get_distinct_values_for k results =
-  let vs = ~~ List.map results (fun (inputs,ps_results) -> Env.get ps_results k) in
+  let vs = ~~ List.map results (fun (_inputs,ps_results) -> Env.get ps_results k) in
   XList.remove_duplicate vs
 
 let get_distinct_values_for_several ks results =
-  let vss : Env.t list = ~~ List.map results (fun (inputs,ps_results) -> 
+  let vss : Env.t list = ~~ List.map results (fun (_inputs,ps_results) ->
     List.map (fun k -> (k, Env.get ps_results k)) ks) in
   List.map Env.from_assoc (XList.remove_duplicate vss)
   (* note: returns a list of environments *)
@@ -256,7 +256,7 @@ let get_distinct_values_for_several ks results =
 
 let check_consistent_inputs group_by results =
    let envs = ~~ List.map results (fun (inkeys,e) ->
-      ~~ List.filter (Env.to_assoc e) (fun (k,v) ->
+      ~~ List.filter (Env.to_assoc e) (fun (k,_v) ->
          List.mem k inkeys && not (List.mem k group_by))) in
    match envs with
    | [] -> ()
@@ -277,8 +277,8 @@ let check_consistent_inputs group_by results =
     have the same output values for every key from the list match_by *)
 
 let check_consistent_outputs match_by_keys results =
-   let envs_outputs = ~~ List.map results (fun (inkeys,e) ->
-      let os = ~~ List.filter (Env.to_assoc e) (fun (k,v) ->
+   let envs_outputs = ~~ List.map results (fun (_inkeys,e) ->
+      let os = ~~ List.filter (Env.to_assoc e) (fun (k,_v) ->
                     List.mem k match_by_keys) in
       (e,os)) in
    match envs_outputs with

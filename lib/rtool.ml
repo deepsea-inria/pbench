@@ -6,7 +6,7 @@ type script = string
 
 (** Converts a string into its R description, by adding double quotes *)
 
-let of_string s = 
+let of_string s =
   sprintf "\"%s\"" s
 
 (** Converts a list of R values into its R description (coma-separated) *)
@@ -22,28 +22,28 @@ let of_string_list ss =
 (** Converts a float value into its R description, dealing with special values *)
 
 let of_float ?(islogscale=false) v =
-   match classify_float v with 
-   | FP_zero when islogscale -> "0.1" 
+   match classify_float v with
+   | FP_zero when islogscale -> "0.1"
    | FP_normal | FP_subnormal | FP_zero -> sprintf "%f" v
    | FP_infinite | FP_nan -> "NA"
 
 (** Defines a variable name for a series of data *)
 
-let batch_name i = 
+let batch_name i =
   sprintf "data%d" i
 
 (** Defines a default vector of colors to use for plots *)
 
-let colors_default = 
-   [ "#000000"; "#FF0000"; "#0000FF"; "#00FF00"; "#AA00AA"; 
+let colors_default =
+   [ "#000000"; "#FF0000"; "#0000FF"; "#00FF00"; "#AA00AA";
      "#000099"; "#CCFF99"; "#FF66FF"; "#FFFF00"; "#00FFFF"; "#CC0066"; "#CCCCFF"; "#C0C0C0"; "#0000CC"; "#FF66FF"; "#990000"; "#009900"; "#CC0000"; "#00CC00"; "#FFCCCC";]
 
-   (* XList.init nbcols (fun i -> sprintf "%d" (i+1)) 
+   (* XList.init nbcols (fun i -> sprintf "%d" (i+1))
       sprintf "cols <- as.vector(c(%s))" (XList.to_string "," (fun x -> x) vals) *)
 
 (** Declare 'cols' to be a list of nb colors given by RGB code *)
 
-let colors_define color_codes nb = 
+let colors_define color_codes nb =
   if nb > List.length color_codes then Pbench.error (sprintf "Rtool.colors_define: too many different colors requested %d" nb);
   let codes = XList.take nb color_codes in
   sprintf "cols <- as.vector(c(%s))" (XList.to_string "," (fun x -> sprintf "'%s'" x) codes)
@@ -55,7 +55,7 @@ let pchs_default =
 
 (** Declare 'pchs' to be a list of colors given by RGB code *)
 
-let pchs_define nbpchs =
+let pchs_define _nbpchs =
   sprintf "pchs <- as.vector(c(%s))" (XList.to_string "," (fun x -> sprintf "%d" x) pchs_default)
 
 (** Defines a title for a R chart *)
