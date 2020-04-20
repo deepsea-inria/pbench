@@ -25,16 +25,23 @@ ready for incorporation in research papers.
   who need fine-grained tuning of the runs and plots, and who
   want to make their experimental evaluations repeatable
   by other experimenters. The distribution includes example 
-  scripts using the lbirary.
+  scripts using the library.
+
+- The implementation of pbench relies on a collection of general-purpose
+  functions gathered in the `xlib` folder, with filenames starting with
+  the letter `X`. Ultimately, the vast majority of these functions should 
+  be replaced by functions from a standard library such as `core`, yet 
+  there is quite some work involved.
 
 Requirements
 ------------
 
 ### Build dependencies
 
-You will need version 4.00 or greater of 
-[OCaml](http://www.ocaml.org/) and also a recent version 
-of the gnu c compiler [GCC](http://gcc.gnu.org/).
+You will need version 4.09 or greater of [OCaml](http://www.ocaml.org/),
+the [dune] build system, and also a recent version of the gnu C compiler 
+[GCC](http://gcc.gnu.org/). Recommanded installation of OCaml is using
+[opam].
 
 The pbench plot generator requires that recent versions of 
 [R](http://www.r-project.org/) and LaTeX be installed on the 
