@@ -37,18 +37,18 @@ let rec log2 n =
 
 let log2_via_float x =
    int_of_float (XFloat.log2 (float_of_int x))
-   
+
 (** Returns the value of the log base 10 of an int, as an int *)
 
 let log10_via_float x =
    int_of_float (XFloat.log10 (float_of_int x))
 
 
-   
+
 (************************************************************************)
 (** Sequences *)
 
-(** Builds the list made of integers between a and b (inclusive), 
+(** Builds the list made of integers between a and b (inclusive),
     with step of d integers *)
 
 let rec seq_step a b d =
@@ -59,7 +59,7 @@ let rec seq_step a b d =
 let seq a b =
   seq_step a b 1
 
-(** Builds the list of the n first consecutive natural numbers, 
+(** Builds the list of the n first consecutive natural numbers,
     i.e., between 0 and n-1, inclusive *)
 
 let nat_seq n =

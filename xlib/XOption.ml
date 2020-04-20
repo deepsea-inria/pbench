@@ -10,7 +10,7 @@ let unsome_or_failwith msg = function
 
 (** Extract the value from an option known to be Some *)
 
-let unsome o = 
+let unsome o =
   unsome_or_failwith "unsome of none" o
 
 (** Extract the value from an option, or return a default value *)
@@ -37,7 +37,7 @@ let iter o f =
    | None -> ()
    | Some x -> f x
 
-(** Map applies a function to the item stored in a Some, and returns a 
+(** Map applies a function to the item stored in a Some, and returns a
     given default value otherwise *)
 let map o r f =
    match o with

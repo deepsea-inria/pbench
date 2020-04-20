@@ -1,12 +1,12 @@
 
 (** On loading, the module parses the command line, and creates a list
-    of key-pair arguments, given in the form "-key value", a list 
+    of key-pair arguments, given in the form "-key value", a list
     of activated flags, given in the form "--key", and a list of other
     values provided on the command line. *)
 
 exception Illegal_command_line of string
 
-type element = 
+type element =
   | Arg of string * string   (* -key value *)
   | Flag of string           (* --key *)
   | Other of string          (* value *)
@@ -21,17 +21,17 @@ let elements_from_string_list ls = (* todo: generalize the exception in a better
        if arg.[0] <> '-' then begin
           aux ((Other arg)::acc) ls2
        end else begin
-         if n <= 1 
+         if n <= 1
             then raise (Illegal_command_line ("dash symbol on its own"));
          if arg.[1] = '-' then begin
-            let key = Str.string_after arg 2 in       
+            let key = Str.string_after arg 2 in
             aux ((Flag key)::acc) ls2
          end else begin
             let key = Str.string_after arg 1 in
             match ls2 with
             | [] -> raise (Illegal_command_line ("missing argument after " ^ key));
             | value::ls3 -> aux (Arg(key, value)::acc) ls3
-         end 
+         end
       end
     in
  aux [] ls
@@ -53,13 +53,13 @@ let args,flags,args_and_flags,others =
    let args_and_flags = ref [] in
    let others = ref [] in
    List.iter (function
-     | Arg (key,value) -> 
+     | Arg (key,value) ->
         XBase.add_to_list_ref args (key,value);
         XBase.add_to_list_ref args_and_flags (key,value)
-     | Flag key -> 
+     | Flag key ->
         XBase.add_to_list_ref flags key;
         XBase.add_to_list_ref args_and_flags (key, "1")
-     | Other value -> 
+     | Other value ->
         XBase.add_to_list_ref others value
      ) elements;
    List.rev !args, List.rev !flags, List.rev !args_and_flags, List.rev !others
@@ -70,7 +70,7 @@ let program () =
    Sys.argv.(0)
    (* same as: Sys.executable_name *)
 
-(** Accessors *) 
+(** Accessors *)
 
 let get_elements () =
    elements
@@ -80,7 +80,7 @@ let get_args () =
    (*depreacted: XList.build (fun add -> iter_args (fun x v -> add (x,v))) *)
 
 let get_flags () =
-   flags 
+   flags
    (*depreacted: XList.build (fun add -> iter_flags (fun x -> add x)) *)
 
 let get_args_and_flags () =
@@ -89,10 +89,10 @@ let get_args_and_flags () =
 let get_others () =
    others
 
-(** Iterators *) 
+(** Iterators *)
 
 let iter_args f =
-   List.iter (fun (k,v) -> f k v) args  
+   List.iter (fun (k,v) -> f k v) args
 
 let iter_flags f =
    List.iter f flags
@@ -113,23 +113,23 @@ let remove_arg name =
 (** Test whether a flag was activated *)
 
 let mem_flag name =
-   List.mem name flags 
+   List.mem name flags
 
 (** Test wheter an argument was provided *)
 
-let mem_arg name = 
-   List.mem_assoc name args  
+let mem_arg name =
+   List.mem_assoc name args
 
 (** Obtain the value bound to a key in args or flags, as a string;
     flags are mapped to "1".  In not found, raise Argument_not_found *)
 
 exception Argument_not_found of string
 
-let find_arg name = 
+let find_arg name =
    try List.assoc name args
    with Not_found ->
      if List.mem name flags
-     then "1" 
+     then "1"
      else raise (Argument_not_found name)
 
 (** Obtain the value bound to a key, at a specific type,
@@ -153,7 +153,7 @@ let parse_float name =
 let parse_string name =
    (find_arg name)
 
-let parse_list_string name = 
+let parse_list_string name =
   Str.split (Str.regexp_string ",") (find_arg name)
 
 let parse_list_int name =
@@ -162,7 +162,7 @@ let parse_list_int name =
 let parse_list_float name =
    List.map float_of_string (parse_list_string name)
 
-(** Obtain the value bound to a key, at a specific type, 
+(** Obtain the value bound to a key, at a specific type,
     or return a default value of this type. *)
 
 let parse_or_default parsing name default =
@@ -189,7 +189,7 @@ let parse_or_default_list_int n d =
 let parse_or_default_list_float n d =
    parse_or_default parse_list_float n d
 
-(** Obtain "Some" applied to the value bound to a key, at a specific type, 
+(** Obtain "Some" applied to the value bound to a key, at a specific type,
     or "None". *)
 
 let parse_optional parsing name =
@@ -222,6 +222,6 @@ let parse_optional_list_float n =
 
 let string_of_flags flags =
    XList.to_string " " (fun x -> Printf.sprintf "--%s" x) flags
-   
+
 let string_of_args args =
    XList.to_string " " (fun (k,v) -> Printf.sprintf "-%s %s" k v) args

@@ -12,12 +12,12 @@ let escape r =
 
 (** Escape latex characters in a list of strings *)
 
-let escapes rs = 
+let escapes rs =
   List.map escape rs
 
 (** Function to a coma-separated string into a multiline latex comments *)
 
-let coma_to_newlines s = 
+let coma_to_newlines s =
    escape (Str.global_replace (Str.regexp ",") "\\\\\\\\" s)
 
 (** Build basic document with given contents *)

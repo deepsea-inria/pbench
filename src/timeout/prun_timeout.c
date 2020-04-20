@@ -1,9 +1,9 @@
  /*
   * timeout - run a command for a limited amount of time
-  * 
+  *
   * Uses POSIX process groups so that we do the right thing when the controlled
   * command forks off child processes.
-  * 
+  *
   * Author: Wietse Venema; Adapted by Arthur Chargueraud and Mike Rainey
   */
 
