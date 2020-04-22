@@ -1,0 +1,5 @@
+(executable
+  (name other)
+  (modules other)
+  (libraries str unix xlib pbench)
+)

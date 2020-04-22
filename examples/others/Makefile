@@ -1,8 +1,7 @@
-all: other.pbench
+.PHONY: all
+all:
+	dune build .
 
-PBENCH_PATH=../..
-
-include $(PBENCH_PATH)/Makefile_common
-
-clean: pbench_clean
-
+.PHONY: clean
+clean:
+	dune clean

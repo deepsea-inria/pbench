@@ -1,6 +1,4 @@
-open Printf
 open XBase
-open Env
 open Params
 
 
@@ -24,12 +22,12 @@ open Params
 
 
 (*-------------------------------------------------------------------*)
-(* First demo: compare two programs, 
+(* First demo: compare two programs,
    with argument "-n v" for some value v
-   and argument "-s a" or "-s b -t 0" 
+   and argument "-s a" or "-s b -t 0"
 *)
 
-let first() = 
+let first() =
    let n = "n" in
    (* let m = "m" in *)
    let s = "s" in
@@ -38,9 +36,9 @@ let first() =
    let mk_programs = mk_progs ["test.sh"; "test2.sh"] in
    (*  same as:
        mk_programs = fun e -> [[("prog", Pstring "test.sh")]; [("prog", Pstring "test2.sh")]]) *)
-   let mk_series = 
-         (mk string s "a") 
-      ++ ((mk string s "b") & (mk int t 0)) 
+   let mk_series =
+         (mk string s "a")
+      ++ ((mk string s "b") & (mk int t 0))
       in
    (*  same as:
        mk_series = fun e -> [[(s, Pstring "a")]; [(s, Pstring "b"); (t, Vint 0)]]) *)
@@ -70,47 +68,47 @@ let first() =
           (* LATER:
             & mk_list float n [5.; 10.]
             & mk_eval float m (fun e -> 1000. /. (get as_float e n)) *)
- 
+
    begin
       Results.check_consistent_outputs_filter_by_params ["bla"] mk_programs results_all
    end;
 
    let charts1 = Mk_bar_plot.(get_charts ([
       Bar_plot_opt Bar_plot.([
-         X_titles_dir Vertical; 
+         X_titles_dir Vertical;
          Y_axis [Axis.Lower (Some 0.)] ]);
       Charts mk_programs;
       Series mk_series;
       X mk_x;
       Input "results.txt";
-      ] 
+      ]
       @ (y_as_mean "exectime")
       )) in
    let charts2 = Mk_bar_plot.(get_charts ([
       Bar_plot_opt Bar_plot.([
-         X_titles_dir Vertical; 
+         X_titles_dir Vertical;
          Y_axis [Axis.Lower (Some 0.)] ]);
       Series (mk_series);
       X (mk_programs & mk_x);
       Input "results.txt";
-      ] 
+      ]
       @ (y_as_mean "exectime")
       )) in
    let charts3 = Mk_bar_plot.(get_charts ([
       Bar_plot_opt Bar_plot.([
-         X_titles_dir Vertical; 
+         X_titles_dir Vertical;
          Y_axis [Axis.Lower (Some 0.)] ]);
       Series (mk_programs & mk_series);
       X (mk_x);
       Input "results.txt";
-      ] 
+      ]
       @ (y_as_mean "exectime")
       )) in
    Chart.build "barplots.pdf" (charts1 @ charts2 @ charts3);
 
    Mk_scatter_plot.(call ([
       Scatter_plot_opt Scatter_plot.([
-         Draw_lines true; 
+         Draw_lines true;
          X_axis [Axis.Label "demo_xaxis"];
          Y_axis [Axis.Lower (Some 0.)] ]);
       Charts mk_programs;
@@ -118,7 +116,7 @@ let first() =
       X mk_x;
       Input "results.txt";
       Output "plots.pdf";
-      ] 
+      ]
       @ (y_as_mean "exectime")
       ));
     begin (* draw table *)
@@ -129,7 +127,7 @@ let first() =
        let envs_prog = mk_programs env in
        let envs_serie = mk_series env in
        let nb_series = List.length envs_serie in
-       add (sprintf "\\begin{tabular}{|l|%s} \\hline \n" (String.concat "" (XList.init nb_series (fun i -> "c|"))));
+       add (sprintf "\\begin{tabular}{|l|%s} \\hline \n" (String.concat "" (XList.init nb_series (fun _i -> "c|"))));
        ~~ List.iter envs_serie (fun env_serie ->
           add " & ";
           add (Env.to_string env_serie);
@@ -162,13 +160,13 @@ let first() =
    on a range of arguments
 *)
 
-let second() = 
+let second() =
    let mk_x = mk_list int "n" [5; 10] in
    (*  same as:
        mk_programs = fun e -> [[("prog", Pstring "test.sh")]; [("prog", Pstring "test2.sh")]]) *)
-   let mk_series = 
-         ((mk_prog "test.sh") & (mk string "s" "a")) 
-      ++ ((mk_prog "test2.sh") & (mk string "s" "b") & (mk int "t" 0)) 
+   let mk_series =
+         ((mk_prog "test.sh") & (mk string "s" "a"))
+      ++ ((mk_prog "test2.sh") & (mk string "s" "b") & (mk int "t" 0))
       in
    (*  same as:
        mk_series = fun e -> [[(s, Pstring "a")]; [(s, Pstring "b"); (t, Vint 0)]]) *)
@@ -176,20 +174,20 @@ let second() =
       Output "second.txt";
       Args (mk_series & mk_x)
       ]);
-   
+
    begin
       let results_all = Results.from_file "second.txt" in
       Results.check_consistent_outputs_filter_by_params ["bla"] mk_series results_all
    end;
-  
-   let eval_mean k = (fun env all_results results -> Results.get_mean_of k results) in
+
+   let eval_mean k = (fun _env _all_results results -> Results.get_mean_of k results) in
 
    let formatter = (* used to beautify the name of the series *)
      Env.format (Env.(
        [ ("prog", Format_custom (fun s -> sprintf "%s" s));
          ("t", Format_custom (fun s -> sprintf "t = %s" s));
-         (* ("prog", Format_custom (fun s -> 
-            if s = "test.sh" then "A" 
+         (* ("prog", Format_custom (fun s ->
+            if s = "test.sh" then "A"
             else if s = "test2.sh" then "B" else sprintf "%s" s)); *)
          ("t", Format_hidden);
          ("s", Format_custom (fun x -> sprintf "s is %s" (
@@ -201,7 +199,7 @@ let second() =
 
    Mk_bar_plot.(call ([
       Bar_plot_opt Bar_plot.([
-         X_titles_dir Vertical; 
+         X_titles_dir Vertical;
          Y_axis [Axis.Lower (Some 0.)] ]);
       Charts mk_unit;
       Formatter formatter;
@@ -219,12 +217,12 @@ let second() =
    (provide --skip_baseline on the command line)
 *)
 
-let third() = 
-  let mk_baseline = 
+let third() =
+  let mk_baseline =
     (mk_prog "test.sh") & (mk string "s" "a") in
-  let mk_mainline = 
+  let mk_mainline =
     ((mk_prog "test2.sh") & (mk string "s" "b") & (mk int "t" 0)) in
-  let mk_n = 
+  let mk_n =
      (mk_list int "n" [5; 10]) in
   let mk_m =
      (mk_list int "m" [1;2]) in
@@ -247,7 +245,7 @@ let third() =
 
   let results_baselines = Results.from_file "results_baselines.txt" in
 
-  let eval_relative = fun env all_results results ->
+  let eval_relative = fun env _all_results results ->
     let baseline_results =  ~~ Results.filter_by_params results_baselines (
          from_env (Env.filter_keys ["n"; "m"] env)
          (* here we select only the baseline runs with matching n and m arguments *)
@@ -260,7 +258,7 @@ let third() =
 
    Mk_bar_plot.(call ([
       Bar_plot_opt Bar_plot.([
-         X_titles_dir Vertical; 
+         X_titles_dir Vertical;
          Y_axis [Axis.Lower (Some 0.)] ]);
       Charts mk_unit;
       Series mk_m;
@@ -282,4 +280,3 @@ let _ =
    | "second" -> second()
    | "third" -> third()
    | _ -> failwith "unknown test"
-
