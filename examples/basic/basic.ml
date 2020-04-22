@@ -52,7 +52,7 @@ let file_plots exp_name =
 
 (** Evaluation functions *)
 
-let eval_exectime = fun env all_results results ->
+let eval_exectime = fun _env _all_results results ->
    Results.get_mean_of "exectime" results
 
 (*****************************************************************************)

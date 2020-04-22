@@ -35,7 +35,7 @@ let _ =
   let result  = if algo = "recursive" then
                   fib_rec n
                 else if algo = "cached" then
-                  let Int n = fib_cache n in n
+                  let[@warning "-8"] Int n = fib_cache n in n
                 else
                   invalid_arg "algo"
   in
