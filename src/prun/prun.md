@@ -15,7 +15,7 @@ prun [-mode *MODE*] [*PRUN_OPTIONS*] -args "[*PROG_OPTIONS*]"
 If not specified, the *MODE* is set to "default". Other valid
 modes include the `speedup` mode.
 
-***Remark*** The later form with the explicity `-args` should be used if 
+***Remark*** The later form with the explicity `-args` should be used if
 you want stability through updates of pbench that may add new options.
 
 Description
@@ -77,7 +77,7 @@ collects data on benchmark runs of a specified program. The
      file exists; otherwise, writes results to a fresh results file.
 
 `--complete`
-:    Perform only those runs that have not already been reported in the target 
+:    Perform only those runs that have not already been reported in the target
      results file (currently incompatible with `-runs`).
 
 `--replace`
@@ -90,7 +90,7 @@ collects data on benchmark runs of a specified program. The
 Program options
 ---------------
 
-The program options *PRUN_OPTIONS* defines the behavior of the programs to 
+The program options *PRUN_OPTIONS* defines the behavior of the programs to
 be run by the tool. A program run is specified by a string of program options,
 which should be in the form, e.g.:
 
@@ -103,7 +103,7 @@ or
 The cross product of all comma separated values is considered by the
 `prun` tool.
 
-***Remark*** The later form with the explicit `-prog` should be used if 
+***Remark*** The later form with the explicit `-prog` should be used if
 you want stability through updates of pbench that may add new options.
 
 ***Limitation*** If your program expects arguments whose name conflicts
@@ -121,9 +121,11 @@ program. In the experiment, the program is run on two inputs, namely
 `recursive` and `cached` versions. For each distinct configuration,
 two runs are performed by the experiment.
 
-    make prun
-    make -C examples/basic fib
-    prun -prog examples/basic/fib -algo recursive,cached -n 39,40 -runs 2
+We assume that `prun` and `pplot` have been installed. These commands
+are intended to be run at the root of the repository.
+
+    make -C examples/basic
+    prun -prog _build/default/examples/basic/fib.exe -algo recursive,cached -n 39,40 -runs 2
 
 The following command specifies an experiment where a program is run
 multiple times varying number of processors. The run where zero is
@@ -176,6 +178,4 @@ Example
 -------
 
     make prun
-    prun speedup -baseline "examples/others/speedup.sh -algo foo -proc 0" -baseline-runs 1  -parallel "examples/others/speedup.sh -algo bar -proc 1,2,3,4" -runs 2 
-
-
+    prun speedup -baseline "examples/others/speedup.sh -algo foo -proc 0" -baseline-runs 1  -parallel "examples/others/speedup.sh -algo bar -proc 1,2,3,4" -runs 2
