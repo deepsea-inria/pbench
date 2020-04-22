@@ -168,13 +168,14 @@ Examples
 Building and running a simple experiment
 ----------------------------------------
 
-The following commands build the benchmarking tools and then gather
+The following commands gather
 some data from a few runs of our example program, Fibonacci.
 
-    make -C examples/basic fib
-    make prun
-    prun -prog examples/basic/fib -algo recursive,cached -n 39,40 -runs 2
-    make pplot
+We assume that `prun` and `pplot` have been installed. These commands
+are intended to be run at the root of the repository.
+
+    make -C examples/basic
+    prun -prog _build/default/examples/basic/fib.exe -algo recursive,cached -n 39,40 -runs 2
 
 Bar plots
 ---------
@@ -259,7 +260,6 @@ benchmark program, the algorithm to be measured is selected by the
 command-line key `-algo`. Our baseline algorithm is specified by the
 value `foo` and our parallel algorithm by the value `bar`.
 
-    make prun
     prun speedup -baseline "examples/others/speedup.sh -algo foo" -baseline-runs 1  -parallel "examples/others/speedup.sh -algo bar -proc 1,2,3,4" -runs 2
     pplot speedup
 
