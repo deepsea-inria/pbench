@@ -10,6 +10,7 @@ install:
 
 uninstall:
 	dune uninstall
+	make -C src/timeout $@
 
 clean:
 	dune clean
