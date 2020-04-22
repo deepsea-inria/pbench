@@ -1,5 +1,5 @@
 open XBase
-let info = Pbench.info
+let info = Central.info
 
 (** Description of the arguments of a program (list of "-key value" to give it) *)
 
@@ -25,7 +25,7 @@ type run = {
 
 let create_backup_of_results source_file =
    let tm = Unix.gmtime (Unix.time()) in
-   let target = sprintf "%s/results_%d-%d-%d_%d-%d-%d.txt" (Pbench.get_results_folder())
+   let target = sprintf "%s/results_%d-%d-%d_%d-%d-%d.txt" (Central.get_results_folder())
       (1900+tm.Unix.tm_year) (1+tm.Unix.tm_mon) tm.Unix.tm_mday
       tm.Unix.tm_hour tm.Unix.tm_min tm.Unix.tm_sec in
    unix_command (sprintf "cp %s %s" source_file target)
@@ -46,7 +46,7 @@ let bench_command result_file b =
    let prog = b.run_prog in
    let args = XList.to_string " " (fun (k,v) -> sprintf "-%s %s" k v) b.run_args in
    if b.run_timeout <= 0 && b.run_timeout <> cst_no_timeout
-    then Pbench.error "invalid value for timeout (shoud be positive or cst_no_timeout)";
+    then Central.error "invalid value for timeout (shoud be positive or cst_no_timeout)";
    let timeout_path = sprintf "prun_timeout" in
    let timeout =
       if b.run_timeout = cst_no_timeout
@@ -106,7 +106,7 @@ let result_contains_killed content =
 (* TODO: svn_version is deprecated *)
 
 let execute is_verbose is_virtual (*svn_revision*) machine add_output add_error b =
-   let result_file = sprintf "%s/run.txt" (Pbench.get_results_folder()) in
+   let result_file = sprintf "%s/run.txt" (Central.get_results_folder()) in
    let (full_cmd, disp_cmd) = bench_command result_file b in
    begin
       if b.run_dummy
@@ -118,7 +118,7 @@ let execute is_verbose is_virtual (*svn_revision*) machine add_output add_error 
    if not is_virtual then begin
       XFile.put_contents result_file "";
       let attempts_left = ref b.run_attempts in
-      if !attempts_left <= 0 then Pbench.error "attempts should be positive";
+      if !attempts_left <= 0 then Central.error "attempts should be positive";
       let result = ref "" in
       let timed_out = ref false in
       begin try while !attempts_left > 0 do
@@ -177,9 +177,9 @@ let get_output args = XOpt.get_default args (function Output x -> Some x | _ -> 
 let call args =
    let is_virtual = get_virtual args in
    let output_file = get_output args in
-   Pbench.ensure_results_folder_exists();
-   (* let svn_revision = Pbench.get_subversion_revision() in *)
-   let machine = Pbench.get_localhost_name() in
+   Central.ensure_results_folder_exists();
+   (* let svn_revision = Central.get_subversion_revision() in *)
+   let machine = Central.get_localhost_name() in
    let exec = execute (get_verbose args) is_virtual (*svn_revision*) machine in
    let (add_output,end_output) =
       if is_virtual then begin

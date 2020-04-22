@@ -51,7 +51,7 @@ let call args =
    let islogy = Axis.get_is_log yaxis in
    let logoption = if islogy then ", log='y'" else "" in
    let nb_series = List.length series in
-   if nb_series = 0 then Pbench.error "Bar_plot.call needs nb_series > 0";
+   if nb_series = 0 then Central.error "Bar_plot.call needs nb_series > 0";
    let max_height = ref (-1.e20) in (* todo: use min float *)
    let find_value v =
       if v > !max_height then max_height := v;
@@ -145,5 +145,5 @@ let label_direction_of_string s =
   match s with
   | "horizontal" -> Horizontal
   | "vertical" -> Vertical
-  | _ -> Pbench.error "invalid name for label direction (should be 'horizontal' or 'vertical')"
+  | _ -> Central.error "invalid name for label direction (should be 'horizontal' or 'vertical')"
 

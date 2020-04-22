@@ -45,7 +45,7 @@ let arguments_of_elements elements =
       | XCmd.Flag key -> (key, "1")
       | XCmd.Other value ->
           if !count_others > 0
-            then Pbench.error "Multiple non-named arguments";
+            then Central.error "Multiple non-named arguments";
           incr count_others;
           ("prog", value))
     in
@@ -85,7 +85,7 @@ let get_arguments_shared () =
   match arguments_implicit, arguments_of_string arg_args with
   | [], [] -> []
   | [], a | a, [] -> a
-  | _ -> Pbench.error "When -args is used, only prun-specific arguments can be provided outside of the -args parameter."
+  | _ -> Central.error "When -args is used, only prun-specific arguments can be provided outside of the -args parameter."
 
 let common_options () =
   Mk_runs.([
@@ -104,7 +104,7 @@ let common_options () =
 let default () =
   let arguments_shared = get_arguments_shared() in
   if arguments_shared = []
-    then Pbench.warning "no benchmark arguments provided";
+    then Central.warning "no benchmark arguments provided";
   let args_shared = args_or_arguments arguments_shared in
   let args_shared = args_shared in
   Mk_runs.(call (common_options() @ [
@@ -148,17 +148,17 @@ let _ =
      match XList.inter supported_modes (XCmd.get_others()) with
      | [] -> None
      | [m] -> Some m
-     | _ -> Pbench.error "Multiple modes specified"
+     | _ -> Central.error "Multiple modes specified"
      in
   let mode =
      match implicit_mode, arg_mode with
      | None, None -> "default"
      | None, Some m | Some m, None -> m
-     | _ -> Pbench.error "Multiple modes specified"
+     | _ -> Central.error "Multiple modes specified"
      in
   let run_fct = match mode with
     | "default" -> default
     | "speedup" -> speedup
-    | _ -> Pbench.error "Unknown mode (should be 'default' or 'speedup')."
+    | _ -> Central.error "Unknown mode (should be 'default' or 'speedup')."
     in
   run_fct()

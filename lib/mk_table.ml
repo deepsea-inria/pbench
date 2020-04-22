@@ -40,7 +40,7 @@ let latex_of_matrix ?(escape=true) matrix =
   let nb_rows = Array.length matrix in
   if nb_rows = 0 then "" else begin
     let nb_cols = Array.length matrix.(0) in
-    if nb_cols < 2 then Pbench.error "latex_of_matrix requires at least 2 columns";
+    if nb_cols < 2 then Central.error "latex_of_matrix requires at least 2 columns";
     let s = Buffer.create 1 in
     let add x = Buffer.add_string s x in
     add (Latex.tabular_begin (String.concat "" (["|l|"] @ XList.init (nb_cols-1) (fun _i -> "c|") )));

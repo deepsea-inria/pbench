@@ -91,7 +91,7 @@ let call args =
       let nb_series = List.length series in
       if nb_series = 0 then raise (Chart.Cannot_build "no series")
       else if nb_series > 16 then begin
-         Pbench.warning (sprintf "cannot plot more than 16 series on one graph; trimming data for %s\n" title);
+         Central.warning (sprintf "cannot plot more than 16 series on one graph; trimming data for %s\n" title);
          XList.take 16 series
       end else series in
    let series = List.filter (fun serie -> serie.serie_points <> []) series in

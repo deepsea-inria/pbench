@@ -78,7 +78,7 @@ let from_lines lines : t =
                let key = Str.string_before line space_index in
                let svalue = Str.string_after line (space_index+1) in
                if key = "sError"
-                  then Pbench.info (sprintf "Error in result: %s\n" svalue);
+                  then Central.info (sprintf "Error in result: %s\n" svalue);
                add_to_list_ref current_params (key, value_of_string svalue);
                if !in_inputs
                   then add_to_list_ref current_inputs key;
@@ -87,7 +87,7 @@ let from_lines lines : t =
          end
          );
       if !current_params <> []
-         then Pbench.warning "incomplete benchmark results at end of file";
+         then Central.warning "incomplete benchmark results at end of file";
       )
 
 (** Reading results from filename *)
@@ -219,7 +219,7 @@ let get_unique_of_as conv k results =
          then raise (Missing_key ("", []));
       if not (XList.same_items vs) then begin
         let m = String.concat "," (List.map Env.string_of_value (get (fun x->x) k results)) in
-        Pbench.error (sprintf "Results.get_unique_of: not all the same values for key %s, values:\n%s" k m);
+        Central.error (sprintf "Results.get_unique_of: not all the same values for key %s, values:\n%s" k m);
       end;
       List.hd vs
    with Missing_key _ -> raise (Missing_key ("", []))
@@ -231,7 +231,7 @@ let get_unique_of k results =
       if vs = []
          then raise (Missing_key ("", []));
       if not (XList.same_items vs)
-         then Pbench.error (sprintf "Results.get_unique_of: not all the same values for key %s" k);
+         then Central.error (sprintf "Results.get_unique_of: not all the same values for key %s" k);
       List.hd vs
    with Missing_key _ -> nan
 
@@ -264,9 +264,9 @@ let check_consistent_inputs group_by results =
       ~~ List.iter es (fun e ->
          if not (XList.equiv e0 e)
             then begin
-            Pbench.info (sprintf "Trying to build a value for incompatible input environments:\n--- %s\n--- %s\n"
+            Central.info (sprintf "Trying to build a value for incompatible input environments:\n--- %s\n--- %s\n"
                (Env.to_string e0) (Env.to_string e));
-            Pbench.error "Terminating."
+            Central.error "Terminating."
             end)
 
 
@@ -286,7 +286,7 @@ let check_consistent_outputs match_by_keys results =
    | (e0,os0)::eos ->
       ~~ List.iter eos (fun (e,os) ->
          if not (XList.equiv os0 os)
-            then Pbench.error (sprintf "Inconsistent outputs:\n--- %s\n--- %s\n"
+            then Central.error (sprintf "Inconsistent outputs:\n--- %s\n--- %s\n"
                (Env.to_string e0) (Env.to_string e)))
 
 (** [check_consistent_outputs_filter_by env match_by results] ensures that all the results

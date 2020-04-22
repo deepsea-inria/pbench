@@ -60,10 +60,10 @@ exception Cannot_build of string
     generate a PDF in a target output file. *)
 
 let build_for prefix folder _output_file (charts : t list) =
-   Pbench.ensure_results_folder_exists();
+   Central.ensure_results_folder_exists();
    let rscripts = ref [] in
    let latexs = ref [] in
-   if prefix = "chart" then Pbench.info (sprintf "Starting to generate %d charts." (List.length charts));
+   if prefix = "chart" then Central.info (sprintf "Starting to generate %d charts." (List.length charts));
    ~~ List.iteri charts (fun id_chart chart ->
       let rscript_core = get_rscript chart in
       let basename = sprintf "%s-%d" prefix(id_chart+1) in
@@ -72,7 +72,7 @@ let build_for prefix folder _output_file (charts : t list) =
       if build_debug then begin
          let rfilename = basename ^ ".r" in
          Rtool.execute rscript rfilename;
-         Pbench.info (sprintf "Graph printed: %s.pdf\n" basename);
+         Central.info (sprintf "Graph printed: %s.pdf\n" basename);
       end else begin
          add_to_list_ref rscripts rscript;
       end;
@@ -88,13 +88,13 @@ let build_for prefix folder _output_file (charts : t list) =
   latexs
 
 let build output_file (charts : t list) =
-  let folder = Pbench.get_results_folder() in
+  let folder = Central.get_results_folder() in
   let _ = build_for output_file folder output_file charts in
   let latexs = build_for "chart" folder output_file charts in
   if !latexs = []
-      then Pbench.warning "no plots to output!\n";
+      then Central.warning "no plots to output!\n";
    XFile.put_contents (folder ^ "/plots.tex") latex_plots;
    XFile.put_lines (folder ^ "/list.tex") (List.rev !latexs);
-   Pbench.system (sprintf "cd %s; pdflatex -interaction=batchmode plots.tex > null" folder);
-   Pbench.system (sprintf "mv %s/plots.pdf %s" folder output_file);
-   Pbench.info (sprintf "Produced file %s." output_file)
+   Central.system (sprintf "cd %s; pdflatex -interaction=batchmode plots.tex > null" folder);
+   Central.system (sprintf "mv %s/plots.pdf %s" folder output_file);
+   Central.info (sprintf "Produced file %s." output_file)

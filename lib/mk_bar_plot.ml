@@ -1,5 +1,5 @@
 open XBase
-let warning = Pbench.warning
+let warning = Central.warning
 
 
 type arg =
@@ -42,7 +42,7 @@ let get_results args =
    | None, None -> Results.from_file "results.txt"
    | None, Some f -> Results.from_file f
    | Some rs, None -> rs
-   | Some _, Some _ -> Pbench.error "Bar_plot was given both Input and Results"
+   | Some _, Some _ -> Central.error "Bar_plot was given both Input and Results"
 let get_output args = XOpt.get_default args (function Output x -> Some x | _ -> None) "plots.pdf"
 let get_formatter_common args f =
    XOpt.get_default_2 args f (function Formatter x -> Some x | _ -> None) Env.formatter_key_values
@@ -147,7 +147,7 @@ let get_charts args =
       let chart_envs = (get_charts args) env_global in
       let by_charts = ~~ XList.concat_map chart_envs (fun env_chart ->
          try [build_chart env_global results_global env_chart]
-         with Missing_chart s -> Pbench.warning s; []) in
+         with Missing_chart s -> Central.warning s; []) in
       XList.build (fun add_chart ->
          ~~ List.iter by_charts (fun bar_plot ->
             try
@@ -155,7 +155,7 @@ let get_charts args =
                let chart_opt = Bar_plot.get_chart_opt bar_plot in
                add_chart ([Chart.Rscript rscript] @ chart_opt)
             with Chart.Cannot_build s ->
-               Pbench.warning (sprintf "unable to build chart for %s: %s\n" (Chart.get_title (Bar_plot.get_chart_opt bar_plot)) s)
+               Central.warning (sprintf "unable to build chart for %s: %s\n" (Chart.get_title (Bar_plot.get_chart_opt bar_plot)) s)
          ))
    end
 

@@ -21,7 +21,7 @@ let make_axis smin smax szero slog slabel =
   ~~ List.map (XOption.to_list (XCmd.parse_optional_float smin)) (fun v -> Axis.Lower (Some v));
   ~~ List.map (XOption.to_list (XCmd.parse_optional_float smax)) (fun v -> Axis.Upper (Some v));
   ~~ List.map (XOption.to_list (XCmd.parse_optional_bool szero)) (fun b ->
-    if not b then Pbench.error "should not be using -xzero=false, but only --xzero or nothing";
+    if not b then Central.error "should not be using -xzero=false, but only --xzero or nothing";
     Axis.Lower (Some 0.));
   ]
 
@@ -243,7 +243,7 @@ let plot_speedup () =
     let baseline_env = Env.add baseline_env "prun_speedup" (Env.Vstring "baseline") in
     let baseline_results = ~~ Results.filter all_results baseline_env in
     *)
-    if baseline_results = [] then Pbench.warning ("no results for baseline: " ^ Env.to_string env);
+    if baseline_results = [] then Central.warning ("no results for baseline: " ^ Env.to_string env);
     let tp = Results.get_mean_of "exectime" results in
     let tb = Results.get_mean_of "exectime" baseline_results in
     tb /. tp
@@ -329,7 +329,7 @@ let plot_factored_speedup () =
     let baseline_results = ~~ Results.filter_by_params all_results mk_params_baseline in
     let baseline_env = ~~ Env.filter env (fun k -> List.mem k arg_shared) in
     let baseline_results = ~~ Results.filter baseline_results baseline_env in
-    if baseline_results = [] then Pbench.warning ("no results for baseline: " ^ Env.to_string env);
+    if baseline_results = [] then Central.warning ("no results for baseline: " ^ Env.to_string env);
     let curve_type = Env.get_as_string env curve_type_key in
     let tb = Results.get_mean_of "exectime" baseline_results in
     if curve_type = curve_actual then
@@ -393,14 +393,14 @@ let () =
     | None, [] -> "bar"
     | Some t, [] -> t
     | None, [t] -> t
-    | _, _::_::_ -> Pbench.error "only one non-named argument is allowed; it should be the mode"
-    | Some _, _::_ -> Pbench.error "multiple modes specified for the chart"
+    | _, _::_::_ -> Central.error "only one non-named argument is allowed; it should be the mode"
+    | Some _, _::_ -> Central.error "multiple modes specified for the chart"
     in
   let plot_fct = match arg_type with
     | "bar" -> plot_bar
     | "scatter" -> plot_scatter
     | "table" -> plot_table
     | "speedup" -> if is_factored then plot_factored_speedup else plot_speedup
-    | _ -> Pbench.error "unsupported type of graph"
+    | _ -> Central.error "unsupported type of graph"
     in
   plot_fct()

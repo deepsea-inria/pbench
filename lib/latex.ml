@@ -40,12 +40,12 @@ let basic_document contents =
 (** Build a pdf from a tex source string *)
 
 let build output_file tex_source =
-   Pbench.ensure_results_folder_exists();
-   let folder = Pbench.get_results_folder() in
+   Central.ensure_results_folder_exists();
+   let folder = Central.get_results_folder() in
    XFile.put_contents (folder ^ "/latex.tex") tex_source;
-   Pbench.system (sprintf "cd %s; pdflatex -interaction=batchmode latex.tex > null" folder);
-   Pbench.system (sprintf "mv %s/latex.pdf %s" folder output_file);
-   Pbench.info (sprintf "Produced file %s." output_file)
+   Central.system (sprintf "cd %s; pdflatex -interaction=batchmode latex.tex > null" folder);
+   Central.system (sprintf "mv %s/latex.pdf %s" folder output_file);
+   Central.info (sprintf "Produced file %s." output_file)
 
 (** Helper functions *)
 

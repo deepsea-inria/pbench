@@ -44,7 +44,7 @@ let get_results args =
    | None, None -> Results.from_file "results.txt"
    | None, Some f -> Results.from_file f
    | Some rs, None -> rs
-   | Some _, Some _ -> Pbench.error "Bar_plot was given both Input and Results"
+   | Some _, Some _ -> Central.error "Bar_plot was given both Input and Results"
 let get_output args = XOpt.get_default args (function Output x -> Some x | _ -> None) "plots.pdf"
 let get_formatter_common args f =
    XOpt.get_default_2 args f (function Formatter x -> Some x | _ -> None) Env.formatter_key_values
@@ -70,18 +70,18 @@ let call' args results_global =
       let results_x = Results.filter env_x results_serie in
       Results.check_consistent_inputs group_by results_x;
       if results_x = [] then begin
-         Pbench.warning ("no point to plot for: " ^ Env.to_string env);
+         Central.warning ("no point to plot for: " ^ Env.to_string env);
          []
       end else begin
          let eval = get_y args in
          let x_value =
             try Env.as_float x_value
-            with Env.Cast_error _s -> Pbench.error ("Scatter plot x-axis key must be convertible to float values") in
+            with Env.Cast_error _s -> Central.error ("Scatter plot x-axis key must be convertible to float values") in
          try
             let y_value = eval env results_global results_x in
             [(x_value, y_value)]
          with Results.Missing_data ->
-            Pbench.warning ("Missing data for: \n --" ^ Env.to_string env);
+            Central.warning ("Missing data for: \n --" ^ Env.to_string env);
             []
       end
       in
@@ -101,14 +101,14 @@ let call' args results_global =
       let envs_series = (get_series args) env in
       let envs_x = (get_x args) env in
       let (x_key, x_values) =
-         if envs_x = [] then Pbench.error ("empty params for field x, in plot");
+         if envs_x = [] then Central.error ("empty params for field x, in plot");
          let (keys, values) = List.split (~~ List.map envs_x (fun env_x ->
             match Env.to_assoc env_x with
             | [(k,v)] -> (k,v)
-            | _ -> Pbench.error "Mk_scatter_plot needs x-axis params to have a unique key"))
+            | _ -> Central.error "Mk_scatter_plot needs x-axis params to have a unique key"))
             in
          if not (XList.same_items keys)
-            then Pbench.error "Mk_scatter_plot needs x-axis params to have a unique key";
+            then Central.error "Mk_scatter_plot needs x-axis params to have a unique key";
          (List.hd keys, values)
          in
       let series = ~~ List.map envs_series (build_serie env x_key x_values results_charts) in
@@ -116,7 +116,7 @@ let call' args results_global =
         match get_xaxis_label_opt args, get_xlabel_opt args with
         | None, None -> x_key
         | Some s, None | None, Some s -> s
-        | Some _s1, Some s2 -> Pbench.warning "multiple settings for xlabel"; s2
+        | Some _s1, Some s2 -> Central.warning "multiple settings for xlabel"; s2
         in
       Scatter_plot.([
          Chart_opt [ Chart.Title title_chart ];
@@ -135,7 +135,7 @@ let call' args results_global =
             let chart_opt = Scatter_plot.get_chart_opt scatter_plot in
             add_chart ([Chart.Rscript rscript] @ chart_opt)
          with Chart.Cannot_build s ->
-            Pbench.warning (sprintf "unable to build chart for %s: %s\n" (Chart.get_title (Scatter_plot.get_chart_opt scatter_plot)) s)
+            Central.warning (sprintf "unable to build chart for %s: %s\n" (Chart.get_title (Scatter_plot.get_chart_opt scatter_plot)) s)
       )) in
    Chart.build (get_output args) charts
 

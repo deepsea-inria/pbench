@@ -37,4 +37,4 @@ let legend_pos_of_string = function
    | "right" -> Right
    | "center" -> Center
    | "nowhere" -> Nowhere
-   | _ -> Pbench.error "invalid name for legend position"
+   | _ -> Central.error "invalid name for legend position"

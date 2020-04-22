@@ -45,7 +45,7 @@ let string_of_value = function
    | Vint n -> string_of_int n
    | Vfloat x -> string_of_float x
    | Vstring s -> s (* for debugging: sprintf "'%s'" s *)
-   | _ -> Pbench.error "unsupported value type for argument_of_param"
+   | _ -> Central.error "unsupported value type for argument_of_param"
 
 (** [is_ghost_key k] computes whether [k] is a ghost key, i.e.,
     its name starts with "!" *)
@@ -118,7 +118,7 @@ let lookup e k =
 let get e k =
    try lookup e k
    with Not_found -> (* raise (Key_not_found_in_env k (XList.keys e)) *)
-     Pbench.error (sprintf "Env.lookup: not found key '%s' in env:\n %s" k (to_string e))
+     Central.error (sprintf "Env.lookup: not found key '%s' in env:\n %s" k (to_string e))
 
 (** Adding a key-value binding *)
 
@@ -130,7 +130,7 @@ let add e k v =
 let append e1 e2 =
    ~~ List.iter e2 (fun (k,_v) ->
       if List.mem_assoc k e1
-         then Pbench.error (Printf.sprintf "Shadowing in the environment for key %s in append environments:\n-- %s\n-- %s" k (to_string e1) (to_string e2)));
+         then Central.error (Printf.sprintf "Shadowing in the environment for key %s in append environments:\n-- %s\n-- %s" k (to_string e1) (to_string e2)));
    e1 @ e2
 
 (** Concatenation of a list params (assumes distinct keys) *)

@@ -44,7 +44,7 @@ let colors_default =
 (** Declare 'cols' to be a list of nb colors given by RGB code *)
 
 let colors_define color_codes nb =
-  if nb > List.length color_codes then Pbench.error (sprintf "Rtool.colors_define: too many different colors requested %d" nb);
+  if nb > List.length color_codes then Central.error (sprintf "Rtool.colors_define: too many different colors requested %d" nb);
   let codes = XList.take nb color_codes in
   sprintf "cols <- as.vector(c(%s))" (XList.to_string "," (fun x -> sprintf "'%s'" x) codes)
 
@@ -75,8 +75,8 @@ let string_of_legend_pos = Legend.(function
    | Left -> "left"
    | Right -> "right"
    | Center -> "center"
-   | Outside_below -> Pbench.error "Outside_below not available for legend in this type of plot"
-   | Nowhere -> Pbench.error "Nowhere not available for legend in this type of plot"
+   | Outside_below -> Central.error "Outside_below not available for legend in this type of plot"
+   | Nowhere -> Central.error "Nowhere not available for legend in this type of plot"
    )
 
 (** Builds a R script that generates an image to store the content
@@ -104,7 +104,7 @@ let wrap_image rscript dimensions basename extension =
 let execute rscript rfilename =
    XFile.put_contents rfilename rscript;
    let cmd = sprintf "R --silent --file=%s > null" rfilename in
-   Pbench.system cmd
+   Central.system cmd
    (* let succes = XSys.command_as_bool cmd in
    if not succes
-      then Pbench.warning (sprintf "failure on executing R on file: %s\n" rfilename)*)
+      then Central.warning (sprintf "failure on executing R on file: %s\n" rfilename)*)

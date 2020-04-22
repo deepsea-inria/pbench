@@ -16,7 +16,7 @@ type arg =
 
 let get_runs_opt args =
    let args2 = XOpt.projects args (function Runs_opt x -> Some x | _ -> None) in
-   ~~ List.iter args2 (function Runs.Verbose _x -> () | _ -> Pbench.error "Mk_runs does not accept runs_opt other than 'verbose'");
+   ~~ List.iter args2 (function Runs.Verbose _x -> () | _ -> Central.error "Mk_runs does not accept runs_opt other than 'verbose'");
    args2
 let get_output args = XOpt.get_default args (function Output x -> Some x | _ -> None) "results.txt"
 let get_virtual args = XOpt.get_default args (function Virtual x -> Some x | _ -> None) false
@@ -31,7 +31,7 @@ let call args =
    let is_virtual = get_virtual args in
    let output_file = get_output args in
    let runs = get_runs args in
-   if runs < 0 then Pbench.error "runs should be non-negative";
+   if runs < 0 then Central.error "runs should be non-negative";
    let build_runs e = (* todo: cleanup this code, by filtering special keys all at once *)
       let (e_prog,e) = Env.partition (fun k -> k = "prog") e in
       let (e_timeout,e) = Env.partition (fun k -> k = "timeout") e in
@@ -46,11 +46,11 @@ let call args =
          | Some n -> n
          | _ ->
             try Env.as_int (Env.lookup e_timeout "timeout")
-            with Not_found -> -1 (* Pbench.error "missing 'timeout' in args for run" *)
+            with Not_found -> -1 (* Central.error "missing 'timeout' in args for run" *)
          in
       let prog =
          try Env.as_string (Env.lookup e_prog "prog")
-         with Not_found -> Pbench.error "missing 'prog' in args for run" in
+         with Not_found -> Central.error "missing 'prog' in args for run" in
       let prog = (* add the leading './' if appropriate *)
         let dot_slash_prog = "./" ^ prog in
         if not (String.contains prog '/')
@@ -72,7 +72,7 @@ let call args =
       if not is_virtual
          then XFile.put_contents output_file ""
       in
-   let machine = Pbench.get_localhost_name() in
+   let machine = Central.get_localhost_name() in
    let equiv existing_e requested_e =
       let requested_e = Env.add requested_e "machine" (Env.Vstring machine) in
       let requested_e = Env.filter (fun k -> not (Env.is_ghost_key k) && k <> "timeout" && k <> "runs") requested_e in
@@ -83,11 +83,11 @@ let call args =
       | Normal ->
          clear_output_file();
          if requested_es = []
-            then Pbench.warning (sprintf "No run were requested.");
+            then Central.warning (sprintf "No run were requested.");
          requested_es
       | Complete ->
          if runs > 1
-            then Pbench.warning "Interaction of --complete and -runs n for n > 1 is not properly supported.";
+            then Central.warning "Interaction of --complete and -runs n for n > 1 is not properly supported.";
          if not (Sys.file_exists output_file) then clear_output_file();
          let results = Results.from_file_or_empty output_file in
          let existing_es = Results.get_input_envs results in
@@ -97,21 +97,21 @@ let call args =
             (* TODO: handle properly the interaction between --complete and -runs n *)
          (* for debugging:
          printf "existing ==>\n";
-         ~~ List.iter existing_es  (fun e -> Pbench.info (Env.to_string e));
+         ~~ List.iter existing_es  (fun e -> Central.info (Env.to_string e));
          printf "requested ==>\n";
-         ~~ List.iter requested_es  (fun e -> Pbench.info (Env.to_string e));
+         ~~ List.iter requested_es  (fun e -> Central.info (Env.to_string e));
          printf "kept ==>\n";
-         ~~ List.iter keep_es  (fun e -> Pbench.info (Env.to_string e));
+         ~~ List.iter keep_es  (fun e -> Central.info (Env.to_string e));
          exit 1; *)
          if keep_es = []
-            then Pbench.info (sprintf "No runs needed to complete %s." output_file);
+            then Central.info (sprintf "No runs needed to complete %s." output_file);
          keep_es
       | Append ->
          ();
          requested_es
       | Replace ->
          if runs > 1
-            then Pbench.warning "Interaction of --replace and -runs n for n > 1 is not properly supported.";
+            then Central.warning "Interaction of --replace and -runs n for n > 1 is not properly supported.";
          if not (Sys.file_exists output_file) then clear_output_file();
          let results = Results.from_file_or_empty output_file in
          let keep_results = ~~ List.filter results (fun r ->
@@ -127,7 +127,7 @@ let call args =
       Runs.({ (List.hd bs) with run_attempts = 1; run_dummy = true }) in
    let bs2 = if (get_dummy args) && bs <> [] then mk_dummy()::bs else bs in
    Runs.call (Runs.([Output output_file; Virtual is_virtual; Runs bs2]) @ (get_runs_opt args));
-   Pbench.info (sprintf "Results written to %s." output_file)
+   Central.info (sprintf "Results written to %s." output_file)
 
 
 (************************************************************************)
@@ -140,7 +140,7 @@ let mode_of_string = function
    | "append" -> Append
    | "complete" -> Complete
    | "replace" -> Replace
-   | _ -> Pbench.error "Mk_runs.string_of_mode: invalid argument (not one of 'normal', 'append', 'complete' or 'replace'.)"
+   | _ -> Central.error "Mk_runs.string_of_mode: invalid argument (not one of 'normal', 'append', 'complete' or 'replace'.)"
 
 let mode_string_from_command_line key =
    let m = XCmd.parse_optional_string key in
@@ -149,7 +149,7 @@ let mode_string_from_command_line key =
    let mc = XCmd.mem_flag "complete" in
    let mr = XCmd.mem_flag "replace" in
    if XList.count (fun x -> x) [mn; ma; mr; mc; m<>None] > 1
-      then Pbench.error "only one mode should be specified among: normal, append, complete, replace.";
+      then Central.error "only one mode should be specified among: normal, append, complete, replace.";
    match m with
    | Some mode -> mode
    | None ->

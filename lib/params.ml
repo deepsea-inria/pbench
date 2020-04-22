@@ -157,7 +157,7 @@ let to_envs m =
 let to_env m =
    match to_envs m with
    | [e] -> e
-   | _ -> Pbench.error ("to_env fails, because nb env is not one in: "  ^
+   | _ -> Central.error ("to_env fails, because nb env is not one in: "  ^
             try to_string m with _ -> "<params could not be evaluated>")
 
 (** Map a function to all the environments associated with a params

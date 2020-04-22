@@ -1,7 +1,7 @@
 (executable
   (public_name prun)
   (libraries str unix xlib pbench)
-  (flags -open Xlib)
+  (flags -open Xlib -open Pbench)
   (package pbench)
 )
 
