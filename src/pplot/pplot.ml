@@ -3,8 +3,6 @@ open XBase
 (************************************************************************)
 (** Common parameters *)
 
-let arg_width = XCmd.parse_or_default_float "width" 6.0
-let arg_height = XCmd.parse_or_default_float "height" 6.0
 let arg_title = XCmd.parse_or_default_string "title" ""
 let arg_input = XCmd.parse_or_default_string "input" "results.txt"
 let arg_output = XCmd.parse_or_default_string "output" "plots.pdf"
