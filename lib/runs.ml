@@ -47,11 +47,12 @@ let bench_command result_file b =
    let args = XList.to_string " " (fun (k,v) -> sprintf "-%s %s" k v) b.run_args in
    if b.run_timeout <= 0 && b.run_timeout <> cst_no_timeout
     then Central.error "invalid value for timeout (shoud be positive or cst_no_timeout)";
-   let timeout_path = sprintf "prun_timeout" in
+   (* We assume that the [timeout] command exists.
+      Its syntax must be [timeout <duration> <command>]. *)
    let timeout =
       if b.run_timeout = cst_no_timeout
         then ""
-        else sprintf "%s %d" timeout_path b.run_timeout
+        else sprintf "timeout %d" b.run_timeout
       in
    (* let utime = sprintf "/usr/bin/time -f %s %s" "\"fUsertime %U\"" in *)
    let disp_cmd = sprintf "%s %s" prog args in

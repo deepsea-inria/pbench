@@ -1,8 +1,3 @@
-* The opam description files currently do not install prun_timeout,
-  because it is not known to dune. Either prun_timeout needs to be
-  built by dune, or the opam description files need additional
-  install/uninstall sections.
-
 * should make this work:
 
     prun speedup -baseline "examples/others/speedup.sh -algo foo -proc 0 -n 1" -baseline-runs 1 -parallel "examples/others/speedup.sh -algo bar -proc 1,2,3,4 -n 1,5" -runs 2

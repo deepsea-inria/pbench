@@ -39,8 +39,10 @@ Requirements
 ### Build dependencies
 
 You need [OCaml](http://www.ocaml.org/) (version 4.02.3 or greater) and
-the `dune` build system. To build the `prun_timeout`, the GNU C compiler
-[GCC](http://gcc.gnu.org/) is required.
+the `dune` build system.
+
+At runtime, a `timeout` command is needed. Such a command can be found
+in GNU Coreutils.
 
 The `pbench` plot generator requires that recent versions of
 [R](http://www.r-project.org/) and LaTeX be installed on the

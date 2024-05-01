@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
     [ ocaml gcc R myTexlive makeWrapper ] ++ docs;
 
   buildPhase =
-    let docs = 
+    let docs =
       if buildDocs then ''
         make pplot.pdf prun.pdf
       ''
@@ -48,10 +48,10 @@ stdenv.mkDerivation rec {
       '';
     in
     ''
-    mkdir -p $out 
-    cp *.ml Makefile Makefile_common prun_timeout.c $out/
+    mkdir -p $out
+    cp *.ml Makefile Makefile_common $out/
     mkdir -p $out/bin/
-    cp prun pplot prun.pbench pplot.pbench prun_timeout $out/bin/
+    cp prun pplot prun.pbench pplot.pbench $out/bin/
     wrapProgram $out/bin/pplot \
       --prefix PATH ":" ${myTexlive}/bin \
       --prefix PATH ":" ${R}/bin
