@@ -24,15 +24,15 @@ let coma_to_newlines s =
 (* \usepackage[margin=0cm, paperwidth=23.5cm, paperheight=23.1cm]{geometry} *)
 
 let basic_document contents =
-   "\\documentclass[12pt]{article}\n \
-   \\usepackage{graphicx}\n \
-   \\usepackage{verbatim}\n \
-   \\usepackage{amssymb}\n \
-   \\usepackage{dcolumn}\n \
-   \\newcolumntype{d}[1]{D{.}{.}{#1}}\n \
-   \\usepackage[margin=0.5cm, paperwidth=30cm, paperheight=30cm]{geometry}
-   \\setlength{\\parindent}{0pt}
-   \\pagestyle{empty}\n \
+   "\\documentclass[12pt]{article}\n\
+   \\usepackage{graphicx}\n\
+   \\usepackage{verbatim}\n\
+   \\usepackage{amssymb}\n\
+   \\usepackage{dcolumn}\n\
+   \\newcolumntype{d}[1]{D{.}{.}{#1}}\n\
+   \\usepackage[margin=0.5cm, paperwidth=30cm, paperheight=30cm]{geometry}\n\
+   \\setlength{\\parindent}{0pt}\n\
+   \\pagestyle{empty}\n\
    \\begin{document}\n"
    ^ contents
    ^ "\\end{document}\n"
