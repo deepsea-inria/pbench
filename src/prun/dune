@@ -6,6 +6,18 @@
 
 (install
   (section doc)
-  (files prun.md)
+  (files prun.md prun.pdf prun.html)
   (package pbench)
+)
+
+(rule
+  (target prun.pdf)
+  (deps prun.md)
+  (action (run pandoc -s -o %{target} %{deps}))
+)
+
+(rule
+  (target prun.html)
+  (deps prun.md)
+  (action (run pandoc --mathjax -s -o %{target} %{deps}))
 )

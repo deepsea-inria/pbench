@@ -6,6 +6,18 @@
 
 (install
   (section doc)
-  (files pplot.md)
+  (files pplot.md pplot.pdf pplot.html)
   (package pbench)
+)
+
+(rule
+  (target pplot.pdf)
+  (deps pplot.md)
+  (action (run pandoc -s -o %{target} %{deps}))
+)
+
+(rule
+  (target pplot.html)
+  (deps pplot.md)
+  (action (run pandoc --mathjax -s -o %{target} %{deps}))
 )
