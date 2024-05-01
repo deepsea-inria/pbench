@@ -106,7 +106,6 @@ let default () =
   if arguments_shared = []
     then Central.warning "no benchmark arguments provided";
   let args_shared = args_or_arguments arguments_shared in
-  let args_shared = args_shared in
   Mk_runs.(call (common_options() @ [
     Args args_shared;
     Runs arg_runs;
