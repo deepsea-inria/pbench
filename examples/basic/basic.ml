@@ -29,7 +29,7 @@ let select make run check plot =
          then "make"::arg_skips
          else arg_skips
       in
-   Pbench.execute_from_only_skip arg_onlys arg_skips [
+   Central.execute_from_only_skip arg_onlys arg_skips [
       "make", make;
       "run", run;
       "check", check;
@@ -41,8 +41,9 @@ let nothing () = ()
 (*****************************************************************************)
 (** Files and binaries *)
 
-let build path bs is_virtual =
-   system (sprintf "make -C %s -j %s" path (String.concat " " bs)) is_virtual
+let build is_virtual =
+  ignore is_virtual;
+  ignore system
 
 let file_results exp_name =
   Printf.sprintf "results_%s.txt" exp_name
@@ -69,7 +70,7 @@ let mk_algos = mk_list string "algo" ["recursive";"cached"]
 let mk_ns = mk_list int "n" [30;35;39]
 
 let make() =
-  build "." [prog] arg_virtual_build
+  build arg_virtual_build
 
 let run() =
   Mk_runs.(call (run_modes @ [
@@ -115,5 +116,5 @@ let _ =
     "fib", ExpFib.all;
   ]
   in
-  Pbench.execute_from_only_skip arg_actions [] bindings;
+  Central.execute_from_only_skip arg_actions [] bindings;
   ()

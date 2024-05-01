@@ -1,3 +1,5 @@
 (library
   (public_name xlib)
+  (libraries str unix)
+  (wrapped false)
 )

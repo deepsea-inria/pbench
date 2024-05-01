@@ -1,0 +1,5 @@
+_results
+results_*.txt
+plots_*.pdf
+*.log
+fib

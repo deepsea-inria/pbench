@@ -1,5 +1,5 @@
 (library
   (public_name pbench)
-  (libraries xlib)
-  (flags -open Xlib)
+  (libraries unix xlib)
+  (wrapped false)
 )

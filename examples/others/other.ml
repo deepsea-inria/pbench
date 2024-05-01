@@ -250,7 +250,7 @@ let third() =
          from_env (Env.filter_keys ["n"; "m"] env)
          (* here we select only the baseline runs with matching n and m arguments *)
        ) in
-    if baseline_results = [] then Pbench.warning ("no results for baseline: " ^ Env.to_string env);
+    if baseline_results = [] then Central.warning ("no results for baseline: " ^ Env.to_string env);
     let v = Results.get_mean_of "exectime" results in
     let b = Results.get_mean_of "exectime" baseline_results in
     v /. b

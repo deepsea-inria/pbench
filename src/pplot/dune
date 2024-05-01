@@ -1,7 +1,6 @@
 (executable
   (public_name pplot)
   (libraries str unix xlib pbench)
-  (flags -open Xlib -open Pbench)
   (package pbench)
 )
 
