@@ -103,7 +103,7 @@ let wrap_image rscript dimensions basename extension =
 
 let execute rscript rfilename =
    XFile.put_contents rfilename rscript;
-   let cmd = sprintf "R --silent --file=%s > null" rfilename in
+   let cmd = sprintf "R --silent --file=%s > R.log" rfilename in
    Central.system cmd
    (* let succes = XSys.command_as_bool cmd in
    if not succes

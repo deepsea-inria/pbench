@@ -95,6 +95,6 @@ let build output_file (charts : t list) =
       then Central.warning "no plots to output!\n";
    XFile.put_contents (folder ^ "/plots.tex") latex_plots;
    XFile.put_lines (folder ^ "/list.tex") (List.rev !latexs);
-   Central.system (sprintf "cd %s; pdflatex -interaction=batchmode plots.tex > null" folder);
+   Central.system (sprintf "cd %s; pdflatex -interaction=batchmode plots.tex > pdflatex.log" folder);
    Central.system (sprintf "mv %s/plots.pdf %s" folder output_file);
    Central.info (sprintf "Produced file %s." output_file)

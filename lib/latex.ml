@@ -43,7 +43,7 @@ let build output_file tex_source =
    Central.ensure_results_folder_exists();
    let folder = Central.get_results_folder() in
    XFile.put_contents (folder ^ "/latex.tex") tex_source;
-   Central.system (sprintf "cd %s; pdflatex -interaction=batchmode latex.tex > null" folder);
+   Central.system (sprintf "cd %s; pdflatex -interaction=batchmode latex.tex > pdflatex.log" folder);
    Central.system (sprintf "mv %s/latex.pdf %s" folder output_file);
    Central.info (sprintf "Produced file %s." output_file)
 
