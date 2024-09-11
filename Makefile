@@ -26,6 +26,12 @@ release:
 	@ make install
 # Check the current package description.
 	@ opam lint
+# Check if this is the master branch.
+	@ if [ "$$(git symbolic-ref --short HEAD)" != "master" ] ; then \
+	  echo "Error: this is not the master branch." ; \
+	  git branch ; \
+	  exit 1 ; \
+	fi
 # Check if everything has been committed.
 	@ if [ -n "$$(git status --porcelain)" ] ; then \
 	    echo "Error: there remain uncommitted changes." ; \
