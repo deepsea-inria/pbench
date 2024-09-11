@@ -1,11 +1,11 @@
 (executable
   (name basic)
   (modules basic)
-  (libraries str unix xlib pbench)
+  (libraries str unix pbench_xlib pbench)
 )
 
 (executable
   (name fib)
   (modules fib)
-  (libraries str unix xlib num)
+  (libraries str unix pbench_xlib num)
 )

@@ -2,7 +2,7 @@
 (generate_opam_files true)
 
 (package
-  (name xlib)
+  (name pbench_xlib)
   (authors
     "Arthur Charguéraud <arthur.chargueraud@inria.fr>"
     "Mike Rainey <me@mike-rainey.site>"

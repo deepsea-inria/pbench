@@ -1,6 +1,6 @@
 (executable
   (public_name prun)
-  (libraries str unix xlib pbench)
+  (libraries str unix pbench_xlib pbench)
   (package pbench)
 )
 

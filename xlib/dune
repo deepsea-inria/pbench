@@ -1,5 +1,5 @@
 (library
-  (public_name xlib)
+  (public_name pbench_xlib)
   (libraries str unix)
   (wrapped false)
 )
