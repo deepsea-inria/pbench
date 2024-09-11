@@ -14,6 +14,7 @@
   (homepage https://github.com/deepsea-inria/pbench)
   (bug_reports https://github.com/deepsea-inria/pbench/-/issues)
   (synopsis "An eXtension library")
+  (license "Apache-2.0")
   (depends
     ocaml
     dune
@@ -33,7 +34,7 @@
   (homepage https://github.com/deepsea-inria/pbench)
   (bug_reports https://github.com/deepsea-inria/pbench/-/issues)
   (synopsis "A parallel algorithm benchmarking toolkit")
-  (license "Apache")
+  (license "Apache-2.0")
   (depends
     ocaml
     dune
