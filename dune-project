@@ -3,6 +3,7 @@
 
 (package
   (name pbench_xlib)
+  (version 1.0)
   (authors
     "Arthur Charguéraud <arthur.chargueraud@inria.fr>"
     "Mike Rainey <me@mike-rainey.site>"
@@ -23,6 +24,7 @@
 
 (package
   (name pbench)
+  (version 1.0)
   (authors
     "Arthur Charguéraud <arthur.chargueraud@inria.fr>"
     "Mike Rainey <me@mike-rainey.site>"
