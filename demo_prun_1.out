@@ -1,0 +1,1945 @@
+
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 10000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.506344
+repetitions      1327
+cycles       4.759089
+nanos        1.694917
+major        0.000100
+minor        0.000009
+promoted     0.000009
+allocated    0.000100
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 10000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.640920
+repetitions        33
+cycles      522.535426
+nanos       186.090469
+major       29.142238
+minor        0.001516
+promoted     0.001516
+allocated   29.142238
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 10000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.573506
+repetitions        52
+cycles      289.819898
+nanos       103.213604
+major       22.825944
+minor        0.000040
+promoted     0.000040
+allocated   22.825944
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 10000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.533965
+repetitions       168
+cycles      30.955888
+nanos       11.024546
+major        0.000118
+minor        0.000025
+promoted     0.000025
+allocated    0.000118
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 20000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.505677
+repetitions       997
+cycles       5.195479
+nanos        1.850441
+major        0.000102
+minor        0.000011
+promoted     0.000011
+allocated    0.000102
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 20000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.534419
+repetitions        25
+cycles      570.427180
+nanos       203.145313
+major       30.538995
+minor        0.001473
+promoted     0.001473
+allocated   30.538995
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 20000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.620620
+repetitions        52
+cycles      310.344030
+nanos       110.522509
+major       24.036378
+minor        0.000045
+promoted     0.000045
+allocated   24.036378
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 20000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.514969
+repetitions        88
+cycles      40.201354
+nanos       14.317280
+major        0.000126
+minor        0.000032
+promoted     0.000032
+allocated    0.000126
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 40000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.506550
+repetitions       525
+cycles       7.974177
+nanos        2.840265
+major        0.000107
+minor        0.000015
+promoted     0.000015
+allocated    0.000107
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 40000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.573974
+repetitions        18
+cycles      845.296777
+nanos       301.033523
+major       35.499951
+minor        0.002862
+promoted     0.002862
+allocated   35.499951
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 40000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.671626
+repetitions        33
+cycles      520.097658
+nanos       185.221614
+major       33.590997
+minor        0.000045
+promoted     0.000045
+allocated   33.590997
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 40000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.625200
+repetitions        42
+cycles      75.556784
+nanos       26.908545
+major        0.000138
+minor        0.000043
+promoted     0.000043
+allocated    0.000138
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 80000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.513277
+repetitions       297
+cycles      12.142142
+nanos        4.324857
+major        0.000111
+minor        0.000019
+promoted     0.000019
+allocated    0.000111
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 80000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.635354
+repetitions        18
+cycles      914.767095
+nanos       325.773689
+major       40.661744
+minor        0.003550
+promoted     0.003550
+allocated   40.661744
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 80000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.646833
+repetitions        33
+cycles      485.550677
+nanos       172.918204
+major       33.669000
+minor        0.000044
+promoted     0.000044
+allocated   33.669000
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 80000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.673175
+repetitions        25
+cycles      81.216300
+nanos       28.927040
+major        0.000148
+minor        0.000052
+promoted     0.000052
+allocated    0.000148
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 160000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.531650
+repetitions       168
+cycles      17.294325
+nanos        6.159785
+major        0.000118
+minor        0.000025
+promoted     0.000025
+allocated    0.000118
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 160000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.608567
+repetitions        18
+cycles      826.501011
+nanos       294.340849
+major       43.153650
+minor        0.003606
+promoted     0.003606
+allocated   43.153650
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 160000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.524189
+repetitions        25
+cycles      471.838327
+nanos       168.035603
+major       33.838054
+minor        0.000050
+promoted     0.000050
+allocated   33.838054
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 160000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.701138
+repetitions        18
+cycles      90.651921
+nanos       32.285319
+major        0.000154
+minor        0.000058
+promoted     0.000058
+allocated    0.000154
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 320000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.527102
+repetitions       102
+cycles      19.960163
+nanos        7.109291
+major        0.000124
+minor        0.000031
+promoted     0.000031
+allocated    0.000124
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 320000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.512872
+repetitions        12
+cycles      935.888179
+nanos       333.297054
+major       44.597710
+minor        0.003541
+promoted     0.003541
+allocated   44.597710
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 320000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.542309
+repetitions        18
+cycles      613.923217
+nanos       218.635268
+major       35.105424
+minor        0.000060
+promoted     0.000060
+allocated   35.105424
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 320000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.578299
+repetitions         7
+cycles      115.788797
+nanos       41.237559
+major        0.000173
+minor        0.000074
+promoted     0.000074
+allocated    0.000173
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 640000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.522797
+repetitions        52
+cycles      27.315855
+nanos        9.729266
+major        0.000135
+minor        0.000040
+promoted     0.000040
+allocated    0.000135
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 640000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.725223
+repetitions        12
+cycles      1204.778352
+nanos       429.054300
+major       49.643433
+minor        0.005990
+promoted     0.005990
+allocated   49.643433
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 640000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.531299
+repetitions        12
+cycles      789.489593
+nanos       281.159878
+major       44.683032
+minor        0.000071
+promoted     0.000071
+allocated   44.683032
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 640000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     1.120865
+repetitions         7
+cycles      186.120429
+nanos       66.284793
+major        0.000173
+minor        0.000074
+promoted     0.000074
+allocated    0.000173
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 2000000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.562045
+repetitions        18
+cycles      28.905417
+nanos       10.296239
+major        0.000154
+minor        0.000058
+promoted     0.000058
+allocated    0.000154
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 2000000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.781434
+repetitions         7
+cycles      1562.574926
+nanos       556.476116
+major       56.357521
+minor        0.006354
+promoted     0.006354
+allocated   56.357521
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 2000000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.641824
+repetitions         7
+cycles      1032.822203
+nanos       367.817879
+major       44.410599
+minor        0.000080
+promoted     0.000080
+allocated   44.410599
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 2000000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     1.628324
+repetitions         3
+cycles      354.223033
+nanos       126.151244
+major        0.000187
+minor        0.000087
+promoted     0.000087
+allocated    0.000187
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 8000000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.840153
+repetitions         7
+cycles      31.644281
+nanos       11.272090
+major        0.000173
+minor        0.000074
+promoted     0.000074
+allocated    0.000173
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 8000000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.983937
+repetitions         3
+cycles      2177.105403
+nanos       775.325298
+major       59.004827
+minor        0.005137
+promoted     0.005137
+allocated   59.004827
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 8000000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.912055
+repetitions         3
+cycles      1508.043420
+nanos       537.056128
+major       46.785347
+minor        0.000090
+promoted     0.000090
+allocated   46.785347
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 8000000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     7.692013
+repetitions         3
+cycles      520.984123
+nanos       185.540517
+major        0.000187
+minor        0.000087
+promoted     0.000087
+allocated    0.000187
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 10000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.510796
+repetitions      1327
+cycles       4.816470
+nanos        1.715397
+major        0.000100
+minor        0.000009
+promoted     0.000009
+allocated    0.000100
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 10000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.512674
+repetitions        25
+cycles      551.832410
+nanos       196.522999
+major       29.142243
+minor        0.001508
+promoted     0.001508
+allocated   29.142243
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 10000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.571923
+repetitions        52
+cycles      286.882211
+nanos       102.167130
+major       22.825944
+minor        0.000040
+promoted     0.000040
+allocated   22.825944
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 10000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.550338
+repetitions       150
+cycles      35.629819
+nanos       12.689304
+major        0.000119
+minor        0.000026
+promoted     0.000026
+allocated    0.000119
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 20000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.526365
+repetitions       700
+cycles       8.268415
+nanos        2.944936
+major        0.000104
+minor        0.000013
+promoted     0.000013
+allocated    0.000104
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 20000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.501118
+repetitions        18
+cycles      743.137523
+nanos       264.652305
+major       30.539004
+minor        0.001448
+promoted     0.001448
+allocated   30.539004
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 20000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.586387
+repetitions        42
+cycles      362.188737
+nanos       128.985757
+major       24.036378
+minor        0.000049
+promoted     0.000049
+allocated   24.036378
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 20000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.529949
+repetitions        88
+cycles      40.321795
+nanos       14.360439
+major        0.000126
+minor        0.000032
+promoted     0.000032
+allocated    0.000126
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 40000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.503157
+repetitions       558
+cycles       7.493993
+nanos        2.669134
+major        0.000106
+minor        0.000014
+promoted     0.000014
+allocated    0.000106
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 40000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.621566
+repetitions        25
+cycles      657.789730
+nanos       234.257221
+major       35.499958
+minor        0.002890
+promoted     0.002890
+allocated   35.499958
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 40000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.548113
+repetitions        33
+cycles      426.065001
+nanos       151.734135
+major       33.590997
+minor        0.000045
+promoted     0.000045
+allocated   33.590997
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 40000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.517758
+repetitions        52
+cycles      55.140215
+nanos       19.637300
+major        0.000135
+minor        0.000040
+promoted     0.000040
+allocated    0.000135
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 80000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.519611
+repetitions       348
+cycles       9.990840
+nanos        3.558555
+major        0.000110
+minor        0.000018
+promoted     0.000018
+allocated    0.000110
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 80000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.534731
+repetitions        18
+cycles      764.470397
+nanos       272.249513
+major       40.661744
+minor        0.003550
+promoted     0.003550
+allocated   40.661744
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 80000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.566459
+repetitions        33
+cycles      420.247791
+nanos       149.662495
+major       33.669000
+minor        0.000044
+promoted     0.000044
+allocated   33.669000
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 80000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.659971
+repetitions        33
+cycles      70.550808
+nanos       25.126573
+major        0.000143
+minor        0.000047
+promoted     0.000047
+allocated    0.000143
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 160000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.508669
+repetitions       187
+cycles      13.450964
+nanos        4.791002
+major        0.000116
+minor        0.000024
+promoted     0.000024
+allocated    0.000116
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 160000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.603838
+repetitions        18
+cycles      821.517962
+nanos       292.565293
+major       43.153650
+minor        0.003606
+promoted     0.003606
+allocated   43.153650
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 160000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.529083
+repetitions        25
+cycles      467.706992
+nanos       166.564083
+major       33.838054
+minor        0.000050
+promoted     0.000050
+allocated   33.838054
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 160000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.701048
+repetitions        18
+cycles      89.128503
+nanos       31.742652
+major        0.000154
+minor        0.000058
+promoted     0.000058
+allocated    0.000154
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 320000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.544782
+repetitions       102
+cycles      20.568476
+nanos        7.325925
+major        0.000124
+minor        0.000031
+promoted     0.000031
+allocated    0.000124
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 320000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.740321
+repetitions        18
+cycles      920.926330
+nanos       327.967935
+major       44.597700
+minor        0.003557
+promoted     0.003557
+allocated   44.597700
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 320000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.517160
+repetitions        18
+cycles      572.635053
+nanos       203.931861
+major       35.105424
+minor        0.000060
+promoted     0.000060
+allocated   35.105424
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 320000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.562677
+repetitions         7
+cycles      117.214064
+nanos       41.745731
+major        0.000173
+minor        0.000074
+promoted     0.000074
+allocated    0.000173
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 640000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.519671
+repetitions        52
+cycles      24.221680
+nanos        8.627176
+major        0.000135
+minor        0.000040
+promoted     0.000040
+allocated    0.000135
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 640000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.665632
+repetitions        12
+cycles      1095.145587
+nanos       390.011867
+major       49.643433
+minor        0.005990
+promoted     0.005990
+allocated   49.643433
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 640000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.537449
+repetitions        12
+cycles      805.613681
+nanos       286.901593
+major       44.683032
+minor        0.000071
+promoted     0.000071
+allocated   44.683032
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 640000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     1.118556
+repetitions         7
+cycles      180.920863
+nanos       64.433643
+major        0.000173
+minor        0.000074
+promoted     0.000074
+allocated    0.000173
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 2000000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.548653
+repetitions        18
+cycles      28.967905
+nanos       10.317961
+major        0.000154
+minor        0.000058
+promoted     0.000058
+allocated    0.000154
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 2000000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.782327
+repetitions         7
+cycles      1562.652250
+nanos       556.503705
+major       56.357521
+minor        0.006354
+promoted     0.006354
+allocated   56.357521
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 2000000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.638921
+repetitions         7
+cycles      1030.354869
+nanos       366.938114
+major       44.410599
+minor        0.000080
+promoted     0.000080
+allocated   44.410599
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 2000000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     1.639805
+repetitions         3
+cycles      370.127637
+nanos       131.815275
+major        0.000187
+minor        0.000087
+promoted     0.000087
+allocated    0.000187
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 8000000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.829149
+repetitions         7
+cycles      31.159839
+nanos       11.098725
+major        0.000173
+minor        0.000074
+promoted     0.000074
+allocated    0.000173
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 8000000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.995851
+repetitions         3
+cycles      2179.185537
+nanos       776.066780
+major       59.004827
+minor        0.005137
+promoted     0.005137
+allocated   59.004827
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 8000000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.918356
+repetitions         3
+cycles      1488.550530
+nanos       530.116558
+major       46.785347
+minor        0.000090
+promoted     0.000090
+allocated   46.785347
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 8000000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     7.246317
+repetitions         3
+cycles      506.451250
+nanos       180.363655
+major        0.000187
+minor        0.000087
+promoted     0.000087
+allocated    0.000187
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 10000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.515719
+repetitions      1099
+cycles       5.791619
+nanos        2.062739
+major        0.000102
+minor        0.000010
+promoted     0.000010
+allocated    0.000102
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 10000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.554762
+repetitions        25
+cycles      596.329534
+nanos       212.369728
+major       29.142243
+minor        0.001508
+promoted     0.001508
+allocated   29.142243
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 10000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.571130
+repetitions        42
+cycles      352.172758
+nanos       125.418845
+major       22.825943
+minor        0.000043
+promoted     0.000043
+allocated   22.825943
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 10000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.571656
+repetitions       133
+cycles      40.914754
+nanos       14.571032
+major        0.000121
+minor        0.000027
+promoted     0.000027
+allocated    0.000121
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 20000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.522872
+repetitions       663
+cycles       8.393273
+nanos        2.989402
+major        0.000105
+minor        0.000013
+promoted     0.000013
+allocated    0.000105
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 20000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.637867
+repetitions        25
+cycles      680.801494
+nanos       242.452431
+major       30.538995
+minor        0.001473
+promoted     0.001473
+allocated   30.538995
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 20000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.599922
+repetitions        52
+cycles      299.300784
+nanos       106.589840
+major       24.036378
+minor        0.000045
+promoted     0.000045
+allocated   24.036378
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 20000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.505967
+repetitions        88
+cycles      38.836857
+nanos       13.831556
+major        0.000126
+minor        0.000032
+promoted     0.000032
+allocated    0.000126
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 40000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.510317
+repetitions       592
+cycles       7.565328
+nanos        2.694541
+major        0.000106
+minor        0.000014
+promoted     0.000014
+allocated    0.000106
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 40000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.517529
+repetitions        18
+cycles      752.340793
+nanos       267.929766
+major       35.499951
+minor        0.002862
+promoted     0.002862
+allocated   35.499951
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 40000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.564938
+repetitions        33
+cycles      440.010945
+nanos       156.700394
+major       33.590997
+minor        0.000045
+promoted     0.000045
+allocated   33.590997
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 40000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.556065
+repetitions        52
+cycles      57.532925
+nanos       20.489784
+major        0.000135
+minor        0.000040
+promoted     0.000040
+allocated    0.000135
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 80000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.532745
+repetitions       322
+cycles      11.357997
+nanos        4.045482
+major        0.000111
+minor        0.000019
+promoted     0.000019
+allocated    0.000111
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 80000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.564929
+repetitions        18
+cycles      806.159867
+nanos       287.096235
+major       40.661744
+minor        0.003550
+promoted     0.003550
+allocated   40.661744
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 80000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.644569
+repetitions        33
+cycles      472.605118
+nanos       168.308345
+major       33.669000
+minor        0.000044
+promoted     0.000044
+allocated   33.669000
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 80000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.655907
+repetitions        33
+cycles      71.390713
+nanos       25.424957
+major        0.000143
+minor        0.000047
+promoted     0.000047
+allocated    0.000143
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 160000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.525370
+repetitions       187
+cycles      13.487862
+nanos        4.803943
+major        0.000116
+minor        0.000024
+promoted     0.000024
+allocated    0.000116
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 160000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.604802
+repetitions        18
+cycles      821.133574
+nanos       292.428467
+major       43.153650
+minor        0.003606
+promoted     0.003606
+allocated   43.153650
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 160000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.518528
+repetitions        25
+cycles      465.721729
+nanos       165.857220
+major       33.838054
+minor        0.000050
+promoted     0.000050
+allocated   33.838054
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 160000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.700186
+repetitions        18
+cycles      88.172668
+nanos       31.402508
+major        0.000154
+minor        0.000058
+promoted     0.000058
+allocated    0.000154
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 320000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.538586
+repetitions       102
+cycles      19.695746
+nanos        7.014882
+major        0.000124
+minor        0.000031
+promoted     0.000031
+allocated    0.000124
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 320000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.751265
+repetitions        18
+cycles      939.065047
+nanos       334.426827
+major       44.597700
+minor        0.003557
+promoted     0.003557
+allocated   44.597700
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 320000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.518773
+repetitions        18
+cycles      579.019245
+nanos       206.205712
+major       35.105424
+minor        0.000060
+promoted     0.000060
+allocated   35.105424
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 320000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.564640
+repetitions         7
+cycles      113.003374
+nanos       40.246419
+major        0.000173
+minor        0.000074
+promoted     0.000074
+allocated    0.000173
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 640000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.519357
+repetitions        52
+cycles      24.758186
+nanos        8.818232
+major        0.000135
+minor        0.000040
+promoted     0.000040
+allocated    0.000135
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 640000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.673494
+repetitions        12
+cycles      1113.710462
+nanos       396.623413
+major       49.643433
+minor        0.005990
+promoted     0.005990
+allocated   49.643433
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 640000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.543242
+repetitions        12
+cycles      807.020067
+nanos       287.402670
+major       44.683032
+minor        0.000071
+promoted     0.000071
+allocated   44.683032
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 640000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.504778
+repetitions         3
+cycles      184.041127
+nanos       65.544446
+major        0.000187
+minor        0.000087
+promoted     0.000087
+allocated    0.000187
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 2000000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.552253
+repetitions        18
+cycles      31.747838
+nanos       11.307531
+major        0.000154
+minor        0.000058
+promoted     0.000058
+allocated    0.000154
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 2000000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.783798
+repetitions         7
+cycles      1567.480347
+nanos       558.222703
+major       56.357521
+minor        0.006354
+promoted     0.006354
+allocated   56.357521
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 2000000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.657117
+repetitions         7
+cycles      1096.262857
+nanos       390.410083
+major       44.410599
+minor        0.000080
+promoted     0.000080
+allocated   44.410599
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 2000000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     1.749389
+repetitions         3
+cycles      364.770013
+nanos       129.907131
+major        0.000187
+minor        0.000087
+promoted     0.000087
+allocated    0.000187
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 8000000
+k 100000
+seq Array
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.886584
+repetitions         7
+cycles      31.560153
+nanos       11.241095
+major        0.000173
+minor        0.000074
+promoted     0.000074
+allocated    0.000173
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 8000000
+k 100000
+seq PSek_reach
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     1.009796
+repetitions         3
+cycles      2195.490707
+nanos       781.873862
+major       59.004827
+minor        0.005137
+promoted     0.005137
+allocated   59.004827
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 8000000
+k 100000
+seq PSek_get
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     0.941609
+repetitions         3
+cycles      1594.292040
+nanos       567.771594
+major       46.785347
+minor        0.000090
+promoted     0.000090
+allocated   46.785347
+==========
+machine charg
+prog reach.3f22acb.4.09.1+flambda
+n 8000000
+k 100000
+seq FmlibRbtrees
+distance -1
+---
+timeout -1
+minor_heap_size_kb 1024
+exectime     7.039437
+repetitions         3
+cycles      512.636200
+nanos       182.565848
+major        0.000187
+minor        0.000087
+promoted     0.000087
+allocated    0.000187
+==========
