@@ -29,6 +29,46 @@ ready for incorporation in research papers.
   by other experimenters. The distribution includes example 
   scripts using the library.
 
+
+Sample output
+-------------
+
+Here is an excerpt of an output of `prun`, showing the data for 2 runs.
+
+```
+machine charg
+prog ../_build/myswitch/benchmark/src/get/Main.exe
+n 1048576
+ops 100000
+distance 5
+seq Ktree
+k 32
+---
+timeout 10
+minor_heap_size_kb 1024
+exectime 0.004947
+cost 0.04947
+==========
+machine charg
+prog ../_build/myswitch/benchmark/src/get/Main.exe
+n 16777216
+ops 100000
+distance 5
+seq Ktree
+k 8
+---
+timeout 10
+minor_heap_size_kb 1024
+exectime 0.020698
+cost 0.020698
+==========
+```
+
+The file `demo_pplot_1.png` contains a sample output of `pplot`. The file `demo_pplot_1.pdf` contains thte PDF version of the image. The file `demo_prun_1.out` contains the associated raw results. 
+
+![alt text](relative%20demo_pplot_1.png?raw=true "Sample output of pplot")
+
+
 Development status
 ------------------
 
