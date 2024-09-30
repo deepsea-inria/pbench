@@ -2,9 +2,9 @@ Pbench: a program benchmarking toolkit
 =================================================
 
 The `pbench` toolkit is a software framework whose purpose is
-to help programmers benchmark their programs, with particular support
-for parallel programs. The toolkit provides two command-line tools,
-namely `prun` and `pplot`, that are useful for small, explorative
+to help programmers benchmark binary programs, with particular support
+for benchmarkig parallel programs. The toolkit provides two command-line 
+tools, namely `prun` and `pplot`, that are useful for small, explorative
 benchmarking scenarios. It also provides an OCaml library that is
 useful for writing sophisticated performance evaluations of one or 
 more benchmark programs, and for generating polished tables and plots 
@@ -13,6 +13,8 @@ ready for incorporation in research papers.
 - The `prun` tool organizes and executes measured runs of
   client-supplied benchmark programs. Crashes and timeouts of
   benchmark programs are handled gracefully by `prun`. 
+  Measurements are saved in a well-organized, human-readable 
+  plain text file.
 
 - The `pplot` tool generates various human-readable
   output from the data collected by `prun` experiments. Forms
@@ -25,7 +27,26 @@ ready for incorporation in research papers.
   who need fine-grained tuning of the runs and plots, and who
   want to make their experimental evaluations repeatable
   by other experimenters. The distribution includes example 
-  scripts using the lbirary.
+  scripts using the library.
+
+Development status
+------------------
+
+The `pbench` tool has been mainly developed by Arthur Charguéraud
+and Mike Rainey between 2012 and 2017. The tool remains
+maintained and used on a regular basis. The opam package is 
+maintained by François Pottier.
+
+If you are interested in extensions (such as GNU plots as output
+or additional OCaml helper functions), pull requests are welcome.
+Don't hesitate to get in touch with Arthur Charguéraud to 
+discuss new features.
+
+Besides, Mike Rainey has developed an experimental Python 
+implementation of `prun`, with compatible output format,
+so that the OCaml-based `pplot` can be used to view results.
+Feel free to contact Mike if you are interested.
+
 
 Requirements
 ------------
@@ -34,7 +55,7 @@ Requirements
 
 You will need version 4.00 or greater of 
 [OCaml](http://www.ocaml.org/) and also a recent version 
-of the gnu c compiler [GCC](http://gcc.gnu.org/).
+of [GCC](http://gcc.gnu.org/).
 
 The pbench plot generator requires that recent versions of 
 [R](http://www.r-project.org/) and LaTeX be installed on the 
