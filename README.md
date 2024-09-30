@@ -66,7 +66,7 @@ cost 0.020698
 
 The file `demo_pplot_1.png` contains a sample output of `pplot`. The file `demo_pplot_1.pdf` contains thte PDF version of the image. The file `demo_prun_1.out` contains the associated raw results. 
 
-![alt text](relative%20demo_pplot_1.png?raw=true "Sample output of pplot")
+![Alt text](demo_pplot_1.png)
 
 
 Development status
