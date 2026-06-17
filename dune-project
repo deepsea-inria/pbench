@@ -1,5 +1,6 @@
 (lang dune 3.11)
 (generate_opam_files true)
+(name pbench)
 
 (package
   (name pbench_xlib)
