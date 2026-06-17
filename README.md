@@ -65,8 +65,7 @@ To install the latest development version, type:
   git clone https://github.com/deepsea-inria/pbench
   cd pbench
   opam install dune
-  opam pin add xlib .
-  opam pin add pbench .
+  opam pin add .
 ```
 
 ### Conventions for benchmark programs
