@@ -40,6 +40,6 @@
   (depends
     ocaml
     dune
-    xlib
+    pbench_xlib
   )
 )
